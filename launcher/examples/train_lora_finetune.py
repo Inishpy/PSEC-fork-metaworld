@@ -11,6 +11,15 @@ from ml_collections import config_flags, ConfigDict
 import json
 import time
 
+import os
+from dotenv import load_dotenv
+
+# This loads the environment variables from .env into os.environ
+load_dotenv()  
+
+# Now you can access them
+api_key = os.getenv("WANDB_API_KEY")
+
 # for debug
 # config.update('jax_disable_jit', True)
 os.environ["WANDB_MODE"] = "offline"
@@ -94,7 +103,7 @@ def main(_):
                                    ),
                                dataset_kwargs=dict(
                                                     cost_scale=25,
-                                                    pr_data='data/point_robot-expert-random-100k.hdf5', # The location of point_robot data
+                                                    pr_data='data/point_robot-expert-random-100k--.hdf5', # The location of point_robot data
                                                 )
                                )
 

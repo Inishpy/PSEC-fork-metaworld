@@ -54,7 +54,7 @@ PLANET_ACTION_REPEAT = {
 
 
 def main(_):
-    wandb.init(project=FLAGS.project_name)
+    wandb.init(project=FLAGS.project_name, mode="online")
     wandb.config.update(FLAGS)
 
     action_repeat = FLAGS.action_repeat or PLANET_ACTION_REPEAT.get(FLAGS.env_name, 2)

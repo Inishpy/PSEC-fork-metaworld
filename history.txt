@@ -1,0 +1,264 @@
+    1  sudo snap install zotero-snap
+    2  sudo snap install outlook-for-linux --edge
+    3  nvidia-smi
+    4  clear
+    5  nvidia-smi -l 1
+    6  ollama
+    7  ollama server
+    8  ollama serve
+    9  ssh coimd@lnx-grid-19
+   10  conda env create -f environment.yml
+   11  python
+   12  sudo apt update
+   13  sudo apt install python3.10
+   14  conda env create -f environment.yml
+   15  conda env list
+   16  conda rm rlvla_env
+   17  conda
+   18  conda remove rlvla_env
+   19  conda env remove rlvla_env
+   20  conda env remove --name rlvla_env
+   21  conda env create -f environment.yml
+   22  conda env remove --name rlvla_env
+   23  conda env create -f environment.yml
+   24  conda env remove --name rlvla_env
+   25  conda env create -f environment.yml
+   26  conda env remove --name rlvla_env
+   27  conda create -n rlvla_env -y python=3.10
+   28  conda activate rlvla_env
+   29  pip install torch==2.2.0 torchvision==0.17.0 torchaudio==2.2.0 --index-url https://download.pytorch.org/whl/cu121
+   30  cd openvla && pip install -e . && cd ..
+   31  pip install -U tyro
+   32  pip install datasets==3.3.2
+   33  wget https://github.com/Dao-AILab/flash-attention/releases/download/v2.7.4.post1/flash_attn-2.7.4.post1+cu12torch2.2cxx11abiFALSE-cp310-cp310-linux_x86_64.whl
+   34  pip install flash_attn-2.7.4.post1+cu12torch2.2cxx11abiFALSE-cp310-cp310-linux_x86_64.whl
+   35  rm flash_attn-2.7.4.post1+cu12torch2.2cxx11abiFALSE-cp310-cp310-linux_x86_64.whl
+   36  cd ManiSkill && pip install -e . && cd ..
+   37  cd SimplerEnv && pip install -e . && cd ..
+   38  git branch
+   39  python simpler_env/train_multi_vla.py --num_agents 1 --cuda_devices 0 --base_seed 42 --base_name vla-exp --comm_interval 1 --name="PPO-pc25m_v3-warmup"     --vla_path="openvla/openvla-7b" --vla_unnorm_key="bridge_orig"   --vla_load_path="../openvla/checkpoints/warmup/steps_2000/lora_002000"   --seed=0 
+   40  cd SimplerEnv/
+   41  python simpler_env/train_multi_vla.py --num_agents 1 --cuda_devices 0 --base_seed 42 --base_name vla-exp --comm_interval 1 --name="PPO-pc25m_v3-warmup"     --vla_path="openvla/openvla-7b" --vla_unnorm_key="bridge_orig"   --vla_load_path="../openvla/checkpoints/warmup/steps_2000/lora_002000"   --seed=0 
+   42  pip install pot
+   43  python simpler_env/train_multi_vla.py --num_agents 1 --cuda_devices 0 --base_seed 42 --base_name vla-exp --comm_interval 1 --name="PPO-pc25m_v3-warmup"     --vla_path="openvla/openvla-7b" --vla_unnorm_key="bridge_orig"   --vla_load_path="../openvla/checkpoints/warmup/steps_2000/lora_002000"   --seed=0 
+   44  pip install openpyxl
+   45  python simpler_env/train_multi_vla.py --num_agents 1 --cuda_devices 0 --base_seed 42 --base_name vla-exp --comm_interval 1 --name="PPO-pc25m_v3-warmup"     --vla_path="openvla/openvla-7b" --vla_unnorm_key="bridge_orig"   --vla_load_path="../openvla/checkpoints/warmup/steps_2000/lora_002000"   --seed=0 
+   46  cd ..
+   47  du -h --max-depth=1
+   48  cd rl4vla-fork/
+   49  cd SimplerEnv/
+   50  python simpler_env/train_multi_vla.py --num_agents 1 --cuda_devices 0 --base_seed 42 --base_name vla-exp --comm_interval 1 --name="PPO-pc25m_v3-warmup"     --vla_path="openvla/openvla-7b" --vla_unnorm_key="bridge_orig"   --vla_load_path="../openvla/checkpoints/warmup/steps_2000/lora_002000"   --seed=0 
+   51  pip list
+   52  pip install -i https://pypi.org/simple/ bitsandbytes
+   53  pip install accelerate
+   54  python simpler_env/train_multi_vla.py --num_agents 1 --cuda_devices 0 --base_seed 42 --base_name vla-exp --comm_interval 1 --name="PPO-pc25m_v3-warmup"     --vla_path="openvla/openvla-7b" --vla_unnorm_key="bridge_orig"   --vla_load_path="../openvla/checkpoints/warmup/steps_2000/lora_002000"   --seed=0 
+   55  pip uninstall accelerate
+   56  pip install accelerate=0.26.0
+   57  pip install accelerate==0.26.0
+   58  python simpler_env/train_multi_vla.py --num_agents 1 --cuda_devices 0 --base_seed 42 --base_name vla-exp --comm_interval 1 --name="PPO-pc25m_v3-warmup"     --vla_path="openvla/openvla-7b" --vla_unnorm_key="bridge_orig"   --vla_load_path="../openvla/checkpoints/warmup/steps_2000/lora_002000"   --seed=0 
+   59  pip list
+   60  pip uninstall bitsandbytes
+   61  pip install bitsandbytes==0.37.2
+   62  python simpler_env/train_multi_vla.py --num_agents 1 --cuda_devices 0 --base_seed 42 --base_name vla-exp --comm_interval 1 --name="PPO-pc25m_v3-warmup"     --vla_path="openvla/openvla-7b" --vla_unnorm_key="bridge_orig"   --vla_load_path="../openvla/checkpoints/warmup/steps_2000/lora_002000"   --seed=0 
+   63  git stash
+   64  python simpler_env/train_multi_vla.py --num_agents 1 --cuda_devices 0 --base_seed 42 --base_name vla-exp --comm_interval 1 --name="PPO-pc25m_v3-warmup"     --vla_path="openvla/openvla-7b" --vla_unnorm_key="bridge_orig"   --vla_load_path="../openvla/checkpoints/warmup/steps_2000/lora_002000"   --seed=0 
+   65  pip install dotenv
+   66  python simpler_env/train_multi_vla.py --num_agents 1 --cuda_devices 0 --base_seed 42 --base_name vla-exp --comm_interval 1 --name="PPO-pc25m_v3-warmup"     --vla_path="openvla/openvla-7b" --vla_unnorm_key="bridge_orig"   --vla_load_path="../openvla/checkpoints/warmup/steps_2000/lora_002000"   --seed=0 
+   67  nvidia-smi -l 1
+   68  nvidia-smi -l 1
+   69  git branch
+   70  git pull
+   71  git fetch origin
+   72  git reset --hard origin/main
+   73  git fetch --tags
+   74  git clean -fd
+   75  conda activate rlvla_env
+   76  python simpler_env/train_multi_vla.py --num_agents 1 --cuda_devices 0 --base_seed 42 --base_name vla-exp --comm_interval 1 --name="PPO-pc25m_v3-warmup"     --vla_path="openvla/openvla-7b" --vla_unnorm_key="bridge_orig"   --vla_load_path="../openvla/checkpoints/warmup/steps_2000/lora_002000"   --seed=0 
+   77  cd SimplerEnv/
+   78  python simpler_env/train_multi_vla.py --num_agents 1 --cuda_devices 0 --base_seed 42 --base_name vla-exp --comm_interval 1 --name="PPO-pc25m_v3-warmup"     --vla_path="openvla/openvla-7b" --vla_unnorm_key="bridge_orig"   --vla_load_path="../openvla/checkpoints/warmup/steps_2000/lora_002000"   --seed=0 
+   79  python nohup simpler_env/train_multi_vla.py --num_agents 1 --cuda_devices 0 --base_seed 42 --base_name vla-exp --comm_interval 1 --name="PPO-pc25m_v3-warmup"     --vla_path="openvla/openvla-7b" --vla_unnorm_key="bridge_orig"   --vla_load_path="../openvla/checkpoints/warmup/steps_2000/lora_002000"   --seed=0 > out3.log 2>&1 &
+   80  nohup python simpler_env/train_multi_vla.py --num_agents 1 --cuda_devices 0 --base_seed 42 --base_name vla-exp --comm_interval 1 --name="PPO-pc25m_v3-warmup"     --vla_path="openvla/openvla-7b" --vla_unnorm_key="bridge_orig"   --vla_load_path="../openvla/checkpoints/warmup/steps_2000/lora_002000"   --seed=0 > out3.log 2>&1 &
+   81  pkill -f train_multi_vla.py
+   82  nohup python simpler_env/train_multi_vla.py --num_agents 1 --cuda_devices 0 --base_seed 42 --base_name vla-exp --comm_interval 1 --name="PPO-pc25m_v3-warmup"     --vla_path="openvla/openvla-7b" --vla_unnorm_key="bridge_orig"   --vla_load_path="../openvla/checkpoints/warmup/steps_2000/lora_002000"   --seed=0 > out3.log 2>&1 &
+   83  git install https://github.com/Inishpy/rl4vla-fork.git
+   84  git clone https://github.com/Inishpy/rl4vla-fork.git
+   85  cd rl4vla-fork/
+   86  ls
+   87  git branch
+   88  conda activate rlvla_env
+   89  git fetch origin
+   90  git reset --hard origin/main
+   91  git fetch --tags
+   92  python simpler_env/train_multi_vla.py --num_agents 1 --cuda_devices 0 --base_seed 42 --base_name vla-exp --comm_interval 1 --name="PPO-pc25m_v3-warmup"     --vla_path="openvla/openvla-7b" --vla_unnorm_key="bridge_orig"   --vla_load_path="../openvla/checkpoints/warmup/steps_2000/lora_002000"   --seed=0 
+   93  cd SimplerEnv/
+   94  python simpler_env/train_multi_vla.py --num_agents 1 --cuda_devices 0 --base_seed 42 --base_name vla-exp --comm_interval 1 --name="PPO-pc25m_v3-warmup"     --vla_path="openvla/openvla-7b" --vla_unnorm_key="bridge_orig"   --vla_load_path="../openvla/checkpoints/warmup/steps_2000/lora_002000"   --seed=0 
+   95  nvidia-smi
+   96  pkill -f python
+   97  pkill -f train_multi_vla.py
+   98  nvidia-smi
+   99  python
+  100  clear
+  101  wnadb login
+  102  wandb login
+  103  wandb login --host=http://localhost:8080
+  104  clear
+  105  python simpler_env/train_multi_vla.py --num_agents 1 --cuda_devices 0 --base_seed 42 --base_name vla-exp --comm_interval 1 --name="PPO-pc25m_v3-warmup"     --vla_path="openvla/openvla-7b" --vla_unnorm_key="bridge_orig"   --vla_load_path="../openvla/checkpoints/warmup/steps_2000/lora_002000"   --seed=0 
+  106  pkill -f train_multi_vla.py
+  107  nvidia-smi
+  108  conda create -n tinyvla python=3.10
+  109  conda activate tinyvla
+  110  pip install -r requirements_lora_vla.txt
+  111  pip install -r requirements.txt
+  112  conda install -r requirements.txt
+  113  conda install --file requirements.txt
+  114  conda install -c conda-forge --file requirements.txt
+  115  pip install -r requirements.txt
+  116  python tinyvla_loader.py
+  117  pip install llava_pythia
+  118  python test_model_loading.py
+  119  python optimized_metaworld_demo.py 
+  120  python tinyvla_loader.py
+  121  git clone https://github.com/liyaxuanliyaxuan/TinyVLA.git
+  122  python tinyvla_loader.py
+  123  cd TinyVLA/
+  124  pip install -r requirements.txt
+  125  cd policy_heads/
+  126  pip install -e .
+  127  cd ../llava-pythia/
+  128  pip install -e .
+  129  pip install deepseed
+  130  pip install deepspeed
+  131  pip install dist/deepspeed-0.3.13+8cd046f-cp38-cp38-linux_x86_64.whl
+  132  cd ..
+  133  git clone https://github.com/deepspeedai/DeepSpeed.git
+  134  cd DeepSpeed/
+  135  pip install .
+  136  cd ..
+  137  clear
+  138  conda create -n tinyvla1 python=3.10 -y
+  139  conda activate tinyvla1
+  140  pip install -r requirements.txt
+  141  cd policy_heads/
+  142  pip install -e .
+  143  cd ../llava-pythia/
+  144  pip install -e .
+  145  cd ..
+  146  ls
+  147  clear
+  148  which nvcc && ls -l /usr/local/cuda
+  149  nvidia-smi
+  150  sys
+  151  what
+  152  memory
+  153  mem
+  154  get
+  155  not
+  156  there
+  157  what
+  158  clear
+  159  conda remove env tinyvla1
+  160  conda remove --name tinyvla1 --all
+  161  clear
+  162  git clone git@github.com:HanshangZhu/vla-vlm-test.git
+  163  git clone https://github.com/HanshangZhu/vla-vlm-test.git
+  164  cd vla-vlm-test/
+  165  ls
+  166  clear
+  167  conda activate PSEC
+  168  pip install -r requirements.txt
+  169  [
+  170  clear
+  171  pip install -r requirements.txt
+  172  python3 run.py
+  173  pip uninstall tensorflow-probability
+  174  pip install tensorflow-probability==0.21.0
+  175  python3 run.py
+  176  pip install -r requirements.txt
+  177  python3 run.py
+  178  pip list
+  179  pip install dataset
+  180  python3 run.py
+  181  pip install git+https://github.com/HenryLHH/metadrive_clean.git@main
+  182  mkdir ~/.mujoco
+  183  cd ~/.mujoco
+  184  wget https://github.com/google-deepmind/mujoco/releases/download/2.1.0/mujoco210-linux-x86_64.tar.gz
+  185  tar -zxvf mujoco210-linux-x86_64.tar.gz
+  186  cd mujoco210
+  187  wget https://www.roboti.us/file/mjkey.txt
+  188  export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:~/.mujoco/mujoco210/bin
+  189  CUDA_VISIBLE_DEVICES=0 python launcher/examples/train_lora_finetune.py --com_method 0 --model_cls 'LoRALearner' --variant 0 --seed 0
+  190  cd ..
+  191  cd PSEC/
+  192  CUDA_VISIBLE_DEVICES=0 python launcher/examples/train_lora_finetune.py --com_method 0 --model_cls 'LoRALearner' --variant 0 --seed 0
+  193  conda list
+  194  CUDA_VISIBLE_DEVICES=0 python launcher/examples/train_lora_finetune.py --com_method 0 --model_cls 'LoRALearner' --variant 0 --seed 0
+  195  pip install -U "huggingface_hub[cli]
+  196  #
+  197  pip install -U "huggingface_hub[cli]"
+  198  hf download LTL07/PSEC
+  199  clear
+  200  CUDA_VISIBLE_DEVICES=0 python launcher/examples/train_lora_finetune.py --com_method 0 --model_cls 'LoRALearner' --variant 0 --seed 0
+  201  export CUDA_VISIBLE_DEVICES=0
+  202  CUDA_VISIBLE_DEVICES=0 python launcher/examples/train_lora_finetune.py --com_method 0 --model_cls 'LoRALearner' --variant 0 --seed 0
+  203  python
+  204  pip install --upgrade "jax[cuda12]"
+  205  CUDA_VISIBLE_DEVICES=0 python launcher/examples/train_lora_finetune.py --com_method 0 --model_cls 'LoRALearner' --variant 0 --seed 0
+  206  CUDA_VISIBLE_DEVICES=0 nohup python launcher/examples/train_lora_finetune.py --com_method 0 --model_cls 'LoRALearner' --variant 0 --seed 0
+  207  git clone https://github.com/ltlhuuu/PSEC.git
+  208  cd PSEC
+  209  conda create -n PSEC python=3.9
+  210  conda activate PSEC
+  211  pip install -r requirements.txt
+  212  nivdia-smi
+  213  nvidia-smi
+  214  pkill -f train_lora_finetune.py
+  215  nvidia-smi
+  216  conda activate PSEC
+  217  CUDA_VISIBLE_DEVICES=0 nohup python launcher/examples/train_lora_finetune.py --com_method 0 --model_cls 'LoRALearner' --variant 0 --seed 0
+  218  python run.py
+  219  nvidia-smi
+  220  conda activate PSEC
+  221  CUDA_VISIBLE_DEVICES=0 nohup python launcher/examples/train_lora_finetune.py --com_method 0 --model_cls 'LoRALearner' --variant 0 --seed 0
+  222  pip install python-dotenv
+  223  CUDA_VISIBLE_DEVICES=0 nohup python launcher/examples/train_lora_finetune.py --com_method 0 --model_cls 'LoRALearner' --variant 0 --seed 0
+  224  wandb login --relogin
+  225  CUDA_VISIBLE_DEVICES=0 nohup python launcher/examples/train_lora_finetune.py --com_method 0 --model_cls 'LoRALearner' --variant 0 --seed 0
+  226  wandb login --relogin http://localhost:8080
+  227  CUDA_VISIBLE_DEVICES=0 nohup python launcher/examples/train_lora_finetune.py --com_method 0 --model_cls 'LoRALearner' --variant 0 --seed 0
+  228  wandb login --relogin http://localhost:8080
+  229  lsof -i :8080
+  230  sudo netstat -tulnp | grep 8080
+  231  CUDA_VISIBLE_DEVICES=0 nohup python launcher/examples/train_lora_finetune.py --com_method 0 --model_cls 'LoRALearner' --variant 0 --seed 0
+  232  nvidia-smi -l 1
+  233  conda activate PSEC
+  234  CUDA_VISIBLE_DEVICES=0 nohup python launcher/examples/train_lora_finetune.py --com_method 0 --model_cls 'LoRALearner' --variant 0 --seed 0
+  235  conda activate PSEC
+  236  CUDA_VISIBLE_DEVICES=0 nohup python launcher/examples/train_lora_finetune.py --com_method 0 --model_cls 'LoRALearner' --variant 0 --seed 0
+  237  CUDA_VISIBLE_DEVICES=0  python launcher/examples/train_lora_finetune.py --com_method 0 --model_cls 'LoRALearner' --variant 0 --seed 0
+  238  conda activate PSEC
+  239  CUDA_VISIBLE_DEVICES=0  python launcher/examples/train_lora_finetune.py --com_method 0 --model_cls 'LoRALearner' --variant 0 --seed 0
+  240  python
+  241  pip list
+  242  CUDA_VISIBLE_DEVICES=0  python launcher/examples/train_lora_finetune.py --com_method 0 --model_cls 'LoRALearner' --variant 0 --seed 0
+  243  pip install metaworld
+  244  CUDA_VISIBLE_DEVICES=0  python launcher/examples/train_lora_finetune.py --com_method 0 --model_cls 'LoRALearner' --variant 0 --seed 0
+  245  conda deactivate
+  246  conda activate PSEC
+  247  pip list
+  248  CUDA_VISIBLE_DEVICES=0  python launcher/examples/train_lora_finetune.py --com_method 0 --model_cls 'LoRALearner' --variant 0 --seed 0
+  249  python
+  250  python3 -c "import metaworld; print(metaworld.__file__)"
+  251  which python3 && python3 -m site && which pip && pip show metaworld
+  252  pip install git+https://github.com/Farama-Foundation/Metaworld.git@master#egg=metaworld
+  253  python
+  254  conda activate PSEC
+  255  python
+  256  pip install git+https://github.com/Farama-Foundation/Metaworld.git@master#egg=metaworld
+  257  pip install git+https://github.com/Farama-Foundation/Metaworld.git@04be337a12305e393c0caf0cbf5ec7755c7c8feb
+  258  python
+  259  export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/home/lunet/coimd/.mujoco/mujoco210/bin
+  260  python
+  261  CUDA_VISIBLE_DEVICES=0  python launcher/examples/train_lora_finetune.py --com_method 0 --model_cls 'LoRALearner' --variant 0 --seed 0
+  262  export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/lib/nvidia
+  263  CUDA_VISIBLE_DEVICES=0  python launcher/examples/train_lora_finetune.py --com_method 0 --model_cls 'LoRALearner' --variant 0 --seed 0
+  264  history > history.txt

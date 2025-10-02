@@ -1,0 +1,46 @@
+{
+    "project": "PSEC",
+    "experiment_name": "ddpm_lora",
+    "timestamp": "Pretrain",
+    "max_steps": 1,
+    "batch_size": 2048,
+    "eval_episodes": 10,
+    "log_interval": 1000,
+    "save_steps": 250000,
+    "eval_interval": 250000,
+    "save_video": false,
+    "filter_threshold": null,
+    "take_top": null,
+    "online_max_steps": 0,
+    "unsquash_actions": false,
+    "normalize_returns": true,
+    "ratio": 1.0,
+    "training_time_inference_params": {
+        "N": 64,
+        "clip_sampler": true,
+        "M": 1
+    },
+    "rl_config": {
+        "model_cls": "Pretrain",
+        "actor_lr": 0.0003,
+        "T": 5,
+        "N": 64,
+        "M": 0,
+        "actor_dropout_rate": 0.1,
+        "actor_num_blocks": 3,
+        "decay_steps": 3000000,
+        "actor_layer_norm": true,
+        "actor_tau": 0.001,
+        "beta_schedule": "vp"
+    },
+    "seed": 42,
+    "env_name": "OfflineMetadrive-easysparse-v0",
+    "group": "OfflineMetadrive-easysparse-v0_ddpm_lora_",
+    "inference_variants": [
+        {
+            "N": 1,
+            "clip_sampler": true,
+            "M": 0
+        }
+    ]
+}

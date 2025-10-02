@@ -9,11 +9,11 @@ from jaxrl5.data.dsrl_datasets import DSRLDataset
 from tqdm.auto import trange  # noqa
 import matplotlib.pyplot as plt
 from gym.wrappers import RecordVideo
-import metadrive
+#import metadrive
 import numpy as np
 import matplotlib.pyplot as plt
 from scipy.signal import savgol_filter
-from metadrive import MetaDriveEnv
+#from metadrive import MetaDriveEnv
 import matplotlib as mpl
 
 
@@ -99,27 +99,30 @@ def evaluate_bc(
     agent, env: gym.Env, num_episodes: int, save_video: bool = False, render: bool = False, train_lora: bool = True
 ) -> Dict[str, float]:
     # env.config['use_render'] = True
-    episode_rets, episode_costs, episode_lens, episode_no_safes = [], [], [], []
-    for _ in trange(num_episodes, desc="Evaluating", leave=False):
+    episode_rets, episode_suc, episode_lens, episode_no_safes = [], [], [], []
+    for i in trange(num_episodes, desc="Evaluating", leave=False):
         obs, info = env.reset()
-        episode_ret, episode_cost, episode_len= 0.0, 0.0, 0
+        episode_ret, episode_success, episode_len= 0.0, 0.0, 0
         while True:
             if render:
                 env.render()
                 time.sleep(1e-3)
             action, agent = agent.eval_actions_bc(obs, train_lora=train_lora)
             obs, reward, terminated, truncated, info = env.step(action)
-            cost = info["cost"]
+            
+            success = info["success"]
             episode_ret += reward
             episode_len += 1
-            episode_cost += cost
+            episode_success += success
             if terminated or truncated:
+                break
+            if success == 1:
                 break
         episode_rets.append(episode_ret)
         episode_lens.append(episode_len)
-        episode_costs.append(episode_cost)
+        episode_suc.append(episode_success)
 
-    return {"return": np.mean(episode_rets), "episode_len": np.mean(episode_lens), "cost": np.mean(episode_costs)}
+    return {"return": np.mean(episode_rets), "episode_len": np.mean(episode_lens), "success": np.mean(episode_suc)}
 
 def evaluate_ws(
     agent, agent_reward, agent_cost, env: gym.Env, num_episodes: int, save_video: bool = False, render: bool = False
