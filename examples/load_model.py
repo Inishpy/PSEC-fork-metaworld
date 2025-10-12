@@ -32,9 +32,16 @@ def load_diffusion_model(model_location, pickle, env):
         numbers = {}
         for file in pickle_files:
             match = re.search(r'\d+', file)
-            number = int(match.group())
-            path = os.path.join(f"{model_location}", file)
-            numbers[number] = path
+            if match:
+                number = int(match.group())
+                path = os.path.join(f"{model_location}", file)
+                numbers[number] = path
+
+        if not numbers:
+            raise FileNotFoundError(
+                f"No model checkpoint files with extension '{pickle}' found in directory '{model_location}'. "
+                f"Available files: {files}"
+            )
 
         max_number = max(numbers.keys())
         max_path = numbers[max_number]
