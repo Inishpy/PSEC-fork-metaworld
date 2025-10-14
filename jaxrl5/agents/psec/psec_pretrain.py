@@ -1,7 +1,7 @@
-"""Implementations of algorithms for continuous control."""
+"""Implementations of algorithms for continuous control with parameter-level composition."""
 import os
 from functools import partial
-from typing import Dict, Optional, Tuple, Union
+from typing import Dict, Optional, Tuple, Union, List
 import flax.linen as nn
 import gym
 import gym.spaces
@@ -16,15 +16,53 @@ import numpy as np
 from jaxrl5.agents.agent import Agent
 from jaxrl5.data.dataset import DatasetDict
 from jaxrl5.networks import MLP, DDPM, FourierFeatures, ddpm_sampler_eval_bc, cosine_beta_schedule, MLPResNet, vp_beta_schedule
-
-
+import tensorflow as tf
+from tensorboardX import SummaryWriter
+import logging
+# Meta-World task names
+env_names = [
+    'assembly-v3', 'basketball-v3', 'bin-picking-v3', 'box-close-v3', 'button-press-topdown-v3',
+    'button-press-topdown-wall-v3', 'button-press-v3', 'button-press-wall-v3', 'coffee-button-v3',
+    'coffee-pull-v3', 'coffee-push-v3', 'dial-turn-v3', 'disassemble-v3', 'door-close-v3',
+    'door-lock-v3', 'door-open-v3', 'door-unlock-v3', 'drawer-close-v3', 'drawer-open-v3',
+    'faucet-close-v3', 'faucet-open-v3', 'hammer-v3', 'hand-insert-v3', 'handle-press-side-v3',
+    'handle-press-v3', 'handle-pull-side-v3', 'handle-pull-v3', 'lever-pull-v3', 'peg-insert-side-v3',
+    'peg-unplug-side-v3', 'pick-out-of-hole-v3', 'pick-place-v3', 'pick-place-wall-v3',
+    'plate-slide-back-side-v3', 'plate-slide-back-v3', 'plate-slide-side-v3', 'plate-slide-v3',
+    'push-back-v3', 'push-v3', 'push-wall-v3', 'reach-v3', 'reach-wall-v3', 'shelf-place-v3',
+    'soccer-v3', 'stick-pull-v3', 'stick-push-v3', 'sweep-into-v3', 'sweep-v3', 'window-close-v3',
+    'window-open-v3'
+]
 
 def mish(x):
     return x * jnp.tanh(nn.softplus(x))
 
-class Pretrain(Agent):
+
+class CompositionWeightNetwork(nn.Module):
+    """Network to learn composition weights for each prior model."""
+    hidden_dims: Tuple[int, ...] = (256, 256)
+    num_priors: int = 1
+    
+    @nn.compact
+    def __call__(self, observations):
+        x = observations
+        for dim in self.hidden_dims:
+            x = nn.Dense(dim)(x)
+            x = mish(x)
+        
+        # Output weights for each prior model
+        weights = nn.Dense(self.num_priors)(x)
+        # Apply softmax to get normalized weights
+        weights = nn.softmax(weights, axis=-1)
+        return weights
+
+
+class PretrainWithComposition(Agent):
     score_model: TrainState
     target_score_model: TrainState
+    composition_weights: TrainState  # Learnable weights for composition
+    prior_models: List[Dict] = struct.field(pytree_node=False)  # List of loaded prior models
+    prior_env_names: List[str] = struct.field(pytree_node=False)  # Names of prior tasks
     discount: float
     tau: float
     actor_tau: float
@@ -37,6 +75,10 @@ class Pretrain(Agent):
     betas: jnp.ndarray
     alphas: jnp.ndarray
     alpha_hats: jnp.ndarray
+    use_composition: bool = struct.field(pytree_node=False)
+    composition_temperature: float
+    logger: Optional[SummaryWriter] = struct.field(pytree_node=False, default=None)
+    update_step: int = 0
 
     @classmethod
     def create(
@@ -59,29 +101,61 @@ class Pretrain(Agent):
         clip_sampler: bool = True,
         beta_schedule: str = 'vp',
         decay_steps: Optional[int] = int(2e6),
+        results_dir: str = './results/pretrain/20251009-015311',
+        current_task: str = None,
+        use_composition: bool = True,
+        composition_lr: float = 1e-3,
+        composition_temperature: float = 1.0,
+        logger_path: str = './logs',
     ):
 
         rng = jax.random.PRNGKey(seed)
-        rng, actor_key = jax.random.split(rng, 2)
+        rng, actor_key, comp_key = jax.random.split(rng, 3)
         actions = action_space.sample()
         observations = observation_space.sample()
         action_dim = action_space.shape[0]
+        
+        # Load prior models
+        prior_models = []
+        prior_env_names = []
+
+        if use_composition and current_task:
+            
+            for env_name in env_names:
+                if env_name != current_task:  # Don't load the current task as a prior
+                    model_path = os.path.join(results_dir, env_name)
+                    
+                    if os.path.exists(model_path):
+                        # Find the latest model file
+                        model_files = [f for f in os.listdir(model_path) if f.startswith('model') and f.endswith('.pickle')]
+                        if model_files:
+                            # Sort by timestamp in filename
+                            model_files.sort(key=lambda x: int(x.replace('model', '').replace('.pickle', '')))
+                            latest_model = os.path.join(model_path, model_files[-1])
+                            try:
+                                with open(latest_model, 'rb') as f:
+                                    prior_model = pickle.load(f)
+                                prior_models.append(prior_model)
+                                prior_env_names.append(env_name)
+                                print(f"Loaded prior model from {env_name}")
+                            except Exception as e:
+                                print(f"Failed to load model from {env_name}: {e}")
+        
+        num_priors = len(prior_models)
+        print(f"Loaded {num_priors} prior models for composition")
         
         preprocess_time_cls = partial(FourierFeatures,
                                       output_size=time_dim,
                                       learnable=True)
         
-
         cond_model_cls = partial(MLP,
                                 hidden_dims=(128, 128),
                                 activations=mish,
                                 activate_final=False)
         
-        
         if decay_steps is not None:
             actor_lr = optax.cosine_decay_schedule(actor_lr, decay_steps)
 
-        # TODO: change
         base_model_cls = partial(MLPResNet,
                                     use_layer_norm=actor_layer_norm,
                                     num_blocks=actor_num_blocks,
@@ -89,7 +163,7 @@ class Pretrain(Agent):
                                     out_dim=action_dim,
                                     activations=mish,
                                     )
-        # TODO: change
+
         actor_def = DDPM(time_preprocess_cls=preprocess_time_cls,
                             cond_encoder_cls=cond_model_cls,
                             reverse_encoder_cls=base_model_cls)
@@ -110,6 +184,22 @@ class Pretrain(Agent):
                                                tx=optax.GradientTransformation(
                                                     lambda _: None, lambda _: None))
         
+        # Initialize composition weight network
+        composition_weights = None
+        if use_composition and num_priors > 0:
+            comp_def = CompositionWeightNetwork(num_priors=num_priors + 1)  # +1 for the base model
+            comp_params = comp_def.init(comp_key, observations)
+            comp_optimizer = optax.adam(learning_rate=composition_lr)
+            composition_weights = TrainState.create(
+                apply_fn=comp_def.apply,
+                params=comp_params,
+                tx=comp_optimizer
+            )
+        
+        # Initialize logger
+        logger = None
+        if use_composition and logger_path:
+            logger = SummaryWriter(logger_path)
 
         if beta_schedule == 'cosine':
             betas = jnp.array(cosine_beta_schedule(T))
@@ -127,6 +217,9 @@ class Pretrain(Agent):
             actor=None, # Base class attribute
             score_model=score_model,
             target_score_model=target_score_model,
+            composition_weights=composition_weights,
+            prior_models=prior_models,
+            prior_env_names=prior_env_names,
             tau=tau,
             discount=discount,
             rng=rng,
@@ -140,7 +233,27 @@ class Pretrain(Agent):
             ddpm_temperature=ddpm_temperature,
             actor_tau=actor_tau,
             clip_sampler=clip_sampler,
+            use_composition=use_composition,
+            composition_temperature=composition_temperature,
+            logger=logger,
+            update_step=0,
         )
+    
+    def compose_parameters(self, params, observation, weights):
+        """Compose parameters from base model and prior models using learned weights."""
+        if not self.use_composition or len(self.prior_models) == 0:
+            return params
+        
+        # Stack all parameters (base + priors)
+        all_params = [params] + [prior['score_model']['params'] for prior in self.prior_models]
+        
+        # Apply weighted combination
+        composed_params = jax.tree_map(
+            lambda *ps: sum(w * p for w, p in zip(weights, ps)),
+            *all_params
+        )
+        
+        return composed_params
     
     def update_actor(agent, batch: DatasetDict) -> Tuple[Agent, Dict[str, float]]:
         rng = agent.rng
@@ -158,26 +271,99 @@ class Pretrain(Agent):
         noisy_actions = alpha_1 * batch['actions'] + alpha_2 * noise_sample
 
         key, rng = jax.random.split(rng, 2)
-        def actor_loss_fn(score_model_params) -> Tuple[jnp.ndarray, Dict[str, float]]:
-            eps_pred = agent.score_model.apply_fn({'params': score_model_params},
-                                       observation,
-                                       noisy_actions,
-                                       time,
-                                       rngs={'dropout': key},
-                                       training=True,
-                                       )
+        
+        if agent.use_composition and agent.composition_weights is not None:
+            # Joint loss for both base model and composition weights
+            def joint_loss_fn(score_params, comp_params) -> Tuple[jnp.ndarray, Dict[str, float]]:
+                # Get composition weights
+                weights = agent.composition_weights.apply_fn(comp_params, observation)
+                weights = weights * agent.composition_temperature
+                
+                # Compose parameters
+                composed_params = agent.compose_parameters(score_params, observation, weights[0])
+                
+                # Forward pass with composed parameters
+                eps_pred = agent.score_model.apply_fn({'params': composed_params},
+                                           observation,
+                                           noisy_actions,
+                                           time,
+                                           rngs={'dropout': key},
+                                           training=True,
+                                           )
+                
+                actor_loss = (((eps_pred - noise_sample) ** 2).sum(axis=-1)).mean()
+                
+                # Add entropy regularization for weights to encourage exploration
+                entropy_reg = -0.01 * (weights * jnp.log(weights + 1e-8)).sum(axis=-1).mean()
+                total_loss = actor_loss + entropy_reg
+                
+                # Prepare info dict with individual weights
+                info_dict = {
+                    'actor_loss': actor_loss, 
+                    'entropy_reg': entropy_reg,
+                    f'weight_base': weights[0, 0].mean()
+                }
+                
+                # Add weights for each prior
+                for i, env_name in enumerate(agent.prior_env_names[:]):  # Limit to first 10 for logging
+                    info_dict[f'weight_{env_name}'] = weights[0, i+1].mean()
+                
+                return total_loss, info_dict
+            
+            # Compute gradients for both networks
+            (loss, info), (score_grads, comp_grads) = jax.value_and_grad(
+                joint_loss_fn, argnums=(0, 1), has_aux=True
+            )(agent.score_model.params, agent.composition_weights.params)
+            
+            # Update both networks
+            score_model = agent.score_model.apply_gradients(grads=score_grads)
+            composition_weights = agent.composition_weights.apply_gradients(grads=comp_grads)
+            
+            agent = agent.replace(score_model=score_model, composition_weights=composition_weights)
+            
+        else:
+            # Standard update without composition
+            def actor_loss_fn(score_model_params) -> Tuple[jnp.ndarray, Dict[str, float]]:
+                eps_pred = agent.score_model.apply_fn({'params': score_model_params},
+                                           observation,
+                                           noisy_actions,
+                                           time,
+                                           rngs={'dropout': key},
+                                           training=True,
+                                           )
 
-            actor_loss = (((eps_pred - noise_sample) ** 2).sum(axis=-1)).mean()
-            return actor_loss, {'actor_loss': actor_loss}
+                actor_loss = (((eps_pred - noise_sample) ** 2).sum(axis=-1)).mean()
+                return actor_loss, {'actor_loss': actor_loss}
 
-        grads, info = jax.grad(actor_loss_fn, has_aux=True)(agent.score_model.params)
-        score_model = agent.score_model.apply_gradients(grads=grads)
-        agent = agent.replace(score_model=score_model)
+            grads, info = jax.grad(actor_loss_fn, has_aux=True)(agent.score_model.params)
+            score_model = agent.score_model.apply_gradients(grads=grads)
+            agent = agent.replace(score_model=score_model)
+        
+        # Update target network
         target_score_params = optax.incremental_update(
             score_model.params, agent.target_score_model.params, agent.actor_tau
         )
         target_score_model = agent.target_score_model.replace(params=target_score_params)
-        new_agent = agent.replace(score_model=score_model, target_score_model=target_score_model, rng=rng)
+        
+        # Log weights to TensorBoard
+        # Avoid Python boolean logic on JAX tracers inside JIT-compiled functions.
+        # Only log if update_step is a regular Python int (i.e., not inside JIT).
+        if (
+            agent.use_composition
+            and agent.logger is not None
+            and isinstance(agent.update_step, int)
+            and agent.update_step % 100 == 0
+        ):
+            for key, value in info.items():
+                if 'weight' in key:
+                    agent.logger.add_scalar(f'composition_weights/{key}', float(value), agent.update_step)
+        
+        new_agent = agent.replace(
+            score_model=score_model, 
+            target_score_model=target_score_model, 
+            rng=rng,
+            update_step=agent.update_step + 1
+        )
         
         return new_agent, info
     
@@ -188,9 +374,23 @@ class Pretrain(Agent):
         observations = jax.device_put(observations)
         observations = jnp.expand_dims(observations, axis=0).repeat(self.N, axis = 0)
 
-        score_params = self.target_score_model.params
+        # Get composed parameters for evaluation
+        if self.use_composition and self.composition_weights is not None:
+            weights = self.composition_weights.apply_fn(
+                self.composition_weights.params, observations[0:1]
+            )
+            weights = weights * self.composition_temperature
+            score_params = self.compose_parameters(
+                self.target_score_model.params, observations[0:1], weights[0]
+            )
+        else:
+            score_params = self.target_score_model.params
 
-        actions, rng = ddpm_sampler_eval_bc(self.score_model.apply_fn, score_params, self.T, rng, self.act_dim, observations, self.alphas, self.alpha_hats, self.betas, self.ddpm_temperature, self.M, self.clip_sampler, training = False)
+        actions, rng = ddpm_sampler_eval_bc(
+            self.score_model.apply_fn, score_params, self.T, rng, self.act_dim, 
+            observations, self.alphas, self.alpha_hats, self.betas, 
+            self.ddpm_temperature, self.M, self.clip_sampler, training=False
+        )
         rng, _ = jax.random.split(rng, 2)
         idx = 0
 
@@ -209,10 +409,33 @@ class Pretrain(Agent):
     def save(self, modeldir, save_time):
         file_name = 'model' + str(save_time) + '.pickle'
         state_dict = flax.serialization.to_state_dict(self)
+        
+        # Save composition weights separately if they exist
+        if self.use_composition and self.composition_weights is not None:
+            comp_file_name = 'composition_weights_' + str(save_time) + '.pickle'
+            comp_dict = flax.serialization.to_state_dict(self.composition_weights)
+            pickle.dump(comp_dict, open(os.path.join(modeldir, comp_file_name), 'wb'))
+            
+            # Also save the list of prior env names for reference
+            prior_file_name = 'prior_tasks_' + str(save_time) + '.pickle'
+            pickle.dump(self.prior_env_names, open(os.path.join(modeldir, prior_file_name), 'wb'))
+        
         pickle.dump(state_dict, open(os.path.join(modeldir, file_name), 'wb'))
 
     def load(self, model_location):
         pkl_file = pickle.load(open(model_location, 'rb'))
         new_agent = flax.serialization.from_state_dict(target=self, state=pkl_file)
-        return new_agent# 
-    
+        
+        # Try to load composition weights if they exist
+        model_dir = os.path.dirname(model_location)
+        model_name = os.path.basename(model_location)
+        timestamp = model_name.replace('model', '').replace('.pickle', '')
+        
+        comp_location = os.path.join(model_dir, f'composition_weights_{timestamp}.pickle')
+        if os.path.exists(comp_location):
+            comp_file = pickle.load(open(comp_location, 'rb'))
+            new_agent.composition_weights = flax.serialization.from_state_dict(
+                target=new_agent.composition_weights, state=comp_file
+            )
+        
+        return new_agent

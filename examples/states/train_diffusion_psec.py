@@ -15,7 +15,7 @@ from dotenv import load_dotenv
 import glob
 from metaworld.evaluation import evaluation, metalearning_evaluation
 import traceback
-from jaxrl5.agents.psec.psec_pretrain import Pretrain
+from jaxrl5.agents.psec.psec_pretrain import PretrainWithComposition
 import pandas as pd
 # Load environment variables from .env into os.environ
 load_dotenv()
@@ -651,8 +651,9 @@ def create_agent(details, env, config_dict):
         )
         keys = ["observations", "actions"]
     else:
+        print("model class", model_cls)
         agent_bc = globals()[model_cls].create(
-            details['seed'], env.observation_space, env.action_space, **config_dict
+            details['seed'], env.observation_space, env.action_space, current_task=details["env_name"][1], **config_dict
         )
         keys = None
     logging.info("[AGENT] Agent created: %s", model_cls)

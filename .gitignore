@@ -16,3 +16,4 @@ nohup.out
 *.pickle
 
 libero_partial/*
+logs/

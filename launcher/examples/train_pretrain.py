@@ -52,11 +52,11 @@ def main():
         project='PSEC',
         group='metaworld',
         experiment_name='ddpm_lora',
-        max_steps=2000000,
+        max_steps=20000,
         batch_size=4096,
         eval_episodes=10,
         log_interval=1000,
-        save_steps=1999999,
+        save_steps=19999,
         eval_interval=4000,
         save_video=False,
         filter_threshold=None,
@@ -71,7 +71,7 @@ def main():
             M=1,
         ),
         rl_config=dict(
-            model_cls='Pretrain',
+            model_cls='PretrainWithComposition',
             actor_lr=3e-4,
             T=5,
             N=64,
@@ -114,9 +114,11 @@ def main():
             try:
                 call_main(details)
                 logging.info(f"=== [Task {idx}] Finished training for {env_name} ===")
-                
+               
             except Exception as e:
                 logging.error(f"Exception during training for task {env_name} (idx={idx}): {e}", exc_info=True)
+
+            
             
     except Exception as main_e:
         logging.critical(f"Fatal error in main training loop: {main_e}", exc_info=True)

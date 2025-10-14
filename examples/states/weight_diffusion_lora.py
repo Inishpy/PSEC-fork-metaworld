@@ -106,6 +106,8 @@ def call_main(details):
         model_location = f"results/LoRA-{info1}/LoRA-{info1}_{details['env_name']}_ddpm_lora_/ddpm_lora"
         env, agent_lora = load_lora_model(seed=details['seed'], model_location=model_location, pickle=LoRA_pickle, env=env, pretrain_model=details['pretrain_model'])
         print("loralearnere")
+
+        
     keys = None
     sample = ds.sample_jax(details['batch_size'], keys=keys)
     if "BC" in model_cls:
