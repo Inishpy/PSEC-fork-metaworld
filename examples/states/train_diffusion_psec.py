@@ -653,7 +653,12 @@ def create_agent(details, env, config_dict):
     else:
         print("model class", model_cls)
         agent_bc = globals()[model_cls].create(
-            details['seed'], env.observation_space, env.action_space, current_task=details["env_name"][1], **config_dict
+            details['seed'],
+            env.observation_space,
+            env.action_space,
+            current_task=details["env_name"][1],
+            exclude_tasks=details.get('exclude_tasks', None),
+            **config_dict
         )
         keys = None
     logging.info("[AGENT] Agent created: %s", model_cls)
@@ -720,7 +725,7 @@ def train_agent(agent_bc, ds, details, keys, env, log_dir=None):
                     
                     logging.info(f"[TRAIN][Step {i}] Perfect success rate achieved, stopping training early.")
                     save_dir = details.get('results_dir', f"./results/{details['timestamp']}/{details['timestamp']}_{details['group']}/{details['experiment_name']}_bc")
-                    agent_bc.save(save_dir, i)
+                    # agent_bc.save(save_dir, i)
                     logging.info("[TRAIN][Step %d] Model saved to %s", i, save_dir)
                     success_flag = True
                     break
@@ -734,7 +739,11 @@ def train_agent(agent_bc, ds, details, keys, env, log_dir=None):
 
     if writer is not None:
         writer.close()
+
+    logging.info("info, eval_info", info_bc, eval_info_bc)
     logging.info("[TRAIN] Training loop completed for env: %s", str(details.get('env_name')))
+
+
     return agent_bc
 
 def call_main(details):
@@ -743,6 +752,24 @@ def call_main(details):
     """
     logging.info("=========================================================")
     logging.info("[MAIN] Initialized project: %s, group: %s, env: %s", details['project'], details['group'], details['env_name'])
+
+    # --- Write init log, seed, and task details to a txt file in results_dir ---
+    try:
+        import json
+        results_dir = details.get('results_dir', None)
+        seed = details.get('seed', None)
+        env_name = details.get('env_name', None)
+        log_msg = f"[MAIN] Initialized project: {details['project']}, group: {details['group']}, env: {env_name}"
+        if results_dir is not None and seed is not None:
+            os.makedirs(results_dir, exist_ok=True)
+            txt_path = os.path.join(results_dir, f"init_seed_{seed}.txt")
+            with open(txt_path, "w") as f:
+                f.write(log_msg + "\n")
+                f.write(f"Seed: {seed}\n")
+                f.write("Task details:\n")
+                f.write(json.dumps(details, indent=2, default=str) + "\n")
+    except Exception as e:
+        logging.warning(f"Failed to write init log file for seed {seed} in {results_dir}: {e}")
 
     try:
         # Special toy dataset

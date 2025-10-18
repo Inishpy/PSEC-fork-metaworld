@@ -107,6 +107,7 @@ class PretrainWithComposition(Agent):
         composition_lr: float = 1e-3,
         composition_temperature: float = 1.0,
         logger_path: str = './logs',
+        exclude_tasks: Optional[List[str]] = None,
     ):
 
         rng = jax.random.PRNGKey(seed)
@@ -120,26 +121,31 @@ class PretrainWithComposition(Agent):
         prior_env_names = []
 
         if use_composition and current_task:
-            
+            # Build exclusion set: current_task + any in exclude_tasks
+            exclusion_set = set()
+            if exclude_tasks is not None:
+                exclusion_set.update(exclude_tasks)
+            exclusion_set.add(current_task)
+
             for env_name in env_names:
-                if env_name != current_task:  # Don't load the current task as a prior
-                    model_path = os.path.join(results_dir, env_name)
-                    
-                    if os.path.exists(model_path):
-                        # Find the latest model file
-                        model_files = [f for f in os.listdir(model_path) if f.startswith('model') and f.endswith('.pickle')]
-                        if model_files:
-                            # Sort by timestamp in filename
-                            model_files.sort(key=lambda x: int(x.replace('model', '').replace('.pickle', '')))
-                            latest_model = os.path.join(model_path, model_files[-1])
-                            try:
-                                with open(latest_model, 'rb') as f:
-                                    prior_model = pickle.load(f)
-                                prior_models.append(prior_model)
-                                prior_env_names.append(env_name)
-                                print(f"Loaded prior model from {env_name}")
-                            except Exception as e:
-                                print(f"Failed to load model from {env_name}: {e}")
+                if env_name in exclusion_set:
+                    continue  # Exclude current and any specified tasks
+                model_path = os.path.join(results_dir, env_name)
+                if os.path.exists(model_path):
+                    # Find the latest model file
+                    model_files = [f for f in os.listdir(model_path) if f.startswith('model') and f.endswith('.pickle')]
+                    if model_files:
+                        # Sort by timestamp in filename
+                        model_files.sort(key=lambda x: int(x.replace('model', '').replace('.pickle', '')))
+                        latest_model = os.path.join(model_path, model_files[-1])
+                        try:
+                            with open(latest_model, 'rb') as f:
+                                prior_model = pickle.load(f)
+                            prior_models.append(prior_model)
+                            prior_env_names.append(env_name)
+                            print(f"Loaded prior model from {env_name}")
+                        except Exception as e:
+                            print(f"Failed to load model from {env_name}: {e}")
         
         num_priors = len(prior_models)
         print(f"Loaded {num_priors} prior models for composition")

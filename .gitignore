@@ -11,7 +11,7 @@ __pycache__/
 
 .env
 
-nohup.out
+*.out
 
 *.pickle
 
