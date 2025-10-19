@@ -116,13 +116,16 @@ class DDPM(nn.Module):
                  s: jnp.ndarray,
                  a: jnp.ndarray,
                  time: jnp.ndarray,
-                 training: bool = False,):
-
+                 training: bool = False,
+                 train_lora: bool = False):
         t_ff = self.time_preprocess_cls()(time)
         cond = self.cond_encoder_cls()(t_ff, training=training)
         reverse_input = jnp.concatenate([a, s, cond], axis=-1)
 
-        return self.reverse_encoder_cls()(reverse_input, training=training)
+        try:
+            return self.reverse_encoder_cls()(reverse_input, training=training, train_lora=train_lora)
+        except TypeError:
+            return self.reverse_encoder_cls()(reverse_input, training=training)
     
 class DDPM_alpha(nn.Module):
     cond_encoder_cls: Type[nn.Module]

@@ -11,7 +11,7 @@ from flax import struct
 import numpy as np
 from jaxrl5.agents.agent import Agent
 from jaxrl5.data.dataset import DatasetDict
-from jaxrl5.networks import MLP, Ensemble, StateActionValue, StateValue, DDPM, FourierFeatures, cosine_beta_schedule, ddpm_sampler, MLPResNet, get_weight_decay_mask, vp_beta_schedule
+from jaxrl5.networks import MLP, Ensemble, StateActionValue, StateValue, DDPM, FourierFeatures, cosine_beta_schedule, ddpm_sampler_eval1, MLPResNet, get_weight_decay_mask, vp_beta_schedule
 
 def expectile_loss(diff, expectile=0.8):
     weight = jnp.where(diff > 0, expectile, (1 - expectile))
@@ -365,7 +365,7 @@ class DDPMIQLLearner(Agent):
         observations = jnp.expand_dims(observations, axis = 0).repeat(self.N, axis = 0)
 
         score_params = self.target_score_model.params
-        actions, rng = ddpm_sampler(self.score_model.apply_fn, score_params, self.T, rng, self.act_dim, observations, self.alphas, self.alpha_hats, self.betas, self.ddpm_temperature, self.M, self.clip_sampler)
+        actions, rng = ddpm_sampler_eval1(self.score_model.apply_fn, score_params, self.T, rng, self.act_dim, observations, self.alphas, self.alpha_hats, self.betas, self.ddpm_temperature, self.M, self.clip_sampler)
         rng, key = jax.random.split(rng, 2)
         qs = compute_q(self.target_critic.apply_fn, self.target_critic.params, observations, actions)
         idx = jnp.argmax(qs)
@@ -382,7 +382,7 @@ class DDPMIQLLearner(Agent):
         observations = jnp.expand_dims(observations, axis = 0).repeat(self.N, axis = 0)
 
         score_params = self.target_score_model.params
-        actions, rng = ddpm_sampler(self.score_model.apply_fn, score_params, self.T, rng, self.act_dim, observations, self.alphas, self.alpha_hats, self.betas, self.ddpm_temperature, self.M, self.clip_sampler)
+        actions, rng = ddpm_sampler_eval1(self.score_model.apply_fn, score_params, self.T, rng, self.act_dim, observations, self.alphas, self.alpha_hats, self.betas, self.ddpm_temperature, self.M, self.clip_sampler)
         rng, key = jax.random.split(rng, 2)
         qs = compute_q(self.target_critic.apply_fn, self.target_critic.params, observations, actions)
         vs = compute_v(self.value.apply_fn, self.value.params, observations)

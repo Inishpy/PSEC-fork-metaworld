@@ -58,35 +58,48 @@ class CompositionWeightNetwork(nn.Module):
 
 
 class PretrainWithComposition(Agent):
+    # Diffusion actor
     score_model: TrainState
     target_score_model: TrainState
+    # Online RL critics
+    critic: TrainState
+    target_critic: TrainState
+    # Composition
     composition_weights: TrainState  # Learnable weights for composition
-    prior_models: List[Dict] = struct.field(pytree_node=False)  # List of loaded prior models
-    prior_env_names: List[str] = struct.field(pytree_node=False)  # Names of prior tasks
+    # RL hyperparameters
     discount: float
     tau: float
     actor_tau: float
-    act_dim: int = struct.field(pytree_node=False)
-    T: int = struct.field(pytree_node=False)
     N: int #How many samples per observation
-    M: int = struct.field(pytree_node=False) #How many repeat last steps
-    clip_sampler: bool = struct.field(pytree_node=False)
     ddpm_temperature: float
     betas: jnp.ndarray
     alphas: jnp.ndarray
     alpha_hats: jnp.ndarray
-    use_composition: bool = struct.field(pytree_node=False)
     composition_temperature: float
+
+    # All fields below have no default values and must come first
+    prior_models: List[Dict] = struct.field(pytree_node=False)  # List of loaded prior models
+    prior_env_names: List[str] = struct.field(pytree_node=False)  # Names of prior tasks
+    act_dim: int = struct.field(pytree_node=False)
+    T: int = struct.field(pytree_node=False)
+    M: int = struct.field(pytree_node=False) #How many repeat last steps
+    clip_sampler: bool = struct.field(pytree_node=False)
+    use_composition: bool = struct.field(pytree_node=False)
+
+    # Fields with default values must come after all non-default fields
+    temp: Optional[TrainState] = None  # For entropy regularization (optional)
     logger: Optional[SummaryWriter] = struct.field(pytree_node=False, default=None)
     update_step: int = 0
 
     @classmethod
     def create(
+
         cls,
         seed: int,
         observation_space: gym.spaces.Space,
         action_space: gym.spaces.Box,
         actor_lr: Union[float, optax.Schedule] = 3e-4,
+        critic_lr: float = 3e-4,
         discount: float = 0.99,
         tau: float = 0.005,
         ddpm_temperature: float = 1.0,
@@ -111,7 +124,7 @@ class PretrainWithComposition(Agent):
     ):
 
         rng = jax.random.PRNGKey(seed)
-        rng, actor_key, comp_key = jax.random.split(rng, 3)
+        rng, actor_key, critic_key, comp_key = jax.random.split(rng, 4)
         actions = action_space.sample()
         observations = observation_space.sample()
         action_dim = action_space.shape[0]
@@ -173,7 +186,7 @@ class PretrainWithComposition(Agent):
         actor_def = DDPM(time_preprocess_cls=preprocess_time_cls,
                             cond_encoder_cls=cond_model_cls,
                             reverse_encoder_cls=base_model_cls)
-
+        
         time = jnp.zeros((1, 1))
         observations = jnp.expand_dims(observations, axis=0)
         actions = jnp.expand_dims(actions, axis = 0)
@@ -190,6 +203,24 @@ class PretrainWithComposition(Agent):
                                                tx=optax.GradientTransformation(
                                                     lambda _: None, lambda _: None))
         
+        # === Critic and Target Critic for Online RL ===
+        from jaxrl5.networks.state_action_value import StateActionValue
+        from jaxrl5.networks.mlp import MLP as CriticMLP
+
+        critic_base_cls = partial(CriticMLP, hidden_dims=(256, 256), activate_final=True)
+        critic_def = StateActionValue(base_cls=critic_base_cls)
+        critic_params = critic_def.init(critic_key, observations, actions)['params']
+        critic = TrainState.create(
+            apply_fn=critic_def.apply,
+            params=critic_params,
+            tx=optax.adam(learning_rate=critic_lr),
+        )
+        target_critic = TrainState.create(
+            apply_fn=critic_def.apply,
+            params=critic_params,
+            tx=optax.GradientTransformation(lambda _: None, lambda _: None),
+        )
+
         # Initialize composition weight network
         composition_weights = None
         if use_composition and num_priors > 0:
@@ -223,6 +254,8 @@ class PretrainWithComposition(Agent):
             actor=None, # Base class attribute
             score_model=score_model,
             target_score_model=target_score_model,
+            critic=critic,
+            target_critic=target_critic,
             composition_weights=composition_weights,
             prior_models=prior_models,
             prior_env_names=prior_env_names,
@@ -244,6 +277,92 @@ class PretrainWithComposition(Agent):
             logger=logger,
             update_step=0,
         )
+
+    # === Online RL methods for PretrainWithComposition ===
+
+    def update_critic(self, batch: DatasetDict) -> Tuple["PretrainWithComposition", Dict[str, float]]:
+        masks = 1.0 - batch["dones"]
+        rng = self.rng
+        key, rng = jax.random.split(rng)
+        time = jnp.zeros((batch["next_observations"].shape[0], 1))
+        next_actions, _ = self.eval_actions_bc(batch["next_observations"][0], train_lora=False)
+        next_actions = jnp.array(next_actions)
+        if next_actions.ndim == 1:
+            next_actions = next_actions[None, :]
+        key, rng = jax.random.split(rng)
+        next_q = self.target_critic.apply_fn(
+            {"params": self.target_critic.params},
+            batch["next_observations"],
+            next_actions,
+            True,
+            rngs={"dropout": key},
+        )
+        if next_q.ndim == 2 and next_q.shape[-1] == 1:
+            next_q = jnp.squeeze(next_q, axis=-1)
+        target_q = batch["rewards"] + self.discount * masks * next_q
+
+        key, rng = jax.random.split(rng)
+        def critic_loss_fn(critic_params) -> Tuple[jnp.ndarray, Dict[str, float]]:
+            qs = self.critic.apply_fn(
+                {"params": critic_params},
+                batch["observations"],
+                batch["actions"],
+                True,
+                rngs={"dropout": key},
+            )
+            critic_loss = ((qs - target_q[None, :]) ** 2).mean()
+            return critic_loss, {"critic_loss": critic_loss, "q": qs.mean()}
+
+        grads, info = jax.grad(critic_loss_fn, has_aux=True)(self.critic.params)
+        critic = self.critic.apply_gradients(grads=grads)
+
+        target_critic_params = optax.incremental_update(
+            critic.params, self.target_critic.params, self.tau
+        )
+        target_critic = self.target_critic.replace(params=target_critic_params)
+
+        return self.replace(critic=critic, target_critic=target_critic, rng=rng), info
+
+    def update_actor(self, batch: DatasetDict) -> Tuple["PretrainWithComposition", Dict[str, float]]:
+        rng = self.rng
+        key, rng = jax.random.split(rng)
+        time = jnp.zeros((batch["observations"].shape[0], 1))
+
+        def actor_loss_fn(score_params) -> Tuple[jnp.ndarray, Dict[str, float]]:
+            actions = self.score_model.apply_fn({"params": score_params},
+                                                batch["observations"],
+                                                batch["actions"],
+                                                time,
+                                                rngs={"dropout": key},
+                                                training=True)
+            qs = self.critic.apply_fn(
+                {"params": self.critic.params},
+                batch["observations"],
+                actions,
+                True,
+                rngs={"dropout": key},
+            )
+            q = qs.mean(axis=0)
+            actor_loss = -q.mean()
+            return actor_loss, {"actor_loss": actor_loss}
+
+        grads, actor_info = jax.grad(actor_loss_fn, has_aux=True)(self.score_model.params)
+        score_model = self.score_model.apply_gradients(grads=grads)
+
+        return self.replace(score_model=score_model, rng=rng), actor_info
+
+    @partial(jax.jit, static_argnames="utd_ratio")
+    def update(self, batch: DatasetDict, utd_ratio: int):
+        new_agent = self
+        for i in range(utd_ratio):
+            def slice(x):
+                assert x.shape[0] % utd_ratio == 0
+                batch_size = x.shape[0] // utd_ratio
+                return x[batch_size * i : batch_size * (i + 1)]
+            mini_batch = jax.tree_util.tree_map(slice, batch)
+            new_agent, critic_info = new_agent.update_critic(mini_batch)
+        new_agent, actor_info = new_agent.update_actor(mini_batch)
+        return new_agent, {**actor_info, **critic_info}
     
     def compose_parameters(self, params, observation, weights):
         """Compose parameters from base model and prior models using learned weights."""

@@ -15,9 +15,9 @@ from dotenv import load_dotenv
 import glob
 from metaworld.evaluation import evaluation, metalearning_evaluation
 import traceback
-from jaxrl5.agents.psec.psec_pretrain import PretrainWithComposition
 from jaxrl5.agents.sac.sac_learner import SACLearner
 import pandas as pd
+from jaxrl5.agents.ddpm_iql.ddpm_iql_learner import DDPMIQLLearner
 # Load environment variables from .env into os.environ
 load_dotenv()
 # api_key = os.getenv("WANDB_API_KEY")
@@ -663,14 +663,31 @@ def create_agent(details, env, config_dict):
         keys = None
     else:
         print("model class", model_cls)
-        agent_bc = globals()[model_cls].create(
-            details['seed'],
-            env.observation_space,
-            env.action_space,
-            current_task=details["env_name"][1],
-            exclude_tasks=details.get('exclude_tasks', None),
-            **config_dict
-        )
+        if model_cls == "DDPMIQLLearner":
+            # Remove unsupported keys for DDPMIQLLearner.create
+            if 'backup_entropy' in config_dict:
+                del config_dict['backup_entropy']
+            if 'init_temperature' in config_dict:
+                del config_dict['init_temperature']
+            if 'target_entropy' in config_dict:
+                del config_dict['target_entropy']
+            if 'temp_lr' in config_dict:
+                del config_dict['temp_lr']
+            agent_bc = globals()[model_cls].create(
+                details['seed'],
+                env.observation_space,
+                env.action_space,
+                **config_dict
+            )
+        else:
+            agent_bc = globals()[model_cls].create(
+                details['seed'],
+                env.observation_space,
+                env.action_space,
+                current_task=details["env_name"][1],
+                exclude_tasks=details.get('exclude_tasks', None),
+                **config_dict
+            )
         keys = None
     logging.info("[AGENT] Agent created: %s", model_cls)
     return agent_bc, keys
@@ -723,8 +740,10 @@ def train_agent_online(agent, env, details, log_dir=None):
             # logging.info(f"[ROLLOUT][Step {step}] Filling buffer (warmup).")
             action = act_space.sample()
         else:
-            action, _ = agent.eval_actions(np.expand_dims(obs, axis=0))
-            action = np.asarray(action).squeeze(0)
+            action, _ = agent.eval_actions(obs)
+            action = np.asarray(action)
+            if action.ndim > 1 and action.shape[0] == 1:
+                action = action.squeeze(0)
         next_obs, reward, terminated, truncated, info = env.step(action)
         done = terminated or truncated
 
@@ -755,7 +774,7 @@ def train_agent_online(agent, env, details, log_dir=None):
         if step >= warmup_steps:
             # logging.info(f"[TRAIN][Step {step}] Training phase. Sampling batch and updating agent.")
             batch = replay_buffer.sample(batch_size)
-            agent, info = agent.update(batch, utd_ratio)
+            agent, info = agent.update(batch)
             if step % log_interval == 0:
                 log_msg = f"[TRAIN][Step {step}] RL: " + ", ".join([f"{k}: {v}" for k, v in info.items()])
                 logging.info(log_msg)
@@ -770,21 +789,30 @@ def train_agent_online(agent, env, details, log_dir=None):
         # Periodic evaluation
         if step % eval_interval == 0 or step == 0:
             eval_rewards = []
+            eval_successes = []
             for _ in range(eval_episodes):
                 eval_obs, _ = env.reset()
                 eval_ep_reward = 0
+                eval_ep_success = 0
                 for _ in range(details.get('env_max_steps', 1000)):
-                    eval_action, _ = agent.eval_actions(np.expand_dims(eval_obs, axis=0))
-                    eval_action = np.asarray(eval_action).squeeze(0)
-                    eval_obs, eval_reward, eval_terminated, eval_truncated, _ = env.step(eval_action)
+                    eval_action, _ = agent.eval_actions(eval_obs)
+                    eval_action = np.asarray(eval_action)
+                    if eval_action.ndim > 1 and eval_action.shape[0] == 1:
+                        eval_action = eval_action.squeeze(0)
+                    eval_obs, eval_reward, eval_terminated, eval_truncated, eval_info = env.step(eval_action)
                     eval_ep_reward += eval_reward
+                    if eval_info.get("success", 0) == 1:
+                        eval_ep_success = 1
                     if eval_terminated or eval_truncated:
                         break
                 eval_rewards.append(eval_ep_reward)
+                eval_successes.append(eval_ep_success)
             avg_eval_reward = np.mean(eval_rewards)
-            logging.info(f"[EVAL][Step {step}] Average Eval Reward: {avg_eval_reward}")
+            avg_eval_success = np.mean(eval_successes)
+            logging.info(f"[EVAL][Step {step}] Average Eval Reward: {avg_eval_reward} | Success Rate: {avg_eval_success}")
             if writer is not None:
                 writer.add_scalar("eval/avg_reward", avg_eval_reward, step)
+                writer.add_scalar("eval/success_rate", avg_eval_success, step)
 
     if writer is not None:
         writer.close()
@@ -916,6 +944,14 @@ def call_main(details):
                 log_dir = os.path.join(details['results_dir'], "tensorboard")
                 os.makedirs(log_dir, exist_ok=True)
             config_dict = details['rl_config'].copy_and_resolve_references()
+            config_dict['model_cls'] = "DDPMIQLLearner"
+            # Fix: Map hidden_dims to actor_hidden_dims and critic_hidden_dims for DDPMIQLLearner
+            if 'hidden_dims' in config_dict:
+                if 'actor_hidden_dims' not in config_dict:
+                    config_dict['actor_hidden_dims'] = config_dict['hidden_dims']
+                if 'critic_hidden_dims' not in config_dict:
+                    config_dict['critic_hidden_dims'] = config_dict['hidden_dims']
+                del config_dict['hidden_dims']
             agent_bc, keys = create_agent(details, env, config_dict)
             if details.get('online_rl', False):
                 agent_bc = train_agent_online(agent_bc, env, details, log_dir=log_dir)
