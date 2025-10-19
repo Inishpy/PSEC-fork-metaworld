@@ -1,0 +1,1000 @@
+  517  ninja --version; echo $?
+  518  ninja --version
+  519  pip install packaging ninja
+  520  printenv > "/tmp/tmp-3182925mTNvvpw7cK6f.txt"
+  521  conda activate vlarl
+  522  cd prismatic/extern/vllm; pip install -e .; cd ../../..
+  523  pip install packaging ninja
+  524  ninja --version; echo $? 
+  525  pip install "flash-attn==2.5.5" --no-build-isolation
+  526  arch
+  527  cuda
+  528  nvidia-smi
+  529  pytorch
+  530  pip list
+  531  wget https://github.com/mjun0812/flash-attention-prebuild-wheels/releases/download/v0.0.4/flash_attn-2.7.3+cu121torch2.5-cp310-cp310-linux_x86_64.whl
+  532  pip list
+  533  pip show flash-attn
+  534  ls
+  535  pip install flash_attn-2.7.3+cu121torch2.5-cp310-cp310-linux_x86_64.whl 
+  536  pip show flash-attn
+  537  git clone https://github.com/Lifelong-Robot-Learning/LIBERO.git
+  538  cd LIBERO/
+  539  pip install -e .
+  540  mkdir -p MODEL/; cd MODEL/
+  541  git lfs clone https://huggingface.co/openvla/openvla-7b-finetuned-libero-spatial
+  542  git lfs clone https://huggingface.co/datasets/openvla/modified_libero_rlds
+  543  [200~# Set up Weights & Biases for experiment logging
+  544  wandb login~# Set up Weights & Biases for experiment logging
+  545  wandb login
+  546  bash scripts/train_rl_vllm_ray_fsdp.sh 0,1 0,1,2,3,4,5,6,7,8,9
+  547  scripts/train_rl_vllm_ray_fsdp.sh 0,1 0,1,2,3,4,5,6,7,8,9
+  548  cd ..
+  549  scripts/train_rl_vllm_ray_fsdp.sh 0,1 0,1,2,3,4,5,6,7,8,9
+  550  wandb login
+  551  wandb login --relogin
+  552  wandb login
+  553  scripts/train_rl_vllm_ray_fsdp.sh 0,1 0,1,2,3,4,5,6,7,8,9
+  554  pip install wandb
+  555  wandb local
+  556  wandb server stop
+  557  wandb server start
+  558  wandb server stop
+  559  884434b10c0f7b447aae30f8c57f9446beecfc82
+  560  scripts/train_rl_vllm_ray_fsdp.sh 0,1 0,1,2,3,4,5,6,7,8,9
+  561  export WANDB_MODE=offline
+  562  scripts/train_rl_vllm_ray_fsdp.sh 0,1 0,1,2,3,4,5,6,7,8,9
+  563  nano ~/.netrc
+  564  chmod 600 ~/.netrc
+  565  scripts/train_rl_vllm_ray_fsdp.sh 0,1 0,1,2,3,4,5,6,7,8,9
+  566  pip install --upgrade wandb
+  567  wandb server stop
+  568  export WANDB_SERVICE_ENABLED=false
+  569  wandb local
+  570  wandb logout
+  571  wandb --help
+  572  nono ~/.netrc
+  573  nano ~/.netrc
+  574  chmod 600 ~/.netrc
+  575  export WANDB_API_KEY=…
+  576  export WANDB_MODE=offline
+  577  export WANDB_SERVICE_ENABLED=false
+  578  source ~/.bashrc 
+  579  grep -R "WANDB" ~/.config/wandb
+  580  rm -rf ~/.config/wandb
+  581  rm -rf ~/wandb
+  582  conda activate vlarl
+  583  rm -rf ~/wandb
+  584  conda activate vlarl
+  585  conda ati
+  586  conda activate vlarl
+  587  rm -rf ~/.config/wandb
+  588  rm -rf ~/wandb
+  589  sudo rm -rf ~/wandb
+  590  wandb login
+  591  scripts/train_rl_vllm_ray_fsdp.sh 0,1 0,1,2,3,4,5,6,7,8,9
+  592  wandb login
+  593  wandb login --relogin
+  594  scripts/train_rl_vllm_ray_fsdp.sh 0,1 0,1,2,3,4,5,6,7,8,9
+  595  python
+  596  export CUDA_VISIBLE_DEVICES=0,1
+  597  python
+  598  export CUDA_VISIBLE_DEVICES=1,2
+  599  python
+  600  scripts/train_rl_vllm_ray_fsdp.sh 0,1 0,1,2,3,4,5,6,7,8,9
+  601  import torch
+  602  python
+  603  conda activate vlrl
+  604  conda activate vlarll
+  605  conda activate vlarl
+  606  python3
+  607  scripts/train_rl_vllm_ray_fsdp.sh 0,1 0,1,2,3,4,5,6,7,8,9
+  608  cd vlarl/
+  609  scripts/train_rl_vllm_ray_fsdp.sh 0,1 0,1,2,3,4,5,6,7,8,9
+  610  huggingface-cli login
+  611  scripts/train_rl_vllm_ray_fsdp.sh 0,1 0,1,2,3,4,5,6,7,8,9
+  612  nvidia-smi
+  613  watch -n 1 nvidia-smi
+  614  conda activate vlarl
+  615  wandb server start
+  616  tensorboard
+  617  tensorboard --logdir logs/tensorboard
+  618  conda activate vlarl
+  619  scripts/train_rl_vllm_ray_fsdp.sh 0,1 0,1,2,3,4,5,6,7,8,9
+  620  conda activate vlarl
+  621  scripts/train_rl_vllm_ray_fsdp.sh 0,1 0,1,2,3,4,5,6,7,8,9
+  622  nvidia-smi
+  623  nvidia-smi -l 1
+  624  clear
+  625  cd ..
+  626  cd vlarl/
+  627  conda activate vlarl
+  628  ls
+  629  scripts/train_rl_vllm_ray_fsdp.sh 0 0,1,2,3,4,5,6,7,8,9
+  630  scripts/train_rl_vllm_ray_fsdp.sh 0,1 0,1,2,3,4,5,6,7,8,9
+  631  printenv > "/tmp/tmp-1234892H0CPz2m8SRc7.txt"
+  632  nvidia-smi -l 1
+  633  conda activate vlarl
+  634  scripts/train_rl_vllm_ray_fsdp.sh 0,1 0,1,2,3,4,5,6,7,8,9
+  635  clear
+  636  conda activate vlarl
+  637  scripts/train_rl_vllm_ray_fsdp.sh 0,1 0,1,2,3,4,5,6,7,8,9
+  638  clear
+  639  cd ..
+  640  conda deactivate
+  641  conda activate lerobot
+  642  cd leRobot/
+  643  cd lerobot/
+  644  ls
+  645  python src/lerobot/scripts/train.py   --policy.path=lerobot/smolvla_base   --dataset.repo_id=lerobot/libero_10_image   --batch_size=64   --steps=20000   --output_dir=outputs/train/my_smolvla   --job_name=my_smolvla_training   --policy.device=cuda   --wandb.enable=false
+  646  conda activate vlarl
+  647  scripts/train_rl_vllm_ray_fsdp.sh 0,1 0,1,2,3,4,5,6,7,8,9
+  648  cd ..
+  649  clear
+  650  conda deactivate
+  651  conda create -n lerobot
+  652  conda remove --name lerobot --all
+  653  conda create -n lerobot python=3.10 
+  654  cd leRobot/
+  655  conda activate lerobot/
+  656  conda activate lerobot
+  657  cd lerobot
+  658  python src/lerobot/scripts/train.py   --policy.path=lerobot/smolvla_base   --dataset.repo_id=lerobot/libero_10_image   --batch_size=64   --steps=20000   --output_dir=outputs/train/my_smolvla   --job_name=my_smolvla_training   --policy.device=cuda   --wandb.enable=false
+  659  conda activate lerobot
+  660  cd lerobot/
+  661  ls
+  662  python src/lerobot/scripts/train.py   --policy.path=lerobot/smolvla_base   --dataset.repo_id=lerobot/libero_10_image   --batch_size=64   --steps=20000   --output_dir=outputs/train/my_smolvla   --job_name=my_smolvla_training   --policy.device=cuda   --wandb.enable=false
+  663  nvidia-smi -l 1
+  664  cd lerobot/
+  665  ls
+  666  conda activate lerobot
+  667  python src/lerobot/scripts/train.py   --policy.path=lerobot/smolvla_base   --dataset.repo_id=lerobot/libero_10_image   --batch_size=64   --steps=20000   --output_dir=outputs/train/my_smolvla   --job_name=my_smolvla_training   --policy.device=cuda   --wandb.enable=false
+  668  conda activte lerobot
+  669  conda activate lerobot
+  670  cd lerobot
+  671  ls
+  672  python src/lerobot/scripts/train.py   --policy.path=lerobot/smolvla_base   --dataset.repo_id=lerobot/libero_10_image   --batch_size=64   --steps=20000   --output_dir=outputs/train/my_smolvla   --job_name=my_smolvla_training   --policy.device=cuda   --wandb.enable=false
+  673  CUDA_VISIBLE_DEVICES=1 python src/lerobot/scripts/train.py   --policy.path=lerobot/smolvla_base   --dataset.repo_id=lerobot/libero_10_image   --batch_size=64   --steps=20000   --output_dir=outputs/train/my_smolvla   --job_name=my_smolvla_training   --policy.device=cuda   --wandb.enable=false
+  674  cd ../leRobot && git init && git add lerobot && git commit -m "Initial commit of lerobot codebase"
+  675  ls
+  676  cd ../leRobot && git add .gitignore && git rm -r --cached RAWDATA data datasets outputs || true && git commit -am "Add .gitignore and remove large/model/data files from repo"
+  677  git remote add origin https://github.com/Inishpy/leRobot-smolvla.git
+  678  git branch -M main
+  679  git push -u origin main
+  680  ls
+  681  cd lerobot/
+  682  git init
+  683  git add README.md
+  684  git commit -m "initial commit"
+  685  git add .
+  686  git remote add origin https://github.com/Inishpy/leRobot-smolvla.git
+  687  git remove origin
+  688  git remote remove origin
+  689  git remote add origin https://github.com/Inishpy/leRobot-smolvla.git
+  690  git push
+  691  git push --set-upstream origin main
+  692  git add .
+  693  git commit -m "add "
+  694  git push
+  695  git push --set-upstream origin main
+  696  clear
+  697  cd ..
+  698  git clone https://github.com/Inishpy/lerobot.git
+  699  conda activate lerobot
+  700  conda install ffmpeg=7.1.1 -c conda-forge
+  701  clear
+  702  cd lerobot/
+  703  pip install -e .
+  704  LS
+  705  ls
+  706  pip install -e ".[smolvla]"
+  707  python src/lerobot/scripts/train.py   --policy.path=lerobot/smolvla_base   --dataset.repo_id=lerobot/libero_10_image   --batch_size=64   --steps=20000   --output_dir=outputs/train/my_smolvla   --job_name=my_smolvla_training   --policy.device=cuda   --wandb.enable=false
+  708  clear
+  709  git add . && git commit -m "Fix device placement for model; update .gitignore to exclude datasets, model files, and large files" && git push
+  710  conda activate lerobot
+  711  python src/lerobot/scripts/train.py   --policy.path=lerobot/smolvla_base   --dataset.repo_id=lerobot/libero_10_image   --batch_size=64   --steps=20000   --output_dir=outputs/train/my_smolvla   --job_name=my_smolvla_training   --policy.device=cuda   --wandb.enable=false
+  712  git stash
+  713  clear
+  714  python src/lerobot/scripts/train.py   --policy.path=lerobot/smolvla_base   --dataset.repo_id=lerobot/libero_10_image   --batch_size=64   --steps=20000   --output_dir=outputs/train/my_smolvla   --job_name=my_smolvla_training   --policy.device=cuda   --wandb.enable=false
+  715  python src/lerobot/scripts/train.py   --policy.path=lerobot/smolvla_base   --dataset.repo_id=lerobot/libero_10_image   --batch_size=64   --steps=20000   --output_dir=outputs/train/my_smolvla   --job_name=my_smolvla_training   --policy.device=cuda   --wandb.enable=false --eval_freq=2000
+  716  python src/lerobot/scripts/train.py   --policy.path=lerobot/smolvla_base   --dataset.repo_id=lerobot/libero_10_image   --batch_size=64   --steps=20000   --output_dir=outputs/train/my_smolvla1   --job_name=my_smolvla_training   --policy.device=cuda   --wandb.enable=false --eval_freq=2000
+  717  cd ..
+  718  cd vlarl
+  719  conda activate vlarl
+  720  python run_libero_eval_vllm.py --pretrained_checkpoint=/home/lunet/coimd/lerobot/outputs/train/my_smolvla/checkpoints/last/pretrained_model   --task_suite_name=libero_spatial   --num_trials_per_task=50   --device=cuda
+  721  python run_libero_eval_vllm.py --pretrained_checkpoint=/home/lunet/coimd/lerobot/outputs/train/my_smolvla/checkpoints/last/pretrained_model   --task_suite_name=libero_spatial   --num_trials_per_task=50  
+  722  conda activate lerobot
+  723  python src/lerobot/scripts/train.py   --policy.path=lerobot/smolvla_base   --dataset.repo_id=lerobot/libero_10_image   --batch_size=64   --steps=20000   --output_dir=outputs/train/my_smolvla1   --job_name=my_smolvla_training   --policy.device=cuda   --wandb.enable=false --eval_freq=2000
+  724  python src/lerobot/scripts/train.py   --policy.path=lerobot/smolvla_base   --dataset.repo_id=lerobot/libero_10_image   --batch_size=64   --steps=20000   --output_dir=outputs/train/my_smolvla1   --job_name=my_smolvla_training   --policy.device=cuda   --wandb.enable=false --eval_freq=2000  --env.type=libero
+  725  python lerobot/scripts/eval.py   --policy.type=smolvla   --policy.path=/outputs/train/my_smolvla/checkpoints/last/pretrained_model   --env.type=libero   --env.libero.task_suite=libero_spatial_no_noops_lerobot_v21   --eval.n_episodes=50   --device=cuda
+  726  python src/lerobot/scripts/eval.py   --policy.type=smolvla   --policy.path=/outputs/train/my_smolvla/checkpoints/last/pretrained_model   --env.type=libero   --env.libero.task_suite=libero_spatial_no_noops_lerobot_v21   --eval.n_episodes=50   --device=cuda
+  727  python src/lerobot/scripts/eval.py   --policy.path=/outputs/train/my_smolvla/checkpoints/last/pretrained_model   --env.type=libero   --env.libero.task_suite=libero_spatial_no_noops_lerobot_v21   --eval.n_episodes=50   --device=cuda
+  728  python src/lerobot/scripts/eval.py   --policy.path=/outputs/train/my_smolvla/checkpoints/last/pretrained_model   --env.type=libero     --eval.n_episodes=50   -
+  729  python src/lerobot/scripts/eval.py   --policy.path=/outputs/train/my_smolvla/checkpoints/last/pretrained_model   --env.type=libero     --eval.n_episodes=50  
+  730  conda activate lerobot
+  731  python src/lerobot/scripts/train.py   --policy.path=lerobot/smolvla_base   --dataset.repo_id=lerobot/libero_10_image   --batch_size=64   --steps=20000   --output_dir=outputs/train/my_smolvla1   --job_name=my_smolvla_training   --policy.device=cuda   --wandb.enable=false --eval_freq=2000  --env.type=libero
+  732  conda activate lerobot
+  733  python src/lerobot/scripts/train.py   --policy.path=lerobot/smolvla_base   --dataset.repo_id=lerobot/libero_10_image   --batch_size=64   --steps=20000   --output_dir=outputs/train/my_smolvla1   --job_name=my_smolvla_training   --policy.device=cuda   --wandb.enable=false --eval_freq=2000  --env.type=libero
+  734  pip install 'lerobot[libero]
+  735  pip install 'lerobot[libero]'
+  736  python src/lerobot/scripts/train.py   --policy.path=lerobot/smolvla_base   --dataset.repo_id=lerobot/libero_10_image   --batch_size=64   --steps=20000   --output_dir=outputs/train/my_smolvla1   --job_name=my_smolvla_training   --policy.device=cuda   --wandb.enable=false --eval_freq=2000  --env.type=libero
+  737  pip install gym_libero
+  738  cd ..
+  739  mkdir lerobot1
+  740  cd lerobot1
+  741  git clone https://github.com/huggingface/lerobot.git
+  742  conda activate lerobot
+  743  python src/lerobot/scripts/train.py   --policy.path=lerobot/smolvla_base   --dataset.repo_id=lerobot/libero_10_image   --batch_size=64   --steps=20000   --output_dir=outputs/train/my_smolvla1   --job_name=my_smolvla_training   --policy.device=cuda   --wandb.enable=false --eval_freq=2000  --env.type=libero
+  744  ls
+  745  cd lerobot
+  746  python src/lerobot/scripts/train.py   --policy.path=lerobot/smolvla_base   --dataset.repo_id=lerobot/libero_10_image   --batch_size=64   --steps=20000   --output_dir=outputs/train/my_smolvla1   --job_name=my_smolvla_training   --policy.device=cuda   --wandb.enable=false --eval_freq=2000  --env.type=libero
+  747  pip install ppo
+  748  python src/lerobot/scripts/train.py   --policy.path=lerobot/smolvla_base   --dataset.repo_id=lerobot/libero_10_image   --batch_size=64   --steps=20000   --output_dir=outputs/train/my_smolvla1   --job_name=my_smolvla_training   --policy.device=cuda   --wandb.enable=false --eval_freq=2000  --env.type=libero
+  749  pip install -e .
+  750  python src/lerobot/scripts/train.py   --policy.path=lerobot/smolvla_base   --dataset.repo_id=lerobot/libero_10_image   --batch_size=64   --steps=20000   --output_dir=outputs/train/my_smolvla1   --job_name=my_smolvla_training   --policy.device=cuda   --wandb.enable=false --eval_freq=2000  --env.type=libero
+  751  python src/lerobot/scripts/train.py   --policy.path=lerobot/smolvla_base   --dataset.repo_id=lerobot/libero_10_image   --batch_size=64   --steps=20000   --output_dir=outputs/traclear
+  752  nvidia-smi -l 1
+  753  pkill vscode
+  754  cd .vscode-server/
+  755  ls
+  756  cd data/
+  757  cd User/
+  758  ls
+  759  cd globalStorage/
+  760  ls
+  761  rm -r rooveterinaryinc.roo-cline/
+  762  rm -rf rooveterinaryinc.roo-cline/
+  763  cd ..
+  764  ls
+  765  du -h --max-depth=1
+  766  nvidia-smi -l 1
+  767  histroy > commands.txt
+  768  history > commands.txt
+  769  export XLA_PYTHON_CLIENT_PREALLOCATE=false
+  770  cd ..
+  771  ls
+  772  cd ./.vscode-server/
+  773  ls
+  774  cd ..
+  775  cd RL4VLA/
+  776  conda activate rlvla_env
+  777  pip install POT
+  778  clear
+  779  export XLA_PYTHON_CLIENT_PREALLOCATE=false
+  780  export PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True
+  781  python SimplerEnv/simpler_env/train_multi_vla.py   --num_agents 4   --cuda_devices 0,1   --name "PPO-pc25m_v3-warmup"   --vla_path "openvla/openvla-7b"   --vla_unnorm_key "bridge_orig"   --vla_load_path "../openvla/checkpoints/warmup/steps_2000/lora_002000"   --seed 0
+  782  cd SimplerEnv/
+  783  python simpler_env/train_multi_vla.py   --num_agents 4   --cuda_devices 0,1   --name "PPO-pc25m_v3-warmup"   --vla_path "openvla/openvla-7b"   --vla_unnorm_key "bridge_orig"   --vla_load_path "../openvla/checkpoints/warmup/steps_2000/lora_002000"   --seed 0
+  784  clear
+  785  nvidia-smi -l 1
+  786  python3 SimplerEnv/simpler_env/train_multi_vla.py --num_agents 4 --cuda_devices 0,1,2,3 --base_seed 42 --base_name vla-exp --comm_interval 10 -- --some_other_arg value
+  787  conda activate rlvla_env
+  788  python3 SimplerEnv/simpler_env/train_multi_vla.py --num_agents 4 --cuda_devices 0,1 --base_seed 42 --base_name vla-exp --comm_interval 10 --name="PPO-pc25m_v3-warmup"   --env_id="PutOnPlateInScene25Main-v3"   --vla_path="openvla/openvla-7b" --vla_unnorm_key="bridge_orig"   --vla_load_path="../openvla/checkpoints/warmup/steps_2000/lora_002000"   --seed=0 
+  789  python3 SimplerEnv/simpler_env/train_multi_vla.py --num_agents 4 --cuda_devices 0,1 --base_seed 42 --base_name vla-exp --comm_interval 10 --name="PPO-pc25m_v3-warmup"     --vla_path="openvla/openvla-7b" --vla_unnorm_key="bridge_orig"   --vla_load_path="../openvla/checkpoints/warmup/steps_2000/lora_002000"   --seed=0 
+  790  cd SimplerEnv/
+  791  python3 simpler_env/train_multi_vla.py --num_agents 4 --cuda_devices 0,1 --base_seed 42 --base_name vla-exp --comm_interval 10 --name="PPO-pc25m_v3-warmup"     --vla_path="openvla/openvla-7b" --vla_unnorm_key="bridge_orig"   --vla_load_path="../openvla/checkpoints/warmup/steps_2000/lora_002000"   --seed=0 
+  792  python3 simpler_env/train_multi_vla.py --num_agents 4 --cuda_devices 0,1 --base_seed 42 --base_name vla-exp --comm_interval 1 --name="PPO-pc25m_v3-warmup"     --vla_path="openvla/openvla-7b" --vla_unnorm_key="bridge_orig"   --vla_load_path="../openvla/checkpoints/warmup/steps_2000/lora_002000"   
+  793  clear
+  794  git push
+  795  CUDA_VISIBLE_DEVICES=$cuda XLA_PYTHON_CLIENT_PREALLOCATE=false PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True python simpler_env/train_ms3_ppo.py   --name="PPO-pc25m_v3-warmup"   --env_id="PutOnPlateInScene25Main-v3"   --vla_path="openvla/openvla-7b" --vla_unnorm_key="bridge_orig"   --vla_load_path="../openvla/checkpoints/warmup/steps_2000/lora_002000"   --seed=0
+  796  CUDA_VISIBLE_DEVICES=0 XLA_PYTHON_CLIENT_PREALLOCATE=false PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True python simpler_env/train_ms3_ppo.py   --name="PPO-pc25m_v3-warmup"   --env_id="PutOnPlateInScene25Main-v3"   --vla_path="openvla/openvla-7b" --vla_unnorm_key="bridge_orig"   --vla_load_path="../openvla/checkpoints/warmup/steps_2000/lora_002000"   --seed=0
+  797  clear
+  798  conda activate rlvla_env
+  799  conda acitvate rlvla_env
+  800  conda activate rlvla_env
+  801  CUDA_VISIBLE_DEVICES=0 XLA_PYTHON_CLIENT_PREALLOCATE=false PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True python simpler_env/train_ms3_ppo.py   --name="PPO-pc25m_v3-warmup"   --env_id="PutOnPlateInScene25Single-v1"   --vla_path="openvla/openvla-7b" --vla_unnorm_key="bridge_orig"   --vla_load_path="../openvla/checkpoints/warmup/steps_2000/lora_002000"   --seed=0
+  802  cd SimplerEnv/
+  803  CUDA_VISIBLE_DEVICES=0 XLA_PYTHON_CLIENT_PREALLOCATE=false PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True python simpler_env/train_ms3_ppo.py   --name="PPO-pc25m_v3-warmup"   --env_id="PutOnPlateInScene25Single-v1"   --vla_path="openvla/openvla-7b" --vla_unnorm_key="bridge_orig"   --vla_load_path="../openvla/checkpoints/warmup/steps_2000/lora_002000"   --seed=0
+  804  CUDA_VISIBLE_DEVICES=0 XLA_PYTHON_CLIENT_PREALLOCATE=false PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True python simpler_env/train_ms3_ppo.py   --name="PPO-pc25m_v3-warmup"   --env_id="PutOnPlateInScene25VisionImage-v1"   --vla_path="openvla/openvla-7b" --vla_unnorm_key="bridge_orig"   --vla_load_path="../openvla/checkpoints/warmup/steps_2000/lora_002000"   --seed=0
+  805  CUDA_VISIBLE_DEVICES=0 XLA_PYTHON_CLIENT_PREALLOCATE=false PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True python simpler_env/train_ms3_ppo.py   --name="PPO-pc25m_v3-warmup"   --env_id="PutOnPlateInScene25Carrot-v1"   --vla_path="openvla/openvla-7b" --vla_unnorm_key="bridge_orig"   --vla_load_path="../openvla/checkpoints/warmup/steps_2000/lora_002000"   --seed=0
+  806  CUDA_VISIBLE_DEVICES=0 XLA_PYTHON_CLIENT_PREALLOCATE=false PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True python simpler_env/train_ms3_ppo.py   --name="PPO-pc25m_v3-warmup"   --env_id="PutCarrotOnPlateInScene-v1"   --vla_path="openvla/openvla-7b" --vla_unnorm_key="bridge_orig"   --vla_load_path="../openvla/checkpoints/warmup/steps_2000/lora_002000"   --seed=0
+  807  cd ..
+  808  du -h max-depth=1
+  809  du -h -max-depth=1
+  810  du -h --max-depth=1
+  811  CUDA_VISIBLE_DEVICES=0 XLA_PYTHON_CLIENT_PREALLOCATE=false PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True python simpler_env/train_ms3_ppo.py   --name="PPO-pc25m_v3-warmup"   --env_id="PutCarrotOnPlateInScene-v1"   --vla_path="openvla/openvla-7b" --vla_unnorm_key="bridge_orig"   --vla_load_path="../openvla/checkpoints/warmup/steps_2000/lora_002000"   --seed=0
+  812  cd RL4VLA/
+  813  cd SimplerEnv/
+  814  CUDA_VISIBLE_DEVICES=0 XLA_PYTHON_CLIENT_PREALLOCATE=false PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True python simpler_env/train_ms3_ppo.py   --name="PPO-pc25m_v3-warmup"   --env_id="PutCarrotOnPlateInScene-v1"   --vla_path="openvla/openvla-7b" --vla_unnorm_key="bridge_orig"   --vla_load_path="../openvla/checkpoints/warmup/steps_2000/lora_002000"   --seed=0
+  815  CUDA_VISIBLE_DEVICES=0 XLA_PYTHON_CLIENT_PREALLOCATE=false PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True python simpler_env/train_ms3_ppo.py   --name="PPO-pc25m_v3-warmup"   --env_id="PutSpoonOnTableClothInScene-v1"   --vla_path="openvla/openvla-7b" --vla_unnorm_key="bridge_orig"   --vla_load_path="../openvla/checkpoints/warmup/steps_2000/lora_002000"   --seed=0
+  816  CUDA_VISIBLE_DEVICES=0 XLA_PYTHON_CLIENT_PREALLOCATE=false PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True python simpler_env/train_ms3_ppo.py   --name="PPO-pc25m_v3-warmup"   --env_id="StackGreenCubeOnYellowCubeBakedTexInScene-v1"   --vla_path="openvla/openvla-7b" --vla_unnorm_key="bridge_orig"   --vla_load_path="../openvla/checkpoints/warmup/steps_2000/lora_002000"   --seed=0
+  817  CUDA_VISIBLE_DEVICES=0 XLA_PYTHON_CLIENT_PREALLOCATE=false PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True python simpler_env/train_ms3_ppo.py   --name="PPO-pc25m_v3-warmup"   --env_id="PutEggplantInBasketScene-v1"   --vla_path="openvla/openvla-7b" --vla_unnorm_key="bridge_orig"   --vla_load_path="../openvla/checkpoints/warmup/steps_2000/lora_002000"   --seed=0
+  818  CUDA_VISIBLE_DEVICES=0 XLA_PYTHON_CLIENT_PREALLOCATE=false PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True python simpler_env/train_ms3_ppo.py   --name="PPO-pc25m_v3-warmup"   --env_id="PutOnPlateInScene25MultiCarrot-v1"   --vla_path="openvla/openvla-7b" --vla_unnorm_key="bridge_orig"   --vla_load_path="../openvla/checkpoints/warmup/steps_2000/lora_002000"   --seed=0
+  819  clear
+  820  CUDA_VISIBLE_DEVICES=0 XLA_PYTHON_CLIENT_PREALLOCATE=false PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True python simpler_env/train_ms3_ppo.py   --name="PPO-pc25m_v3-warmup"   --env_id="PutCarrotOnPlateInScene-v1"   --vla_path="openvla/openvla-7b" --vla_unnorm_key="bridge_orig"   --vla_load_path="../openvla/checkpoints/warmup/steps_2000/lora_002000"   --seed=0
+  821  pip install oepenpyxl
+  822  pip install openpyxl
+  823  CUDA_VISIBLE_DEVICES=0 XLA_PYTHON_CLIENT_PREALLOCATE=false PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True python simpler_env/train_ms3_ppo.py   --name="PPO-pc25m_v3-warmup"   --env_id="PutCarrotOnPlateInScene-v1"   --vla_path="openvla/openvla-7b" --vla_unnorm_key="bridge_orig"   --vla_load_path="../openvla/checkpoints/warmup/steps_2000/lora_002000"   --seed=0
+  824  CUDA_VISIBLE_DEVICES=0 XLA_PYTHON_CLIENT_PREALLOCATE=false PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True nohup python simpler_env/train_ms3_ppo.py   --name="PPO-pc25m_v3-warmup"   --env_id="PutCarrotOnPlateInScene-v1"   --vla_path="openvla/openvla-7b" --vla_unnorm_key="bridge_orig"   --vla_load_path="../openvla/checkpoints/warmup/steps_2000/lora_002000"   --seed=0 
+  825  CUDA_VISIBLE_DEVICES=0 XLA_PYTHON_CLIENT_PREALLOCATE=false PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True nohup python simpler_env/train_ms3_ppo.py   --name="PPO-pc25m_v3-warmup"   --env_id="PutSpoonOnTableClothInScene-v1"   --vla_path="openvla/openvla-7b" 
+  826  --vla_unnorm_key="bridge_orig"   --vla_load_path="../openvla/checkpoints/warmup/steps_2000/lora_002000"   --seed=0 
+  827  CUDA_VISIBLE_DEVICES=0 XLA_PYTHON_CLIENT_PREALLOCATE=false PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True nohup python simpler_env/train_ms3_ppo.py   --name="PPO-pc25m_v3-warmup"   --env_id="PutSpoonOnTableClothInScene-v1"   --vla_path="openvla/openvla-7b" --vla_unnorm_key="bridge_orig"   --vla_load_path="../openvla/checkpoints/warmup/steps_2000/lora_002000"   --seed=0
+  828  cd SimplerEnv/
+  829  CUDA_VISIBLE_DEVICES=0 XLA_PYTHON_CLIENT_PREALLOCATE=false PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True nohup python simpler_env/train_ms3_ppo.py   --name="PPO-pc25m_v3-warmup"   --env_id="PutSpoonOnTableClothInScene-v1"   --vla_path="openvla/openvla-7b"   --vla_unnorm_key="bridge_orig"   --vla_load_path="../openvla/checkpoints/warmup/steps_2000/lora_002000"   --seed=0   --log_dir="./logs/PPO-pc25m_v3-warmup"   > ./logs/PPO-pc25m_v3-warmup/out.log 2>&1 &
+  830  mkdir -p logs/PPO-pc25m_v3-warmup
+  831  CUDA_VISIBLE_DEVICES=0 XLA_PYTHON_CLIENT_PREALLOCATE=false PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True nohup python simpler_env/train_ms3_ppo.py   --name="PPO-pc25m_v3-warmup"   --env_id="PutSpoonOnTableClothInScene-v1"   --vla_path="openvla/openvla-7b"   --vla_unnorm_key="bridge_orig"   --vla_load_path="../openvla/checkpoints/warmup/steps_2000/lora_002000"   --seed=0   > logs/PPO-pc25m_v3-warmup/train.log 2>&1 &
+  832  nvidia-smi
+  833  CUDA_VISIBLE_DEVICES=0 XLA_PYTHON_CLIENT_PREALLOCATE=false PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True nohup python simpler_env/train_ms3_ppo.py   --name="PPO-pc25m_v3-warmup"   --env_id="StackGreenCubeOnYellowCubeBakedTexInScene-v1"   --vla_path="openvla/openvla-7b"   --vla_unnorm_key="bridge_orig"   --vla_load_path="../openvla/checkpoints/warmup/steps_2000/lora_002000"   --seed=0   > out1.log 2>&1 &
+  834  nvidia-smi
+  835  nvidia-smi -l 1
+  836  clear
+  837  conda activate rlvla_env
+  838  CUDA_VISIBLE_DEVICES=0 XLA_PYTHON_CLIENT_PREALLOCATE=false PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True nohup python simpler_env/train_ms3_ppo.py   --name="PPO-pc25m_v3-warmup"   --env_id="StackGreenCubeOnYellowCubeBakedTexInScene-v1"   --vla_path="openvla/openvla-7b"   --vla_unnorm_key="bridge_orig"   --vla_load_path="../openvla/checkpoints/warmup/steps_2000/lora_002000"   --seed=0   > out1.log 2>&1 &
+  839  cd SimplerEnv/
+  840  CUDA_VISIBLE_DEVICES=0 XLA_PYTHON_CLIENT_PREALLOCATE=false PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True nohup python simpler_env/train_ms3_ppo.py   --name="PPO-pc25m_v3-warmup"   --env_id="StackGreenCubeOnYellowCubeBakedTexInScene-v1"   --vla_path="openvla/openvla-7b"   --vla_unnorm_key="bridge_orig"   --vla_load_path="../openvla/checkpoints/warmup/steps_2000/lora_002000"   --seed=0   > out1.log 2>&1 &
+  841  CUDA_VISIBLE_DEVICES=0 XLA_PYTHON_CLIENT_PREALLOCATE=false PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True nohup python simpler_env/train_ms3_ppo.py   --name="PPO-pc25m_v3-warmup"   --env_id="PutEggplantInBasketScene-v1"   --vla_path="openvla/openvla-7b"   --vla_unnorm_key="bridge_orig"   --vla_load_path="../openvla/checkpoints/warmup/steps_2000/lora_002000"   --seed=0   > out2.log 2>&1 &
+  842  CUDA_VISIBLE_DEVICES=0 XLA_PYTHON_CLIENT_PREALLOCATE=false PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True nohup python simpler_env/train_ms3_ppo.py   --name="PPO-pc25m_v3-warmup"   --env_id="PutSpoonOnTableClothInScene-v1"   --vla_path="openvla/openvla-7b"   --vla_unnorm_key="bridge_orig"   --vla_load_path="../openvla/checkpoints/warmup/steps_2000/lora_002000"   --seed=0   > out3.log 2>&1 &
+  843  git branch
+  844  git checkout -b individualtasktest
+  845  git branch
+  846  git checkout main
+  847  git checkout individualtasktest 
+  848  git checkout main 
+  849  git pull
+  850  git merge individualtasktest 
+  851  git stash
+  852  git merge individualtasktest 
+  853  CUDA_VISIBLE_DEVICES=0 XLA_PYTHON_CLIENT_PREALLOCATE=false PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True nohup python simpler_env/train_ms3_ppo.py   --name="PPO-pc25m_v3-warmup"   --env_id="StackGreenCubeOnYellowCubeBakedTexInScene-v1"   --vla_path="openvla/openvla-7b"   --vla_unnorm_key="bridge_orig"   --vla_load_path="../openvla/checkpoints/warmup/steps_2000/lora_002000"   --seed=0   > out1.log 2>&1 &
+  854  python3 simpler_env/train_multi_vla.py --num_agents 3 --cuda_devices 1 --base_seed 42 --base_name vla-exp --comm_interval 1 --name="PPO-pc25m_v3-warmup"     --vla_path="openvla/openvla-7b" --vla_unnorm_key="bridge_orig"   --vla_load_path="../openvla/checkpoints/warmup/steps_2000/lora_002000"   --seed=0
+  855  du -h --max-depth=1
+  856  cd ..
+  857  du -h --max-depth=1
+  858  cd openvla/
+  859  ls
+  860  du -h --max-depth=1
+  861  cd ..
+  862  Simple
+  863  cd SimplerEnv/
+  864  git stash
+  865  cd ..
+  866  curl -fsSL https://ollama.com/install.sh | sh
+  867  ollama serve
+  868  ollama pull qwen2.5-coder:32b
+  869  ollama run qwen2.5-coder:32b
+  870  /set parameter num_ctx 32768
+  871  ls
+  872  ollama run qwen2.5-coder:32b
+  873  pkill -f ollama
+  874  ollama pull qwen2.5-coder:32b-instruct-q8_0
+  875  ollama run qwen2.5-coder:32b-instruct-q8_0
+  876  ollma pull gpt-oss:latest
+  877  ollama pull gpt-oss:latest
+  878  ollama run gpt-oss:latest
+  879  ollama
+  880  ollama list
+  881  ollama rm qwen2.5-coder:32b
+  882  ollama list
+  883  ollama rm qwen2.5-coder:32b-instruct-q8_0
+  884  ollama rm gpt-oss:latest
+  885  ollama list
+  886  ollama rm qwen2.5-coder:32b32K
+  887  ollama list
+  888  clear
+  889  nvidia-smi -l 1
+  890  du -h --max-depth=1
+  891  cd ./.vs
+  892  cd ./.vscode-server/
+  893  ls
+  894  cd data
+  895  cd User/
+  896  ls
+  897  cd globalStorage/
+  898  ls
+  899  rm -f rooveterinaryinc.roo-cline/
+  900  rm -rf rooveterinaryinc.roo-cline/
+  901  cd ..
+  902  du -h --max-depth=1
+  903  nvidia-smi -l 1
+  904  python3 simpler_env/train_multi_vla.py --num_agents 3 --cuda_devices 1 --base_seed 42 --base_name vla-exp --comm_interval 1 --name="PPO-pc25m_v3-warmup"     --vla_path="openvla/openvla-7b" --vla_unnorm_key="bridge_orig"   --vla_load_path="../openvla/checkpoints/warmup/steps_2000/lora_002000"   --seed=0 
+  905  pip list
+  906  conda activate rlvla_env
+  907  python3 simpler_env/train_multi_vla.py --num_agents 3 --cuda_devices 1 --base_seed 42 --base_name vla-exp --comm_interval 1 --name="PPO-pc25m_v3-warmup"     --vla_path="openvla/openvla-7b" --vla_unnorm_key="bridge_orig"   --vla_load_path="../openvla/checkpoints/warmup/steps_2000/lora_002000"   --seed=0 
+  908  python3 simpler_env/train_multi_vla.py --num_agents 3 --cuda_devices 1 --base_seed 42 --base_name vla-exp --comm_interval 1 --name="PPO-pc25m_v3-warmup"     --vla_path="openvla/openvla-7b" --vla_unnorm_key="bridge_orig"   --vla_load_path="../openvla/checkpoints/warmup/steps_2000/lora_002000"   --seed=0 > outmult1.log 2>&1 &
+  909  cd ..
+  910  du -h --max-depth=1
+  911  clear
+  912  nvidia-smi -l 1
+  913  cd ..
+  914  du -h --max-depth=1
+  915  nvidia-smi 
+  916  clear
+  917  cd RL4VLA/
+  918  cd SimplerEnv/
+  919  conda activate rlvla_env
+  920  python3 simpler_env/train_multi_vla.py --num_agents 3 --cuda_devices 1 --base_seed 42 --base_name vla-exp --comm_interval 1 --name="PPO-pc25m_v3-warmup"     --vla_path="openvla/openvla-7b" --vla_unnorm_key="bridge_orig"   --vla_load_path="../openvla/checkpoints/warmup/steps_2000/lora_002000"   --seed=0 
+  921  git pull
+  922  conda activate rlvla_env
+  923  cd SimplerEnv/
+  924  CUDA_VISIBLE_DEVICES=0 XLA_PYTHON_CLIENT_PREALLOCATE=false PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True  python simpler_env/train_ms3_ppo.py   --name="PPO-pc25m_v3-warmup"   --env_id="PutSpoonOnTableClothInScene-v1"   --vla_path="openvla/openvla-7b"   --vla_unnorm_key="bridge_orig"   --v
+  925  la_load_path="../openvla/checkpoints/warmup/steps_2000/lora_002000"   --seed=0   
+  926  clear
+  927  sudo kill -9 1547765
+  928  ps kill -9 1547765
+  929  ps -fp  1547765
+  930  pkill  1547765
+  931  pkill -f 1547765
+  932  pkill -f train_multi_vla.py
+  933  python3 simpler_env/train_multi_vla.py --num_agents 3 --cuda_devices 1 --base_seed 42 --base_name vla-exp --comm_interval 1 --name="PPO-pc25m_v3-warmup"     --vla_path="gen-robot/openvla-7b-rlvla-rl" --vla_unnorm_key="bridge_orig"   --vla_load_path=""   --seed=0 
+  934  python3 simpler_env/train_multi_vla.py --num_agents 3 --cuda_devices 1 --base_seed 42 --base_name vla-exp --comm_interval 1 --name="PPO-pc25m_v3-warmup"     --vla_path="gen-robot/openvla-7b-rlvla-rl" --vla_unnorm_key="bridge_orig"   --vla_load_path="../openvla/checkpoints/warmup/steps_2000/lora_002000"   --seed=0 
+  935  python3 simpler_env/train_multi_vla.py --num_agents 3 --cuda_devices 1 --base_seed 42 --base_name vla-exp --comm_interval 1 --name="PPO-pc25m_v3-warmup"     --vla_path="gen-robot/openvla-7b-rlvla-rl" --vla_unnorm_key="bridge_orig"   --vla_load_path=""   --seed=0 
+  936  python3 simpler_env/train_multi_vla.py --num_agents 3 --cuda_devices 1 --base_seed 42 --base_name vla-exp --comm_interval 1 --name="PPO-pc25m_v3-warmup"     --vla_path="openvla/openvla-7b" --vla_unnorm_key="bridge_orig"   --vla_load_path="../openvla/checkpoints/warmup/steps_2000/lora_002000"   --seed=0 
+  937  python3 simpler_env/train_multi_vla.py --num_agents 3 --cuda_devices 1 --base_seed 42 --base_name vla-exp --comm_interval 1 --name="PPO-pc25m_v3-warmup"     --vla_path="gen-robot/openvla-7b-rlvla-rl" --vla_unnorm_key="bridge_orig"   --vla_load_path=""   --seed=0 
+  938  cd ..
+  939  du -h --maxdepth==1
+  940  du -h --max-depth==1
+  941  du -h --max-depth=1
+  942  clear
+  943  nvidia-smi -l 1
+  944  cd ..
+  945  du -h --max-depth=1
+  946  conda activate rlvla_env
+  947  clear
+  948  python3 simpler_env/train_multi_vla.py --num_agents 3 --cuda_devices 1 --base_seed 42 --base_name vla-exp --comm_interval 1 --name="PPO-pc25m_v3-warmup"     --vla_path="gen-robot/openvla-7b-rlvla-rl" --vla_unnorm_key="bridge_orig"   --vla_load_path=""   --seed=0 
+  949  cd RL4VLA/
+  950  cd SimplerEnv/
+  951  python3 simpler_env/train_multi_vla.py --num_agents 3 --cuda_devices 1 --base_seed 42 --base_name vla-exp --comm_interval 1 --name="PPO-pc25m_v3-warmup"     --vla_path="gen-robot/openvla-7b-rlvla-rl" --vla_unnorm_key="bridge_orig"   --vla_load_path=""   --seed=0 
+  952  python3 simpler_env/train_multi_vla.py --num_agents 3 --cuda_devices 1 --base_seed 42 --base_name vla-exp --comm_interval 1 --name="PPO-pc25m_v3-warmup"     --vla_path="gen-robot/openvla-7b-rlvla-rl" --vla_unnorm_key="bridge_orig"   --vla_load_path=""   --seed=0 #
+  953  clear
+  954  python3 simpler_env/train_multi_vla.py --num_agents 3 --cuda_devices 1 --base_seed 42 --base_name vla-exp --comm_interval 1 --name="PPO-pc25m_v3-warmup"     --vla_path="gen-robot/openvla-7b-rlvla-rl" --vla_unnorm_key="bridge_orig"   --vla_load_path=""   --seed=0 #
+  955  python3 simpler_env/train_multi_vla.py --num_agents 3 --cuda_devices 1 --base_seed 42 --base_name vla-exp --comm_interval 1 --name="PPO-pc25m_v3-warmup"     --vla_path="gen-robot/openvla-7b-rlvla-rl" --vla_unnorm_key="bridge_orig"   --vla_load_path=""   --seed=0 
+  956  conda deactivate
+  957  conda activate rlvla_env
+  958  python3 simpler_env/train_multi_vla.py --num_agents 3 --cuda_devices 1 --base_seed 42 --base_name vla-exp --comm_interval 1 --name="PPO-pc25m_v3-warmup"     --vla_path="gen-robot/openvla-7b-rlvla-rl" --vla_unnorm_key="bridge_orig"   --vla_load_path=""   --seed=0 
+  959  train_ms3_ppo.py --help
+  960  ls
+  961  simpler_env/train_ms3_ppo.py --help
+  962  python3 simpler_env/train_ms3_ppo.py --help
+  963  python3 simpler_env/train_multi_vla.py --num_agents 3 --cuda_devices 1 --base_seed 42 --base_name vla-exp --comm_interval 1 --name="PPO-pc25m_v3-warmup"     --vla_path="gen-robot/openvla-7b-rlvla-rl" --vla_unnorm_key="bridge_orig"   --vla_load_path=""   --seed=0 
+  964  conda activate rlvla_env
+  965  python3 simpler_env/train_multi_vla.py --num_agents 3 --cuda_devices 1 --base_seed 42 --base_name vla-exp --comm_interval 1 --name="PPO-pc25m_v3-warmup"     --vla_path="gen-robot/openvla-7b-rlvla-rl" --vla_unnorm_key="bridge_orig"   --vla_load_path=""   --seed=0 > multlog.out 2>&1 &
+  966  Python3 nohup  simpler_env/train_multi_vla.py --num_agents 3 --cuda_devices 1 --base_seed 42 --base_name vla-exp --comm_interval 2 --name="PPO-pc25m_v3-warmup"     --vla_path="openvla/openvla-7b" --vla_unnorm_key="bridge_orig"   --vla_load_path="../openvla/checkpoints/warmup/steps_2000/lora_002000"   --seed=0 > out3.log 2>&1 &
+  967  python3 nohup  simpler_env/train_multi_vla.py --num_agents 3 --cuda_devices 1 --base_seed 42 --base_name vla-exp --comm_interval 2 --name="PPO-pc25m_v3-warmup"     --vla_path="openvla/openvla-7b" --vla_unnorm_key="bridge_orig"   --vla_load_path="../openvla/checkpoints/warmup/steps_2000/lora_002000"   --seed=0 > multlog.log 2>&1 &
+  968  nohup python3 simpler_env/train_multi_vla.py --num_agents 3 --cuda_devices 1 --base_seed 42 --base_name vla-exp --comm_interval 2 --name="PPO-pc25m_v3-warmup"     --vla_path="openvla/openvla-7b" --vla_unnorm_key="bridge_orig"   --vla_load_path="../openvla/checkpoints/warmup/steps_2000/lora_002000"   --seed=0 > multlog.log 2>&1 &
+  969  clear
+  970  nvidia-smi -l 1
+  971  pkill -f train_multi_vla.py
+  972  nvidia-smi 
+  973  cd SimplerEnv/
+  974  nohup python3 simpler_env/train_multi_vla.py --num_agents 3 --cuda_devices 1 --base_seed 42 --base_name vla-exp --comm_interval 2 --name="PPO-pc25m_v3-warmup"     --vla_path="openvla/openvla-7b" --vla_unnorm_key="bridge_orig"   --vla_load_path="../openvla/checkpoints/warmup/steps_2000/lora_002000"   --seed=0 > multlog.log 2>&1 &
+  975  conda activate rlvla_env
+  976  nohup python3 simpler_env/train_multi_vla.py --num_agents 3 --cuda_devices 1 --base_seed 42 --base_name vla-exp --comm_interval 2 --name="PPO-pc25m_v3-warmup"     --vla_path="openvla/openvla-7b" --vla_unnorm_key="bridge_orig"   --vla_load_path="../openvla/checkpoints/warmup/steps_2000/lora_002000"   --seed=0 > multlog.log 2>&1 &
+  977  nvidia-smi 
+  978  conda activate rlvla_env
+  979  nohup python3 simpler_env/train_multi_vla.py --num_agents 3 --cuda_devices 1 --base_seed 42 --base_name vla-exp --comm_interval 2 --name="PPO-pc25m_v3-warmup"     --vla_path="openvla/openvla-7b" --vla_unnorm_key="bridge_orig"   --vla_load_path="../openvla/checkpoints/warmup/steps_2000/lora_002000"   --seed=0 > multlog.log 2>&1 &
+  980  pkill -f train_multi_vla.py
+  981  nvidia-smi
+  982  pkill -f .py
+  983  pkill -f python
+  984  cd ..
+  985  du -h --max-depth=1
+  986  cd RL4VLA/
+  987  cd SimplerEnv/
+  988  conda activate rlvla_env
+  989  CUDA_VISIBLE_DEVICES=0 XLA_PYTHON_CLIENT_PREALLOCATE=false PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True nohup python simpler_env/train_ms3_ppo.py   --name="PPO-pc25m_v3-warmup"   --env_id="PutCarrotOnPlateInScreen-v1"   --vla_path="openvla/openvla-7b"   --vla_unnorm_key="bridge_orig" --vla_load_path="../openvla/checkpoints/warmup/steps_2000/lora_002000"   --seed=0   > out3.log 2>&1 &
+  990  pkill -f train_ms3_ppo.py
+  991  pkill -f train_multi_vla.py
+  992  nvidia-smi
+  993  CUDA_VISIBLE_DEVICES=0 XLA_PYTHON_CLIENT_PREALLOCATE=false PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True nohup python simpler_env/train_ms3_ppo.py   --name="PPO-pc25m_v3-warmup"   --env_id="PutCarrotOnPlateInScene-v1"   --vla_path="openvla/openvla-7b"   --vla_unnorm_key="bridge_orig" --vla_load_path="../openvla/checkpoints/warmup/steps_2000/lora_002000"   --seed=0   > out3.log 2>&1 &
+  994  CUDA_VISIBLE_DEVICES=0 XLA_PYTHON_CLIENT_PREALLOCATE=false PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True nohup python simpler_env/train_ms3_ppo.py   --name="PPO-pc25m_v3-warmup"   --env_id="StackGreenCubeOnYellowCubeBakedTexInScene-v1"   --vla_path="openvla/openvla-7b"   --vla_unnorm_key="bridge_orig" --vla_load_path="../openvla/checkpoints/warmup/steps_2000/lora_002000"   --seed=0   > out3.log 2>&1 &
+  995  CUDA_VISIBLE_DEVICES=0 XLA_PYTHON_CLIENT_PREALLOCATE=false PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True nohup python simpler_env/train_ms3_ppo.py   --name="PPO-pc25m_v3-warmup"   --env_id="PutSpoonOnTableClothInScene-v1"   --vla_path="openvla/openvla-7b"   --vla_unnorm_key="bridge_orig" --vla_load_path="../openvla/checkpoints/warmup/steps_2000/lora_002000"   --seed=1   > out3.log 2>&1 &
+  996  nvidia-smi
+  997  git branch
+  998  git checkout main
+  999  git stash
+ 1000  clear
+ 1001  git branch
+ 1002  nvidia-smi
+ 1003  clear
+ 1004  git checkout main
+ 1005  git checkout everything-same-as-individual-task-with-additional-fifo-addition 
+ 1006  git checkout main
+ 1007  git checkout everything-same-as-individual-task-with-additional-fifo-addition 
+ 1008  git checkout main
+ 1009  git add .
+ 1010  git checkout main
+ 1011  git stash push -m "work"
+ 1012  git stash list
+ 1013  git checkout main
+ 1014  git branch
+ 1015  git checkout everything-same-as-individual-task-with-additional-fifo-addition 
+ 1016  git stash pop
+ 1017  git stash
+ 1018  git main
+ 1019  git checkout main
+ 1020  git checkout everything-same-as-individual-task-with-additional-fifo-addition 
+ 1021  git stash pop
+ 1022  coda activate rlvla_env
+ 1023  conda activate rlvla_env
+ 1024  clear
+ 1025  Python3  simpler_env/train_multi_vla.py --num_agents 3 --cuda_devices 1 --base_seed 42 --base_name vla-exp --comm_interval 3 --name="PPO-pc25m_v3-warmup"     --vla_path="openvla/openvla-7b" --vla_unnorm_key="bridge_orig"   --vla_load_path="../openvla/checkpoints/warmup/steps_2000/lora_002000"   --seed=0 > out4.log 2>&1 &
+ 1026  python  simpler_env/train_multi_vla.py --num_agents 3 --cuda_devices 1 --base_seed 42 --base_name vla-exp --comm_interval 3 --name="PPO-pc25m_v3-warmup"     --vla_path="openvla/openvla-7b" --vla_unnorm_key="bridge_orig"   --vla_load_path="../openvla/checkpoints/warmup/steps_2000/lora_002000"   --seed=0 > out4.log 2>&1 &
+ 1027  pkill -f train_multi_vla.py
+ 1028  nvidia-smi 
+ 1029  python  simpler_env/train_multi_vla.py --num_agents 3 --cuda_devices 1 --base_seed 42 --base_name vla-exp --comm_interval 3 --name="PPO-pc25m_v3-warmup"     --vla_path="openvla/openvla-7b" --vla_unnorm_key="bridge_orig"   --vla_load_path="../openvla/checkpoints/warmup/steps_2000/lora_002000"   --seed=0 > out4.log 2>&1 &
+ 1030  nvidia-smi 
+ 1031  pkill -f train_multi_vla.py
+ 1032  python  simpler_env/train_multi_vla.py --num_agents 3 --cuda_devices 1 --base_seed 42 --base_name vla-exp --comm_interval 3 --name="PPO-pc25m_v3-warmup"     --vla_path="openvla/openvla-7b" --vla_unnorm_key="bridge_orig"   --vla_load_path="../openvla/checkpoints/warmup/steps_2000/lora_002000"   --seed=0 > out4.log 2>&1 &
+ 1033  nvidia-smi
+ 1034  wandb local
+ 1035  conda activate rlvla_env
+ 1036  wandb local
+ 1037  wandb server start
+ 1038  docker stop wandb-local
+ 1039  wandb server start
+ 1040  wandb login --relogin --host=http://localhost:8080
+ 1041  wandb online
+ 1042  cd SimplerEnv/
+ 1043  wandb online
+ 1044  wandb sync /home/lunet/coimd/RL4VLA/SimplerEnv/wandb/offline-run-20250825_124854-inpe90hi
+ 1045  wandb login --relogin
+ 1046  wandb sync /home/lunet/coimd/RL4VLA/SimplerEnv/wandb/offline-run-20250825_124854-inpe90hi
+ 1047  wandb login --relogin --host=http://localhost:8080
+ 1048  git branch
+ 1049  git checkout main
+ 1050  git merge everything-same-as-individual-task-with-additional-fifo-addition 
+ 1051  git branch
+ 1052  git checkout everything-same-as-individual-task-with-additional-fifo-addition 
+ 1053  git checkout main
+ 1054  git push
+ 1055  git pull
+ 1056  git pull --tags origin main --no-rebase
+ 1057  git checkout main
+ 1058  nvidia-smi 
+ 1059  cd ..
+ 1060  du -h --max-depth=1
+ 1061  rm ./.cache/
+ 1062  rm -f ./.cache/
+ 1063  rm -rf ./.cache/
+ 1064  du -h --max-depth=1
+ 1065  conda activate rlvla_env
+ 1066  python  simpler_env/train_multi_vla.py --num_agents 3 --cuda_devices 1 --base_seed 42 --base_name vla-exp --comm_interval 3 --name="PPO-pc25m_v3-warmup"     --vla_path="openvla/openvla-7b" --vla_unnorm_key="bridge_orig"   --vla_load_path="../openvla/checkpoints/warmup/steps_2000/lora_002000"   --seed=0 > out4.log 2>&1 &
+ 1067  cd RL4VLA/
+ 1068  cd SimplerEnv/
+ 1069  python  simpler_env/train_multi_vla.py --num_agents 3 --cuda_devices 1 --base_seed 42 --base_name vla-exp --comm_interval 3 --name="PPO-pc25m_v3-warmup"     --vla_path="openvla/openvla-7b" --vla_unnorm_key="bridge_orig"   --vla_load_path="../openvla/checkpoints/warmup/steps_2000/lora_002000"   --seed=0 > out4.log 2>&1 &
+ 1070  pkill -f train_multi_vla.py
+ 1071  python  simpler_env/train_multi_vla.py --num_agents 3 --cuda_devices 1 --base_seed 42 --base_name vla-exp --comm_interval 3 --name="PPO-pc25m_v3-warmup"     --vla_path="openvla/openvla-7b" --vla_unnorm_key="bridge_orig"   --vla_load_path="../openvla/checkpoints/warmup/steps_2000/lora_002000"   --seed=0 > out4.log 2>&1 &
+ 1072  pkill -f train_multi_vla.py
+ 1073  python  simpler_env/train_multi_vla.py --num_agents 3 --cuda_devices 1 --base_seed 42 --base_name vla-exp --comm_interval 3 --name="PPO-pc25m_v3-warmup"     --vla_path="openvla/openvla-7b" --vla_unnorm_key="bridge_orig"   --vla_load_path="../openvla/checkpoints/warmup/steps_2000/lora_002000"   --seed=0 > out4.log 2>&1 &
+ 1074  git branch
+ 1075  conda env export > environment.yml
+ 1076  git add .
+ 1077  git commit -m "few comments and environment.yml file"
+ 1078  git push
+ 1079  git add .
+ 1080  git push
+ 1081  git push --set-upstream origin everything-same-as-individual-task-with-additional-fifo-addition
+ 1082  python
+ 1083  clear
+ 1084  cd .. 
+ 1085  cd ..
+ 1086  ls
+ 1087  du -h --max-depth=1
+ 1088  cd ./maniskill
+ 1089  cd ./.maniskill
+ 1090  ls
+ 1091  cd data
+ 1092  ls
+ 1093  clear
+ 1094  git branch
+ 1095  cd ..
+ 1096  cd RL4VLA/
+ 1097  cd SimplerEnv/
+ 1098  git branch
+ 1099  git stash
+ 1100  git branch
+ 1101  git checkout main
+ 1102  git reset --hard 999d5d0
+ 1103  git push origin main --force
+ 1104  nvidia-smi -l 1
+ 1105  clear
+ 1106  wandb local server
+ 1107  conda activate rlvla_env
+ 1108  wandb login
+ 1109  conda activate rlvla_env
+ 1110  nvidia-smi -l 1
+ 1111  nvidia-smi 
+ 1112  clear
+ 1113  conda activate rlvla_env
+ 1114  nohup python simpler_env/train_multi_vla.py --num_agents 3 --cuda_devices 1 --base_seed 42 --base_name vla-exp --comm_interval 1 --name="PPO-pc25m_v3-warmup"     --vla_path="openvla/openvla-7b" --vla_unnorm_key="bridge_orig"   --vla_load_path="../openvla/checkpoints/warmup/steps_2000/lora_002000"   --seed=0 > out3.log 2>&1 &
+ 1115  cd SimplerEnv/
+ 1116  nohup python simpler_env/train_multi_vla.py --num_agents 3 --cuda_devices 1 --base_seed 42 --base_name vla-exp --comm_interval 1 --name="PPO-pc25m_v3-warmup"     --vla_path="openvla/openvla-7b" --vla_unnorm_key="bridge_orig"   --vla_load_path="../openvla/checkpoints/warmup/steps_2000/lora_002000"   --seed=0 > out3.log 2>&1 &
+ 1117  pkill -f train_multi_vla.py
+ 1118  pip install dotenv
+ 1119  python simpler_env/train_multi_vla.py --num_agents 3 --cuda_devices 1 --base_seed 42 --base_name vla-exp  --name="PPO-pc25m_v3-warmup"     --vla_path="openvla/openvla-7b" --vla_unnorm_key="bridge_orig"   --vla_load_path="../openvla/checkpoints/warmup/steps_2000/lora_002000"   --seed=0 
+ 1120  python simpler_env/train_multi_vla.py --num_agents 1 --cuda_devices 1 --base_seed 42 --base_name vla-exp  --name="PPO-pc25m_v3-warmup"     --vla_path="openvla/openvla-7b" --vla_unnorm_key="bridge_orig"   --vla_load_path="../openvla/checkpoints/warmup/steps_2000/lora_002000"   --seed=0 
+ 1121  wandb login --relogin
+ 1122  python simpler_env/train_multi_vla.py --num_agents 1 --cuda_devices 1 --base_seed 42 --base_name vla-exp  --name="PPO-pc25m_v3-warmup"     --vla_path="openvla/openvla-7b" --vla_unnorm_key="bridge_orig"   --vla_load_path="../openvla/checkpoints/warmup/steps_2000/lora_002000"   --seed=0 
+ 1123  nohup python simpler_env/train_multi_vla.py --num_agents 3 --cuda_devices 1 --base_seed 42 --base_name vla-exp  --name="PPO-pc25m_v3-warmup"     --vla_path="openvla/openvla-7b" --vla_unnorm_key="bridge_orig"   --vla_load_path="../openvla/checkpoints/warmup/steps_2000/lora_002000"   --seed=0 > outwithousparse.log 2>&1 &
+ 1124  clear
+ 1125  conda activate rlvla_env
+ 1126  wandb login
+ 1127  cd RL4VLA/
+ 1128  wandb login
+ 1129  cd SimplerEnv/
+ 1130  wandb login
+ 1131  nvidia-smi 
+ 1132  pkill -f train_multi_vla.py
+ 1133  nvidia-smi 
+ 1134  conda activate rlvla_env
+ 1135  cd SimplerEnv/
+ 1136  nohup python simpler_env/train_multi_vla.py --num_agents 3 --cuda_devices 1 --base_seed 42 --base_name vla-exp  --name="PPO-pc25m_v3-warmup"     --vla_path="openvla/openvla-7b" --vla_unnorm_key="bridge_orig"   --vla_load_path="../openvla/checkpoints/warmup/steps_2000/lora_002000"   --seed=0 > outwithousparse.log 2>&1 &
+ 1137  nvidia-smi
+ 1138  nvidia-smi 
+ 1139  clear
+ 1140  conda activate rlvla_env
+ 1141  cd SimplerEnv/
+ 1142  python simpler_env/train_multi_vla.py --num_agents 3 --cuda_devices 0 --base_seed 42 --base_name vla-exp  --name="PPO-pc25m_v3-warmup"     --vla_path="openvla/openvla-7b" --vla_unnorm_key="bridge_orig"   --vla_load_path="../openvla/checkpoints/warmup/steps_2000/lora_002000"   --seed=0 
+ 1143  cd SimplerEnv/
+ 1144  python simpler_env/train_multi_vla.py --num_agents 3 --cuda_devices 0 --base_seed 42 --base_name vla-exp  --name="PPO-pc25m_v3-warmup"     --vla_path="openvla/openvla-7b" --vla_unnorm_key="bridge_orig"   --vla_load_path="../openvla/checkpoints/warmup/steps_2000/lora_002000"   --seed=0 
+ 1145  conda activate rlvla_env
+ 1146  python simpler_env/train_multi_vla.py --num_agents 1 --cuda_devices 0 --base_seed 42 --base_name vla-exp  --name="PPO-pc25m_v3-warmup"     --vla_path="openvla/openvla-7b" --vla_unnorm_key="bridge_orig"   --vla_load_path="../openvla/checkpoints/warmup/steps_2000/lora_002000"   --seed=0 
+ 1147  cd SimplerEnv/
+ 1148  python simpler_env/train_multi_vla.py --num_agents 1 --cuda_devices 0 --base_seed 42 --base_name vla-exp  --name="PPO-pc25m_v3-warmup"     --vla_path="openvla/openvla-7b" --vla_unnorm_key="bridge_orig"   --vla_load_path="../openvla/checkpoints/warmup/steps_2000/lora_002000"   --seed=0 
+ 1149  python simpler_env/train_multi_vla.py --num_agents 3 --cuda_devices 0 --base_seed 42 --base_name vla-exp  --name="PPO-pc25m_v3-warmup"     --vla_path="openvla/openvla-7b" --vla_unnorm_key="bridge_orig"   --vla_load_path="../openvla/checkpoints/warmup/steps_2000/lora_002000"   --seed=0 
+ 1150  nohup python simpler_env/train_multi_vla.py --num_agents 3 --cuda_devices 0 --base_seed 42 --base_name vla-exp  --name="PPO-pc25m_v3-warmup"     --vla_path="openvla/openvla-7b" --vla_unnorm_key="bridge_orig"   --vla_load_path="../openvla/checkpoints/warmup/steps_2000/lora_002000"   --seed=0 
+ 1151  nvidia-smi
+ 1152  clear
+ 1153  nvidia-smi
+ 1154  nohup python simpler_env/train_multi_vla.py --num_agents 3 --cuda_devices 0 --base_seed 42 --base_name vla-exp  --name="PPO-pc25m_v3-warmup"     --vla_path="openvla/openvla-7b" --vla_unnorm_key="bridge_orig"   --vla_load_path="../openvla/checkpoints/warmup/steps_2000/lora_002000"   --seed=0 
+ 1155  nvidia-smi
+ 1156  nohup python simpler_env/train_multi_vla.py --num_agents 3 --cuda_devices 0 --base_seed 42 --base_name vla-exp  --name="PPO-pc25m_v3-warmup"     --vla_path="openvla/openvla-7b" --vla_unnorm_key="bridge_orig"   --vla_load_path="../openvla/checkpoints/warmup/steps_2000/lora_002000"   --seed=0 
+ 1157  conda activate rlvla_env
+ 1158  cd SimplerEnv/
+ 1159  nohup python simpler_env/train_multi_vla.py --num_agents 3 --cuda_devices 0 --base_seed 42 --base_name vla-exp  --name="PPO-pc25m_v3-warmup"     --vla_path="openvla/openvla-7b" --vla_unnorm_key="bridge_orig"   --vla_load_path="../openvla/checkpoints/warmup/steps_2000/lora_002000"   --seed=0 
+ 1160  nvidia-smi
+ 1161  pkill -f train_mulit_vla.py
+ 1162  nvidia-smi
+ 1163  pkill -f train_multi_vla.py
+ 1164  nvidia-smi
+ 1165  nohup python simpler_env/train_multi_vla.py --num_agents 6 --cuda_devices 0,1 --base_seed 42 --base_name vla-exp  --name="PPO-pc25m_v3-warmup"     --vla_path="openvla/openvla-7b" --vla_unnorm_key="bridge_orig"   --vla_load_path="../openvla/checkpoints/warmup/steps_2000/lora_002000"   --seed=0 
+ 1166  conda activate rlvla_env
+ 1167  cd SimplerEnv/
+ 1168  nohup python simpler_env/train_multi_vla.py --num_agents 6 --cuda_devices 0,1 --base_seed 42 --base_name vla-exp  --name="PPO-pc25m_v3-warmup"     --vla_path="openvla/openvla-7b" --vla_unnorm_key="bridge_orig"   --vla_load_path="../openvla/checkpoints/warmup/steps_2000/lora_002000"   --seed=0 
+ 1169  nvidia-smi
+ 1170  nohup python simpler_env/train_multi_vla.py --num_agents 6 --cuda_devices 0,1 --base_seed 42 --base_name vla-exp  --name="PPO-pc25m_v3-warmup"     --vla_path="openvla/openvla-7b" --vla_unnorm_key="bridge_orig"   --vla_load_path="../openvla/checkpoints/warmup/steps_2000/lora_002000"   --seed=0 
+ 1171  nvidia-smi
+ 1172  nvidia-smi -l 1
+ 1173  pkill -f train_multi_vla.py
+ 1174  nvidia-smi -l 1
+ 1175  clear
+ 1176  conda activate rlvla_env
+ 1177  nvidia smi
+ 1178  nvidia-smi
+ 1179  clear
+ 1180  nohup python simpler_env/train_multi_vla.py --num_agents 6 --cuda_devices 0,1 --base_seed 42 --base_name vla-exp  --name="PPO-pc25m_v3-warmup"     --vla_path="openvla/openvla-7b" --vla_unnorm_key="bridge_orig"   --vla_load_path="../openvla/checkpoints/warmup/steps_2000/lora_002000"   --seed=0 
+ 1181  cd SimplerEnv/
+ 1182  nohup python simpler_env/train_multi_vla.py --num_agents 6 --cuda_devices 0,1 --base_seed 42 --base_name vla-exp  --name="PPO-pc25m_v3-warmup"     --vla_path="openvla/openvla-7b" --vla_unnorm_key="bridge_orig"   --vla_load_path="../openvla/checkpoints/warmup/steps_2000/lora_002000"   --seed=0 
+ 1183  python simpler_env/train_multi_vla.py --num_agents 6 --cuda_devices 0,1 --base_seed 42 --base_name vla-exp  --name="PPO-pc25m_v3-warmup"     --vla_path="openvla/openvla-7b" --vla_unnorm_key="bridge_orig"   --vla_load_path="../openvla/checkpoints/warmup/steps_2000/lora_002000"   --seed=0 
+ 1184  nohup python simpler_env/train_multi_vla.py --num_agents 6 --cuda_devices 0,1 --base_seed 42 --base_name vla-exp  --name="PPO-pc25m_v3-warmup"     --vla_path="openvla/openvla-7b" --vla_unnorm_key="bridge_orig"   --vla_load_path="../openvla/checkpoints/warmup/steps_2000/lora_002000"   --seed=0 
+ 1185  python simpler_env/train_multi_vla.py --num_agents 6 --cuda_devices 0,1 --base_seed 42 --base_name vla-exp  --name="PPO-pc25m_v3-warmup"     --vla_path="openvla/openvla-7b" --vla_unnorm_key="bridge_orig"   --vla_load_path="../openvla/checkpoints/warmup/steps_2000/lora_002000"   --seed=0 
+ 1186  nohuppython simpler_env/train_multi_vla.py --num_agents 6 --cuda_devices 0,1 --base_seed 42 --base_name vla-exp  --name="PPO-pc25m_v3-warmup"     --vla_path="openvla/openvla-7b" --vla_unnorm_key="bridge_orig"   --vla_load_path="../openvla/checkpoints/warmup/steps_2000/lora_002000"   --seed=0 
+ 1187  nohup python simpler_env/train_multi_vla.py --num_agents 6 --cuda_devices 0,1 --base_seed 42 --base_name vla-exp  --name="PPO-pc25m_v3-warmup"     --vla_path="openvla/openvla-7b" --vla_unnorm_key="bridge_orig"   --vla_load_path="../openvla/checkpoints/warmup/steps_2000/lora_002000"   --seed=0 
+ 1188  nvidia-smi -l
+ 1189  cd RL4VLA/
+ 1190  cd SimplerEnv/
+ 1191  ls
+ 1192  cd logs
+ 1193  ls
+ 1194  cd 20250901_191149/
+ 1195  ls
+ 1196  pkill -f train_multi_vla.py
+ 1197  nvidia
+ 1198  nvidia-si
+ 1199  nvidia-smi
+ 1200  conda activate rlvla_env
+ 1201  python simpler_env/train_multi_vla.py --num_agents 6 --cuda_devices 0,1 --base_seed 42 --base_name vla-exp  --name="PPO-pc25m_v3-warmup"     --vla_path="openvla/openvla-7b" --vla_unnorm_key="bridge_orig"   --vla_load_path="../openvla/checkpoints/warmup/steps_2000/lora_002000"   --seed=0 
+ 1202  cd SimplerEnv/
+ 1203  python simpler_env/train_multi_vla.py --num_agents 6 --cuda_devices 0,1 --base_seed 42 --base_name vla-exp  --name="PPO-pc25m_v3-warmup"     --vla_path="openvla/openvla-7b" --vla_unnorm_key="bridge_orig"   --vla_load_path="../openvla/checkpoints/warmup/steps_2000/lora_002000"   --seed=0 
+ 1204  conda activate rlvla_env
+ 1205  python simpler_env/train_multi_vla.py --num_agents 6 --cuda_devices 0,1 --base_seed 42 --base_name vla-exp  --name="PPO-pc25m_v3-warmup"     --vla_path="openvla/openvla-7b" --vla_unnorm_key="bridge_orig"   --vla_load_path="../openvla/checkpoints/warmup/steps_2000/lora_002000"   --seed=0 
+ 1206  nohup python simpler_env/train_multi_vla.py --num_agents 6 --cuda_devices 0,1 --base_seed 42 --base_name vla-exp  --name="PPO-pc25m_v3-warmup"     --vla_path="openvla/openvla-7b" --vla_unnorm_key="bridge_orig"   --vla_load_path="../openvla/checkpoints/warmup/steps_2000/lora_002000"   --seed=0 
+ 1207  pkill -f train_multi_vla.py
+ 1208  nvidia
+ 1209  nvidia-smi
+ 1210  clear
+ 1211  conda activate rlvla_env
+ 1212  python simpler_env/train_multi_vla.py --num_agents 6 --cuda_devices 0,1 --base_seed 42 --base_name vla-exp  --name="PPO-pc25m_v3-warmup"     --vla_path="openvla/openvla-7b" --vla_unnorm_key="bridge_orig"   --vla_load_path="../openvla/checkpoints/warmup/steps_2000/lora_002000"   --seed=0 
+ 1213  cd Sim
+ 1214  cd SimplerEnv/
+ 1215  python simpler_env/train_multi_vla.py --num_agents 6 --cuda_devices 0,1 --base_seed 42 --base_name vla-exp  --name="PPO-pc25m_v3-warmup"     --vla_path="openvla/openvla-7b" --vla_unnorm_key="bridge_orig"   --vla_load_path="../openvla/checkpoints/warmup/steps_2000/lora_002000"   --seed=0 
+ 1216  cd ..
+ 1217  cd RL4VLA/
+ 1218  conda activate rlvla_env
+ 1219  python simpler_env/train_multi_vla.py --num_agents 6 --cuda_devices 0,1 --base_seed 42 --base_name vla-exp  --name="PPO-pc25m_v3-warmup"     --vla_path="openvla/openvla-7b" --vla_unnorm_key="bridge_orig"   --vla_load_path="../openvla/checkpoints/warmup/steps_2000/lora_002000"   --seed=0 
+ 1220  cd SimplerEnv/
+ 1221  python simpler_env/train_multi_vla.py --num_agents 6 --cuda_devices 0,1 --base_seed 42 --base_name vla-exp  --name="PPO-pc25m_v3-warmup"     --vla_path="openvla/openvla-7b" --vla_unnorm_key="bridge_orig"   --vla_load_path="../openvla/checkpoints/warmup/steps_2000/lora_002000"   --seed=0 
+ 1222  pip install sklearn
+ 1223  pip install scikit-learn
+ 1224  python simpler_env/train_multi_vla.py --num_agents 6 --cuda_devices 0,1 --base_seed 42 --base_name vla-exp  --name="PPO-pc25m_v3-warmup"     --vla_path="openvla/openvla-7b" --vla_unnorm_key="bridge_orig"   --vla_load_path="../openvla/checkpoints/warmup/steps_2000/lora_002000"   --seed=0 
+ 1225  pip list
+ 1226  python simpler_env/train_multi_vla.py --num_agents 6 --cuda_devices 0,1 --base_seed 42 --base_name vla-exp  --name="PPO-pc25m_v3-warmup"     --vla_path="openvla/openvla-7b" --vla_unnorm_key="bridge_orig"   --vla_load_path="../openvla/checkpoints/warmup/steps_2000/lora_002000"   --seed=0 
+ 1227  nohup python simpler_env/train_multi_vla.py --num_agents 6 --cuda_devices 0,1 --base_seed 42 --base_name vla-exp  --name="PPO-pc25m_v3-warmup"     --vla_path="openvla/openvla-7b" --vla_unnorm_key="bridge_orig"   --vla_load_path="../openvla/checkpoints/warmup/steps_2000/lora_002000"   --seed=0 
+ 1228  nvidia-smi -l 1
+ 1229  top
+ 1230  nvidia-smi -l 1
+ 1231  nvidia-smi -l 1
+ 1232  conda activate rlvla_env
+ 1233  nvidia-smi -l 1
+ 1234  pkill -f train_multi_vla.py
+ 1235  nvidia-smi
+ 1236  clear
+ 1237  cd SimplerEnv/
+ 1238  python simpler_env/train_multi_vla.py --num_agents 6 --cuda_devices 0,1 --base_seed 42 --base_name vla-exp  --name="PPO-pc25m_v3-warmup"     --vla_path="openvla/openvla-7b" --vla_unnorm_key="bridge_orig"   --vla_load_path="../openvla/checkpoints/warmup/steps_2000/lora_002000"   --seed=0 
+ 1239  OA
+ 1240  python simpler_env/train_multi_vla.py --num_agents 6 --cuda_devices 0,1 --base_seed 42 --base_name vla-exp  --name="PPO-pc25m_v3-warmup"     --vla_path="openvla/openvla-7b" --vla_unnorm_key="bridge_orig"   --vla_load_path="../openvla/checkpoints/warmup/steps_2000/lora_002000"   --seed=0 
+ 1241  conda activate rlvla_env
+ 1242  python simpler_env/train_multi_vla.py --num_agents 6 --cuda_devices 0,1 --base_seed 42 --base_name vla-exp  --name="PPO-pc25m_v3-warmup"     --vla_path="openvla/openvla-7b" --vla_unnorm_key="bridge_orig"   --vla_load_path="../openvla/checkpoints/warmup/steps_2000/lora_002000"   --seed=0 
+ 1243  cd SimplerEnv/
+ 1244  python simpler_env/train_multi_vla.py --num_agents 6 --cuda_devices 0,1 --base_seed 42 --base_name vla-exp  --name="PPO-pc25m_v3-warmup"     --vla_path="openvla/openvla-7b" --vla_unnorm_key="bridge_orig"   --vla_load_path="../openvla/checkpoints/warmup/steps_2000/lora_002000"   --seed=0 
+ 1245  python simpler_env/train_multi_vla.py --num_agents 6 --cuda_devices 0,1 --base_seed 42 --base_name vla-exp  --name="PPO-pc25m_v3-warmup"     --vla_path="openvla/openvla-7b" --vla_unnorm_key="bridge_orig"   --vla_load_path="../openvla/checkpoints/warmup/steps_2000/lora_002000"   --seed=0 ~
+ 1246  python simpler_env/train_multi_vla.py --num_agents 6 --cuda_devices 0,1 --base_seed 42 --base_name vla-exp  --name="PPO-pc25m_v3-warmup"     --vla_path="openvla/openvla-7b" --vla_unnorm_key="bridge_orig"   --vla_load_path="../openvla/checkpoints/warmup/steps_2000/lora_002000"   --seed=0 
+ 1247  nohup python simpler_env/train_multi_vla.py --num_agents 6 --cuda_devices 0,1 --base_seed 42 --base_name vla-exp  --name="PPO-pc25m_v3-warmup"     --vla_path="openvla/openvla-7b" --vla_unnorm_key="bridge_orig"   --vla_load_path="../openvla/checkpoints/warmup/steps_2000/lora_002000"   --seed=0 
+ 1248  nvidia-smi
+ 1249  conda activate rlvla_env
+ 1250  python simpler_env/train_multi_vla.py --num_agents 6 --cuda_devices 0,1 --base_seed 42 --base_name vla-exp  --name="PPO-pc25m_v3-warmup"     --vla_path="openvla/openvla-7b" --vla_unnorm_key="bridge_orig"   --vla_load_path="../openvla/checkpoints/warmup/steps_2000/lora_002000"   --seed=0 
+ 1251  cd SimplerEnv/
+ 1252  python simpler_env/train_multi_vla.py --num_agents 6 --cuda_devices 0,1 --base_seed 42 --base_name vla-exp  --name="PPO-pc25m_v3-warmup"     --vla_path="openvla/openvla-7b" --vla_unnorm_key="bridge_orig"   --vla_load_path="../openvla/checkpoints/warmup/steps_2000/lora_002000"   --seed=0 
+ 1253  pkill -f train_multi_vla.py
+ 1254  nvidia-smi
+ 1255  clear
+ 1256  python simpler_env/train_multi_vla.py --num_agents 6 --cuda_devices 0,1 --base_seed 42 --base_name vla-exp  --name="PPO-pc25m_v3-warmup"     --vla_path="openvla/openvla-7b" --vla_unnorm_key="bridge_orig"   --vla_load_path="../openvla/checkpoints/warmup/steps_2000/lora_002000"   --seed=0 
+ 1257  pip list
+ 1258  clear
+ 1259  python simpler_env/train_multi_vla.py --num_agents 6 --cuda_devices 0,1 --base_seed 42 --base_name vla-exp  --name="PPO-pc25m_v3-warmup"     --vla_path="openvla/openvla-7b" --vla_unnorm_key="bridge_orig"   --vla_load_path="../openvla/checkpoints/warmup/steps_2000/lora_002000"   --seed=0 
+ 1260  python simpler_env/train_multi_vla.py --num_agents 6 --cuda_devices 0,1 --base_seed 42 --base_name vla-exp  --name="PPO-pc25m_v3-warmup"     --vla_path="openvla/openvla-7b" --vla_unnorm_key="bridge_orig"   --vla_load_path="../openvla/checkpoints/warmup/steps_2000/lora_002000"   --seed=0 
+ 1261  pip list
+ 1262  conda create --name rlvla_env_clone --clone rlvla_env
+ 1263  conda deactivate
+ 1264  conda activate rlvla_env_clone
+ 1265  pip uninstall transformers
+ 1266  pip install git+https://github.com/huggingface/transformers.git
+ 1267  python simpler_env/train_multi_vla.py --num_agents 6 --cuda_devices 0,1 --base_seed 42 --base_name vla-exp  --name="PPO-pc25m_v3-warmup"     --vla_path="openvla/openvla-7b" --vla_unnorm_key="bridge_orig"   --vla_load_path="../openvla/checkpoints/warmup/steps_2000/lora_002000"   --seed=0 
+ 1268  conda deactivate
+ 1269  conda activate rlvla_env
+ 1270  python simpler_env/train_multi_vla.py --num_agents 6 --cuda_devices 0,1 --base_seed 42 --base_name vla-exp  --name="PPO-pc25m_v3-warmup"     --vla_path="openvla/openvla-7b" --vla_unnorm_key="bridge_orig"   --vla_load_path="../openvla/checkpoints/warmup/steps_2000/lora_002000"   --seed=0 
+ 1271  clear
+ 1272  conda env list
+ 1273  conda env remove --name rlvla_env_clone
+ 1274  conda deactivate
+ 1275  conda create --name rlvla_env_clone --clone rlvla_env
+ 1276  conda activate rlvla_env_clone
+ 1277  pip uninstall transformers
+ 1278  pip install --upgrade --no-deps git+https://github.com/huggingface/transformers.git
+ 1279  python simpler_env/train_multi_vla.py --num_agents 6 --cuda_devices 0,1 --base_seed 42 --base_name vla-exp  --name="PPO-pc25m_v3-warmup"     --vla_path="openvla/openvla-7b" --vla_unnorm_key="bridge_orig"   --vla_load_path="../openvla/checkpoints/warmup/steps_2000/lora_002000"   --seed=0 
+ 1280  pip install --upgrade --no-deps tokenizers
+ 1281  python simpler_env/train_multi_vla.py --num_agents 6 --cuda_devices 0,1 --base_seed 42 --base_name vla-exp  --name="PPO-pc25m_v3-warmup"     --vla_path="openvla/openvla-7b" --vla_unnorm_key="bridge_orig"   --vla_load_path="../openvla/checkpoints/warmup/steps_2000/lora_002000"   --seed=0 
+ 1282  conda deactivate
+ 1283  conda activate rlvla_env
+ 1284  python simpler_env/train_multi_vla.py --num_agents 6 --cuda_devices 0,1 --base_seed 42 --base_name vla-exp  --name="PPO-pc25m_v3-warmup"     --vla_path="openvla/openvla-7b" --vla_unnorm_key="bridge_orig"   --vla_load_path="../openvla/checkpoints/warmup/steps_2000/lora_002000"   --seed=0 
+ 1285  nohup python simpler_env/train_multi_vla.py --num_agents 6 --cuda_devices 0,1 --base_seed 42 --base_name vla-exp  --name="PPO-pc25m_v3-warmup"     --vla_path="openvla/openvla-7b" --vla_unnorm_key="bridge_orig"   --vla_load_path="../openvla/checkpoints/warmup/steps_2000/lora_002000"   --seed=0 
+ 1286  conda activate rlvla_env
+ 1287  pip list
+ 1288  conda deactivate
+ 1289  cond activate rlvla_env_clone
+ 1290  cond activate rlvla_clone_env
+ 1291  conda activate rlvla_env_clone
+ 1292  pip list
+ 1293  pip install --upgrade torch
+ 1294  conda create -n dinov3 python=3.12
+ 1295  conda activate dinov3
+ 1296  pip install git+https://github.com/huggingface/transformers.git
+ 1297  pip install torch==2.8.0+cu126
+ 1298  pip list
+ 1299  conda deactivate
+ 1300  pip list
+ 1301  conda deactivate
+ 1302  pip list
+ 1303  conda activte dinov3
+ 1304  conda activate dinov3
+ 1305  pip install torch==2.8.0+cu126 torchvision torchaudio --index-url https://download.pytorch.org/whl/test/cu126
+ 1306  nvidia-smi -l 1
+ 1307  pkill -f train_multi_vla.py
+ 1308  nvidia-smi -l 1
+ 1309  nvidia-smi
+ 1310  pkill -f train_multi_vla.py
+ 1311  clear
+ 1312  nvidia-smi
+ 1313  clear
+ 1314  conda activate rlvla_env
+ 1315  nohup python simpler_env/train_multi_vla.py --num_agents 6 --cuda_devices 0,1 --base_seed 42 --base_name vla-exp  --name="PPO-pc25m_v3-warmup"     --vla_path="openvla/openvla-7b" --vla_unnorm_key="bridge_orig"   --vla_load_path="../openvla/checkpoints/warmup/steps_2000/lora_002000"   --seed=0 
+ 1316  cd SimplerEnv/
+ 1317  nohup python simpler_env/train_multi_vla.py --num_agents 4 --cuda_devices 0,1 --base_seed 42 --base_name vla-exp  --name="PPO-pc25m_v3-warmup"     --vla_path="openvla/openvla-7b" --vla_unnorm_key="bridge_orig"   --vla_load_path="../openvla/checkpoints/warmup/steps_2000/lora_002000"   --seed=0 
+ 1318  nvidia-smi
+ 1319  nohup python simpler_env/train_multi_vla.py --num_agents 4 --cuda_devices 0,1 --base_seed 42 --base_name vla-exp  --name="PPO-pc25m_v3-warmup"     --vla_path="openvla/openvla-7b" --vla_unnorm_key="bridge_orig"   --vla_load_path="../openvla/checkpoints/warmup/steps_2000/lora_002000"   --seed=0 
+ 1320  nvidia-smi
+ 1321  nohup python simpler_env/train_multi_vla.py --num_agents 4 --cuda_devices 0,1 --base_seed 42 --base_name vla-exp  --name="PPO-pc25m_v3-warmup"     --vla_path="openvla/openvla-7b" --vla_unnorm_key="bridge_orig"   --vla_load_path="../openvla/checkpoints/warmup/steps_2000/lora_002000"   --seed=0 
+ 1322  python simpler_env/train_multi_vla.py --num_agents 4 --cuda_devices 0,1 --base_seed 42 --base_name vla-exp  --name="PPO-pc25m_v3-warmup"     --vla_path="openvla/openvla-7b" --vla_unnorm_key="bridge_orig"   --vla_load_path="../openvla/checkpoints/warmup/steps_2000/lora_002000"   --seed=0 
+ 1323  nohup python simpler_env/train_multi_vla.py --num_agents 4 --cuda_devices 0,1 --base_seed 42 --base_name vla-exp  --name="PPO-pc25m_v3-warmup"     --vla_path="openvla/openvla-7b" --vla_unnorm_key="bridge_orig"   --vla_load_path="../openvla/checkpoints/warmup/steps_2000/lora_002000"   --seed=0 
+ 1324  nvidia-smi
+ 1325  clear
+ 1326  pkill -f train_multi_vla.py
+ 1327  nvidia-smi
+ 1328  clear
+ 1329  time
+ 1330  clear
+ 1331  conda activate rlvla_env
+ 1332  python check_safetensors.py
+ 1333  ~/anaconda3/envs/rlvla_env/bin/python check_safetensors.py
+ 1334  python check_safetensors.py
+ 1335  conda activate rlvla_env
+ 1336  python check_safetensors.py
+ 1337  ls -lh SimplerEnv/logs/20250911_140606/parameter_drift/
+ 1338  python simpler_env/train_multi_vla.py --num_agents 6 --cuda_devices 0,1 --base_seed 42 --base_name vla-exp  --name="PPO-pc25m_v3-warmup"     --vla_path="openvla/openvla-7b" --vla_unnorm_key="bridge_orig"   --vla_load_path="../openvla/checkpoints/warmup/steps_2000/lora_002000"   --seed=0 
+ 1339  cd SimplerEnv/
+ 1340  python simpler_env/train_multi_vla.py --num_agents 6 --cuda_devices 0,1 --base_seed 42 --base_name vla-exp  --name="PPO-pc25m_v3-warmup"     --vla_path="openvla/openvla-7b" --vla_unnorm_key="bridge_orig"   --vla_load_path="../openvla/checkpoints/warmup/steps_2000/lora_002000"   --seed=0 
+ 1341  clear
+ 1342  python simpler_env/train_multi_vla.py --num_agents 6 --cuda_devices 0,1 --base_seed 42 --base_name vla-exp  --name="PPO-pc25m_v3-warmup"     --vla_path="openvla/openvla-7b" --vla_unnorm_key="bridge_orig"   --vla_load_path="../openvla/checkpoints/warmup/steps_2000/lora_002000"   --seed=0 
+ 1343  clear
+ 1344  python simpler_env/train_multi_vla.py --num_agents 6 --cuda_devices 0,1 --base_seed 42 --base_name vla-exp  --name="PPO-pc25m_v3-warmup"     --vla_path="openvla/openvla-7b" --vla_unnorm_key="bridge_orig"   --vla_load_path="../openvla/checkpoints/warmup/steps_2000/lora_002000"   --seed=0 
+ 1345  cd ..
+ 1346  du -h --max-depth=1
+ 1347  cd RL4VLA/
+ 1348  cd SimplerEnv/
+ 1349  python simpler_env/train_multi_vla.py --num_agents 6 --cuda_devices 0,1 --base_seed 42 --base_name vla-exp  --name="PPO-pc25m_v3-warmup"     --vla_path="openvla/openvla-7b" --vla_unnorm_key="bridge_orig"   --vla_load_path="../openvla/checkpoints/warmup/steps_2000/lora_002000"   --seed=0 
+ 1350  nohup python simpler_env/train_multi_vla.py --num_agents 6 --cuda_devices 0,1 --base_seed 42 --base_name vla-exp  --name="PPO-pc25m_v3-warmup"     --vla_path="openvla/openvla-7b" --vla_unnorm_key="bridge_orig"   --vla_load_path="../openvla/checkpoints/warmup/steps_2000/lora_002000"   --seed=0 
+ 1351  nvidia-smi
+ 1352  pkill -f train_multi_vla.py
+ 1353  nvidia-smi
+ 1354  conda activate rlvla_env
+ 1355  cd SimplerEnv/
+ 1356  conda activate rlvla_env
+ 1357  nohup python simpler_env/train_multi_vla.py --num_agents 6 --cuda_devices 0,1 --base_seed 42 --base_name vla-exp  --name="PPO-pc25m_v3-warmup"     --vla_path="openvla/openvla-7b" --vla_unnorm_key="bridge_orig"   --vla_load_path="../openvla/checkpoints/warmup/steps_2000/lora_002000"   --seed=0 
+ 1358  python simpler_env/train_multi_vla.py --num_agents 6 --cuda_devices 0,1 --base_seed 42 --base_name vla-exp  --name="PPO-pc25m_v3-warmup"     --vla_path="openvla/openvla-7b" --vla_unnorm_key="bridge_orig"   --vla_load_path="../openvla/checkpoints/warmup/steps_2000/lora_002000"   --seed=0 
+ 1359  clear
+ 1360  python simpler_env/train_multi_vla.py --num_agents 6 --cuda_devices 0,1 --base_seed 42 --base_name vla-exp  --name="PPO-pc25m_v3-warmup"     --vla_path="openvla/openvla-7b" --vla_unnorm_key="bridge_orig"   --vla_load_path="../openvla/checkpoints/warmup/steps_2000/lora_002000"   --seed=0 
+ 1361  conda activate rlvla_env
+ 1362  python simpler_env/train_multi_vla.py --num_agents 6 --cuda_devices 0,1 --base_seed 42 --base_name vla-exp  --name="PPO-pc25m_v3-warmup"     --vla_path="openvla/openvla-7b" --vla_unnorm_key="bridge_orig"   --vla_load_path="../openvla/checkpoints/warmup/steps_2000/lora_002000"   --seed=0 
+ 1363  cd SimplerEnv/
+ 1364  python simpler_env/train_multi_vla.py --num_agents 6 --cuda_devices 0,1 --base_seed 42 --base_name vla-exp  --name="PPO-pc25m_v3-warmup"     --vla_path="openvla/openvla-7b" --vla_unnorm_key="bridge_orig"   --vla_load_path="../openvla/checkpoints/warmup/steps_2000/lora_002000"   --seed=0 
+ 1365  nohup python simpler_env/train_multi_vla.py --num_agents 6 --cuda_devices 0,1 --base_seed 42 --base_name vla-exp  --name="PPO-pc25m_v3-warmup"     --vla_path="openvla/openvla-7b" --vla_unnorm_key="bridge_orig"   --vla_load_path="../openvla/checkpoints/warmup/steps_2000/lora_002000"   --seed=0 
+ 1366  conda activate rlvla_env
+ 1367  python simpler_env/train_multi_vla.py --num_agents 6 --cuda_devices 0,1 --base_seed 42 --base_name vla-exp  --name="PPO-pc25m_v3-warmup"     --vla_path="openvla/openvla-7b" --vla_unnorm_key="bridge_orig"   --vla_load_path="../openvla/checkpoints/warmup/steps_2000/lora_002000"   --seed=0 
+ 1368  cd SimplerEnv/
+ 1369  python simpler_env/train_multi_vla.py --num_agents 6 --cuda_devices 0,1 --base_seed 42 --base_name vla-exp  --name="PPO-pc25m_v3-warmup"     --vla_path="openvla/openvla-7b" --vla_unnorm_key="bridge_orig"   --vla_load_path="../openvla/checkpoints/warmup/steps_2000/lora_002000"   --seed=0 
+ 1370  nvidia-smi
+ 1371  pkill -f train_multi_vla.py
+ 1372  nvidia-smi
+ 1373  python simpler_env/train_multi_vla.py --num_agents 6 --cuda_devices 0,1 --base_seed 42 --base_name vla-exp  --name="PPO-pc25m_v3-warmup"     --vla_path="openvla/openvla-7b" --vla_unnorm_key="bridge_orig"   --vla_load_path="../openvla/checkpoints/warmup/steps_2000/lora_002000"   --seed=0 
+ 1374  conda activate rlvla_env
+ 1375  python simpler_env/train_multi_vla.py --num_agents 6 --cuda_devices 0,1 --base_seed 42 --base_name vla-exp  --name="PPO-pc25m_v3-warmup"     --vla_path="openvla/openvla-7b" --vla_unnorm_key="bridge_orig"   --vla_load_path="../openvla/checkpoints/warmup/steps_2000/lora_002000"   --seed=0 
+ 1376  cd SimplerEnv/
+ 1377  python simpler_env/train_multi_vla.py --num_agents 6 --cuda_devices 0,1 --base_seed 42 --base_name vla-exp  --name="PPO-pc25m_v3-warmup"     --vla_path="openvla/openvla-7b" --vla_unnorm_key="bridge_orig"   --vla_load_path="../openvla/checkpoints/warmup/steps_2000/lora_002000"   --seed=0 
+ 1378  clear
+ 1379  python simpler_env/train_multi_vla.py --num_agents 6 --cuda_devices 0,1 --base_seed 42 --base_name vla-exp  --name="PPO-pc25m_v3-warmup"     --vla_path="openvla/openvla-7b" --vla_unnorm_key="bridge_orig"   --vla_load_path="../openvla/checkpoints/warmup/steps_2000/lora_002000"   --seed=0 
+ 1380  clear
+ 1381  python simpler_env/train_multi_vla.py --num_agents 6 --cuda_devices 0,1 --base_seed 42 --base_name vla-exp  --name="PPO-pc25m_v3-warmup"     --vla_path="openvla/openvla-7b" --vla_unnorm_key="bridge_orig"   --vla_load_path="../openvla/checkpoints/warmup/steps_2000/lora_002000"   --seed=0 
+ 1382  clear
+ 1383  python simpler_env/train_multi_vla.py --num_agents 6 --cuda_devices 0,1 --base_seed 42 --base_name vla-exp  --name="PPO-pc25m_v3-warmup"     --vla_path="openvla/openvla-7b" --vla_unnorm_key="bridge_orig"   --vla_load_path="../openvla/checkpoints/warmup/steps_2000/lora_002000"   --seed=0 
+ 1384  conda env list
+ 1385  conda rlvla_env
+ 1386  conda activate rlvla_env
+ 1387  clear
+ 1388  python
+ 1389  printenv | grep WANDB
+ 1390  wandb
+ 1391  python3
+ 1392  wandb
+ 1393  pip install wandb
+ 1394  wandb login
+ 1395  wandb login --relogin
+ 1396  python test.py
+ 1397  ls
+ 1398  python3 test.py
+ 1399  conda activate rlvla_env
+ 1400  python3 test.py
+ 1401  export WANDB_API_KEY="884434b10c0f7b447aae30f8c57f9446beecfc82"
+ 1402  python3 test.py
+ 1403  wandb login --relogin
+ 1404  docker ps -a
+ 1405  docker ps -a | grep coimd
+ 1406  docker container ls
+ 1407  docker container rm bbfdfe0275a0
+ 1408  docker container stop bbfdfe0275a0
+ 1409  docker stop bbfdfe0275a0
+ 1410  docker container ls
+ 1411  python3 test.py
+ 1412  wandb login --relogin
+ 1413  python3 test.py
+ 1414  wandb login --relogin
+ 1415  python3 test.py
+ 1416  update-ca-certificates
+ 1417  sudo update-ca-certificates
+ 1418  pip install --upgrade certifi
+ 1419  python3 test.py
+ 1420  wandb --version
+ 1421  pip install wandb==0.20.0
+ 1422  ls
+ 1423  python --version
+ 1424  gymnasium --version
+ 1425  pip list | grep gymnasium
+ 1426  cd ..
+ 1427  cd PSEC
+ 1428  cd /PSEC
+ 1429  cd RL4VLA/
+ 1430  python3 test.py
+ 1431  exit()
+ 1432  python3 test_communication_queues.py
+ 1433  nvidia-smi -l 1
+ 1434  conda activte rlval_env
+ 1435  conda activate rlvla_env
+ 1436  python3 test.py
+ 1437  python simpler_env/train_multi_vla.py --num_agents 6 --cuda_devices 0,1 --base_seed 42 --base_name vla-exp  --name="PPO-pc25m_v3-warmup"     --vla_path="openvla/openvla-7b" --vla_unnorm_key="bridge_orig"   --vla_load_path="../openvla/checkpoints/warmup/steps_2000/lora_002000"   --seed=0 
+ 1438  cd SimplerEnv/
+ 1439  python simpler_env/train_multi_vla.py --num_agents 6 --cuda_devices 0,1 --base_seed 42 --base_name vla-exp  --name="PPO-pc25m_v3-warmup"     --vla_path="openvla/openvla-7b" --vla_unnorm_key="bridge_orig"   --vla_load_path="../openvla/checkpoints/warmup/steps_2000/lora_002000"   --seed=0 
+ 1440  clear
+ 1441  [200~conda list --explicit > spec-file.txt~
+ 1442  conda list --explicit > spec-file.txt
+ 1443  cd ..
+ 1444  conda pack -n myenv -o myenv.tar.gz
+ 1445  conda activate rlvla_env
+ 1446  python
+ 1447  git clone https://github.com/Inishpy/PSEC-fork-metaworld.git
+ 1448  nvidia-smi -l 1
+ 1449  conda create -n py310n python=3.10
+ 1450  conda activate py310n
+ 1451  pip install -r requirements.txt
+ 1452  CUDA_VISIBLE_DEVICES=0 python launcher/examples/train_pretrain.py
+ 1453  pip install python-dotenv
+ 1454  CUDA_VISIBLE_DEVICES=0 python launcher/examples/train_pretrain.py
+ 1455  pip install metaworld
+ 1456  CUDA_VISIBLE_DEVICES=0 python launcher/examples/train_pretrain.py
+ 1457  pip install tensorflow
+ 1458  CUDA_VISIBLE_DEVICES=0 python launcher/examples/train_pretrain.py
+ 1459  pip install torch
+ 1460  CUDA_VISIBLE_DEVICES=0 python launcher/examples/train_pretrain.py
+ 1461  pip install huggingface-hub==0.35.3
+ 1462  CUDA_VISIBLE_DEVICES=0 python launcher/examples/train_pretrain.py
+ 1463  python
+ 1464  mkdir ~/.mujoco
+ 1465  cd ~/.mujoco
+ 1466  wget https://github.com/google-deepmind/mujoco/releases/download/2.1.0/mujoco210-linux-x86_64.tar.gz
+ 1467  tar -zxvf mujoco210-linux-x86_64.tar.gz
+ 1468  cd mujoco210
+ 1469  wget https://www.roboti.us/file/mjkey.txt
+ 1470  export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:~/.mujoco/mujoco210/bin
+ 1471  python
+ 1472  pip uninstall -y jax jaxlib jax-cuda12-plugin jax-cuda12-pjrt || true
+ 1473  pip install jax==0.4.30 jax-cuda12-plugin==0.4.30 -f https://storage.googleapis.com/jax-releases/jax_cuda_releases.html
+ 1474  cd ..
+ 1475  cd PSEC-fork-metaworld/
+ 1476  CUDA_VISIBLE_DEVICES=0 python launcher/examples/train_pretrain.py
+ 1477  python
+ 1478  CUDA_VISIBLE_DEVICES=0 python launcher/examples/train_pretrain.py
+ 1479  export XLA_PYTHON_CLIENT_PREALLOCATE=False
+ 1480  CUDA_VISIBLE_DEVICES=0 python launcher/examples/train_pretrain.py
+ 1481  export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:~/.mujoco/mujoco210/bin
+ 1482  CUDA_VISIBLE_DEVICES=0 python launcher/examples/train_pretrain.py
+ 1483  ptax
+ 1484  ptxas
+ 1485  pip list
+ 1486  which ptxas || find /usr /opt /home -type f -name ptxas 2>/dev/null
+ 1487  echo 'export PATH="/home/lunet/coimd/.conda/envs/py310n/lib/python3.10/site-packages/triton/backends/nvidia/bin:$PATH"' >> ~/.bashrc && source ~/.bashrc && which ptxas
+ 1488  CUDA_VISIBLE_DEVICES=0 python launcher/examples/train_pretrain.py
+ 1489  conda activate py310n
+ 1490  CUDA_VISIBLE_DEVICES=0 python launcher/examples/train_pretrain.py
+ 1491  export XLA_FLAGS=--xla_gpu_cuda_data_dir=/usr/local/cuda/nvvm/libdevice
+ 1492  CUDA_VISIBLE_DEVICES=0 python launcher/examples/train_pretrain.py
+ 1493  # common CUDA locations — adjust if you installed CUDA somewhere else
+ 1494  ls /usr/local/cuda/nvvm/libdevice/libdevice.*.bc
+ 1495  ls /usr/local/cuda-*/nvvm/libdevice/libdevice.*.bc
+ 1496  # common CUDA locations — adjust if you installed CUDA somewhere else
+ 1497  ls /usr/local/cuda/nvvm/libdevice/libdevice.*.bc
+ 1498  ls /usr/local/cuda-*/nvvm/libdevice/libdevice.*.bc
+ 1499  python -c "import jax, jaxlib, sys, os; print('jax', jax.__version__); print('jaxlib', jaxlib.__version__); print('platforms', jax.devices());"
+ 1500  export XLA_FLAGS="--xla_gpu_cuda_data_dir=/usr/local/cuda"
+ 1501  ls /usr/local/cuda/nvvm/libdevice/libdevice.*.bc
+ 1502  CUDA_VISIBLE_DEVICES=0 python launcher/examples/train_pretrain.py
+ 1503  python -c "import jax; print(jax.devices())"
+ 1504  ls $CUDA_HOME/nvvm/libdevice/
+ 1505  sudo find / -type f -name "libdevice*.bc" 2>/dev/null
+ 1506  sudo apt-get install -y nvidia-cuda-toolkit
+ 1507  pip install --upgrade --force-reinstall jaxlib==0.4.xx+cuda12.cudnn89 -f https://storage.googleapis.com/jax-releases/jax_releases.html
+ 1508  pip list jax
+ 1509  pip install --upgrade --force-reinstall jaxlib==0.4.30+cuda12.cudnn89 -f https://storage.googleapis.com/jax-releases/jax_releases.html
+ 1510  jax.__version__
+ 1511  python
+ 1512  pip install --upgrade --force-reinstall jaxlib==0.4.30+cuda12.cudnn89 -f https://storage.googleapis.com/jax-releases/jax_releases.html
+ 1513  pip install --upgrade "jax[cuda12]"
+ 1514  CUDA_VISIBLE_DEVICES=0 python launcher/examples/train_pretrain.py
+ 1515  nvidia-smi -l 1
+ 1516  history > historygrid02.txt

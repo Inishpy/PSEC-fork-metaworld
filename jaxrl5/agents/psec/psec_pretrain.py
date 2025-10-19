@@ -101,7 +101,7 @@ class PretrainWithComposition(Agent):
         clip_sampler: bool = True,
         beta_schedule: str = 'vp',
         decay_steps: Optional[int] = int(2e6),
-        results_dir: str = './results/pretrain/20251009-015311',
+        results_dir: str = './results/pretrain/20251015-124601',
         current_task: str = None,
         use_composition: bool = True,
         composition_lr: float = 1e-3,
@@ -254,7 +254,7 @@ class PretrainWithComposition(Agent):
         all_params = [params] + [prior['score_model']['params'] for prior in self.prior_models]
         
         # Apply weighted combination
-        composed_params = jax.tree_map(
+        composed_params = jax.tree_util.tree_map(
             lambda *ps: sum(w * p for w, p in zip(weights, ps)),
             *all_params
         )

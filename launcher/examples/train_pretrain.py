@@ -190,14 +190,16 @@ def main():
     logging.info("========== Starting Meta-World Pretrain Loop ==========")
     try:
         for idx, (env_name, exclude_list) in enumerate(env_names.items()):
+            if idx <= 20:
+                continue
             # For each task, determine all possible priors (all other tasks except itself and its exclusion list)
             all_possible_priors = [k for k in env_names.keys() if k != env_name and k not in exclude_list]
             for kept_prior in all_possible_priors:
                 # Exclude all priors except the one being kept
                 exclude_for_this_run = [k for k in env_names.keys() if k != kept_prior and k != env_name]
-                for seed in range(4):
+                for seed in range(1):
                     # Check if prior model exists for kept_prior
-                    prior_model_dir = os.path.join("./results/pretrain/20251009-015311", kept_prior)
+                    prior_model_dir = os.path.join("./results/pretrain/20251015-124601", kept_prior)
                     prior_model_exists = False
                     if os.path.isdir(prior_model_dir):
                         model_files = [f for f in os.listdir(prior_model_dir) if f.startswith('model') and f.endswith('.pickle')]
@@ -217,7 +219,7 @@ def main():
                     details['results_dir'] = run_dir  # Pass the directory for saving outputs
                     details['exclude_tasks'] = exclude_for_this_run
                     details['kept_prior'] = kept_prior
-                    details['seed'] = seed
+                    
 
                     # Save config for this run
                     config_path = os.path.join(run_dir, "config.json")
