@@ -1,3 +1,4 @@
+
 import os
 import sys
 import time
@@ -136,26 +137,41 @@ env_names = {
 
 def main():
     import argparse
-    parser = argparse.ArgumentParser(description="Pretrain script with seed option")
+    parser = argparse.ArgumentParser(description="RL script with seed option (no demonstration data)")
     parser.add_argument('--seed', type=int, default=0, help="Random seed for training")
+    parser.add_argument('--env_name', type=str, default='reach-v3', help="Meta-World task name, e.g. reach-v3")
+    parser.add_argument('--algo', type=str, default='SAC', choices=['SAC', 'TD3', 'IQL', 'REDQ'], help="RL algorithm")
     args = parser.parse_args()
 
-    info = 'pretrain'
+    info = 'rl'
     timestamp = time.strftime("%Y%m%d-%H%M%S")
     base_results_dir = f"./results/{info}/{timestamp}"
     os.makedirs(base_results_dir, exist_ok=True)
 
-    # Constant parameters for all tasks
-    constant_parameters = dict(
+    # RL config selection
+    if args.algo == 'SAC':
+        from examples.states.configs.sac_config import get_config as get_algo_config
+    elif args.algo == 'TD3':
+        from examples.states.configs.td3_config import get_config as get_algo_config
+    elif args.algo == 'IQL':
+        from examples.states.configs.iql_mujoco_config import get_config as get_algo_config
+    elif args.algo == 'REDQ':
+        from examples.states.configs.redq_config import get_config as get_algo_config
+    else:
+        raise ValueError("Unknown RL algorithm")
+
+    algo_config = get_algo_config()
+    # Set env_name in details for Meta-World
+    details = dict(
         project='PSEC',
         group='metaworld',
-        experiment_name='ddpm_lora',
-        max_steps=20000,
-        batch_size=4096,
+        experiment_name=f'rl_{args.algo.lower()}',
+        max_steps=200000,  # RL usually needs more steps
+        batch_size=256,
         eval_episodes=10,
         log_interval=1000,
-        save_steps=19999,
-        eval_interval=4000,
+        save_steps=199999,
+        eval_interval=5000,
         save_video=False,
         filter_threshold=None,
         take_top=None,
@@ -164,87 +180,28 @@ def main():
         normalize_returns=True,
         ratio=1.0,
         training_time_inference_params=dict(
-            N=64,
+            N=1,
             clip_sampler=True,
-            M=1,
-        ),
-        rl_config=dict(
-            model_cls='PretrainWithComposition',
-            actor_lr=3e-4,
-            T=5,
-            N=64,
             M=0,
-            actor_dropout_rate=0.1,
-            actor_num_blocks=3,
-            decay_steps=int(3e6),
-            actor_layer_norm=True,
-            actor_tau=0.001,
-            beta_schedule='vp',
         ),
+        rl_config=algo_config,
         benchmark='Meta-World/MT1',
         inference_variants=[dict(N=1, clip_sampler=True, M=0)],
         seed=args.seed,
         timestamp=timestamp,
+        env_name=(0, args.env_name),
+        results_dir=base_results_dir,
+        
     )
 
-    logging.info("========== Starting Meta-World Pretrain Loop ==========")
+    logging.info("========== Starting Meta-World RL Training ==========")
     try:
-        for idx, (env_name, exclude_list) in enumerate(env_names.items()):
-            if idx <= 20:
-                continue
-            # For each task, determine all possible priors (all other tasks except itself and its exclusion list)
-            all_possible_priors = [k for k in env_names.keys() if k != env_name and k not in exclude_list]
-            for kept_prior in all_possible_priors:
-                # Exclude all priors except the one being kept
-                exclude_for_this_run = [k for k in env_names.keys() if k != kept_prior and k != env_name]
-                for seed in range(1):
-                    # Check if prior model exists for kept_prior
-                    prior_model_dir = os.path.join("./results/pretrain/20251015-124601", kept_prior)
-                    prior_model_exists = False
-                    if os.path.isdir(prior_model_dir):
-                        model_files = [f for f in os.listdir(prior_model_dir) if f.startswith('model') and f.endswith('.pickle')]
-                        if len(model_files) > 0:
-                            prior_model_exists = True
-                    if not prior_model_exists:
-                        logging.warning(f"Skipping training for task {env_name} with kept_prior={kept_prior}, seed={seed} because no prior model found in {prior_model_dir}")
-                        continue
-
-                    # Create a subdirectory for each (task, prior, seed)
-                    run_dir = os.path.join(base_results_dir, env_name, f"kept_prior_{kept_prior}", f"seed_{seed}")
-                    os.makedirs(run_dir, exist_ok=True)
-
-                    # Prepare details dict for this run
-                    details = constant_parameters.copy()
-                    details['env_name'] = (idx, env_name)
-                    details['results_dir'] = run_dir  # Pass the directory for saving outputs
-                    details['exclude_tasks'] = exclude_for_this_run
-                    details['kept_prior'] = kept_prior
-                    
-
-                    # Save config for this run
-                    config_path = os.path.join(run_dir, "config.json")
-                    with open(config_path, "w") as f:
-                        json.dump(details, f, indent=4)
-                    logging.info(f"Config saved for task {env_name} (idx={idx}), kept_prior={kept_prior}, seed={seed} at {config_path}")
-
-                    print("details", details)
-                    # Call the main training routine for this run
-                    logging.info(f"=== [Task {idx}] Starting training for {env_name} with kept_prior={kept_prior}, seed={seed} ===")
-                    try:
-                        call_main(details)
-                        logging.info(f"=== [Task {idx}] Finished training for {env_name} with kept_prior={kept_prior}, seed={seed} ===")
-                        import gc
-                        import jax
-                        gc.collect()
-                        jax.clear_caches()
-                    except Exception as e:
-                        logging.error(f"Exception during training for task {env_name} (idx={idx}), kept_prior={kept_prior}, seed={seed}: {e}", exc_info=True)
-
-            
-            
+        # For RL, just train on the selected task (no priors, no demonstration data)
+        details["online_rl"] = True
+        call_main(details)
     except Exception as main_e:
-        logging.critical(f"Fatal error in main training loop: {main_e}", exc_info=True)
-    logging.info("========== Finished Meta-World Pretrain Loop ==========")
+        logging.critical(f"Fatal error in RL training loop: {main_e}", exc_info=True)
+    logging.info("========== Finished Meta-World RL Training ==========")
 
 if __name__ == '__main__':
     main()

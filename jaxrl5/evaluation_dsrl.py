@@ -107,7 +107,10 @@ def evaluate_bc(
             if render:
                 env.render()
                 time.sleep(1e-3)
-            action, agent = agent.eval_actions_bc(obs, train_lora=train_lora)
+            if hasattr(agent, "eval_actions_bc"):
+                action, agent = agent.eval_actions_bc(obs, train_lora=train_lora)
+            else:
+                action, agent = agent.eval_actions(obs, train_lora=train_lora)
             obs, reward, terminated, truncated, info = env.step(action)
             
             success = info["success"]

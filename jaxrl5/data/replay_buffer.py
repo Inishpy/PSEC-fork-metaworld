@@ -12,15 +12,27 @@ from jaxrl5.data.dataset import Dataset, DatasetDict
 def _init_replay_dict(
     obs_space: gym.Space, capacity: int
 ) -> Union[np.ndarray, DatasetDict]:
-    if isinstance(obs_space, gym.spaces.Box):
+    # Support both Gym and Gymnasium Box/Dict spaces
+    box_types = []
+    dict_types = []
+    try:
+        import gymnasium
+        box_types.append(gymnasium.spaces.Box)
+        dict_types.append(gymnasium.spaces.Dict)
+    except ImportError:
+        pass
+    box_types.append(gym.spaces.Box)
+    dict_types.append(gym.spaces.Dict)
+
+    if isinstance(obs_space, tuple(box_types)):
         return np.empty((capacity, *obs_space.shape), dtype=obs_space.dtype)
-    elif isinstance(obs_space, gym.spaces.Dict):
+    elif isinstance(obs_space, tuple(dict_types)):
         data_dict = {}
         for k, v in obs_space.spaces.items():
             data_dict[k] = _init_replay_dict(v, capacity)
         return data_dict
     else:
-        raise TypeError()
+        raise TypeError(f"Unsupported observation space type: {type(obs_space)}")
 
 
 def _insert_recursively(

@@ -26,7 +26,7 @@ class Agent(struct.PyTreeNode):
     actor: TrainState
     rng: PRNGKey
 
-    def eval_actions(self, observations: np.ndarray) -> np.ndarray:
+    def eval_actions(self, observations: np.ndarray, **kwargs) -> np.ndarray:
         actions = _eval_actions(self.actor.apply_fn, self.actor.params, observations)
         return np.asarray(actions), self.replace(rng=self.rng)
 

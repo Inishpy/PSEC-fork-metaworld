@@ -1,4 +1,4 @@
-from configs import td_config
+from . import td_config
 from ml_collections.config_dict import config_dict
 
 

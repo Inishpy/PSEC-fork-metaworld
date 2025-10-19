@@ -1,8 +1,8 @@
-import ml_collections
+from ml_collections import ConfigDict
 
 
 def get_config():
-    config = ml_collections.ConfigDict()
+    config = ConfigDict()
 
     config.actor_lr = 3e-4
     config.critic_lr = 3e-4

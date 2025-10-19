@@ -16,6 +16,7 @@ import glob
 from metaworld.evaluation import evaluation, metalearning_evaluation
 import traceback
 from jaxrl5.agents.psec.psec_pretrain import PretrainWithComposition
+from jaxrl5.agents.sac.sac_learner import SACLearner
 import pandas as pd
 # Load environment variables from .env into os.environ
 load_dotenv()
@@ -643,13 +644,23 @@ def create_agent(details, env, config_dict):
     Modularized agent creation logic.
     Returns: agent_bc, keys
     """
-    model_cls = config_dict.pop("model_cls")
+    model_cls = config_dict['model_cls']
+    del config_dict['model_cls']
     logging.info("[AGENT] Creating agent of class: %s", model_cls)
     if "BC" in model_cls:
         agent_bc = globals()[model_cls].create(
             details['seed'], env.observation_space, env.action_space, **config_dict
         )
         keys = ["observations", "actions"]
+    elif model_cls == "SACLearner":
+        print("model class", model_cls)
+        agent_bc = globals()[model_cls].create(
+            details['seed'],
+            env.observation_space,
+            env.action_space,
+            **config_dict
+        )
+        keys = None
     else:
         print("model class", model_cls)
         agent_bc = globals()[model_cls].create(
@@ -675,12 +686,116 @@ def squeeze_sample_batch(sample):
     return sample
 
 from torch.utils.tensorboard import SummaryWriter
+from jaxrl5.data.replay_buffer import ReplayBuffer
+
+def train_agent_online(agent, env, details, log_dir=None):
+    """
+    Online RL training loop using a replay buffer.
+    """
+    logging.info("[TRAIN][ONLINE] Starting online RL training loop for env: %s", str(details.get('env_name')))
+    writer = None
+    if log_dir is not None:
+        writer = SummaryWriter(log_dir=log_dir)
+
+    logging.info("[DEBUG] env.observation_space type: %s, repr: %r", type(env.observation_space), env.observation_space)
+    obs_space = env.observation_space
+    act_space = env.action_space
+    buffer_size = details.get('replay_buffer_size', 1000000)
+    batch_size = details.get('batch_size', 256)
+    warmup_steps = details.get('warmup_steps', 1000)
+    max_steps = details.get('max_steps', 1000000)
+    eval_interval = details.get('eval_interval', 5000)
+    log_interval = details.get('log_interval', 1000)
+    eval_episodes = details.get('eval_episodes', 10)
+    utd_ratio = details.get('utd_ratio', 1)
+    seed = details.get('seed', 0)
+
+    replay_buffer = ReplayBuffer(obs_space, act_space, buffer_size)
+    rng = np.random.RandomState(seed)
+    obs, _ = env.reset(seed=seed)
+    episode_reward = 0
+    episode_step = 0
+    episode = 0
+
+    for step in tqdm(range(max_steps), smoothing=0.1):
+        # Epsilon-greedy or random action for warmup
+        if step < warmup_steps:
+            # logging.info(f"[ROLLOUT][Step {step}] Filling buffer (warmup).")
+            action = act_space.sample()
+        else:
+            action, _ = agent.eval_actions(np.expand_dims(obs, axis=0))
+            action = np.asarray(action).squeeze(0)
+        next_obs, reward, terminated, truncated, info = env.step(action)
+        done = terminated or truncated
+
+        # Store transition
+        transition = dict(
+            observations=obs,
+            actions=action,
+            rewards=reward,
+            next_observations=next_obs,
+            dones=done,
+            masks=1.0 - float(done),
+        )
+        replay_buffer.insert(transition)
+        # logging.info(f"[ROLLOUT][Step {step}] Added transition to buffer. Buffer size: {len(replay_buffer)}")
+
+        obs = next_obs
+        episode_reward += reward
+        episode_step += 1
+
+        if done:
+            # logging.info(f"[ROLLOUT][Step {step}] Episode finished. Total reward: {episode_reward}, Steps: {episode_step}")
+            obs, _ = env.reset()
+            episode_reward = 0
+            episode_step = 0
+            episode += 1
+
+        # Update agent after warmup
+        if step >= warmup_steps:
+            # logging.info(f"[TRAIN][Step {step}] Training phase. Sampling batch and updating agent.")
+            batch = replay_buffer.sample(batch_size)
+            agent, info = agent.update(batch, utd_ratio)
+            if step % log_interval == 0:
+                log_msg = f"[TRAIN][Step {step}] RL: " + ", ".join([f"{k}: {v}" for k, v in info.items()])
+                logging.info(log_msg)
+                if writer is not None:
+                    for k, v in info.items():
+                        if hasattr(v, "item"):
+                            v = v.item()
+                        elif isinstance(v, (jnp.ndarray, np.ndarray)) and getattr(v, "shape", None) == ():
+                            v = float(v)
+                        writer.add_scalar(f"train/{k}", v, step)
+
+        # Periodic evaluation
+        if step % eval_interval == 0 or step == 0:
+            eval_rewards = []
+            for _ in range(eval_episodes):
+                eval_obs, _ = env.reset()
+                eval_ep_reward = 0
+                for _ in range(details.get('env_max_steps', 1000)):
+                    eval_action, _ = agent.eval_actions(np.expand_dims(eval_obs, axis=0))
+                    eval_action = np.asarray(eval_action).squeeze(0)
+                    eval_obs, eval_reward, eval_terminated, eval_truncated, _ = env.step(eval_action)
+                    eval_ep_reward += eval_reward
+                    if eval_terminated or eval_truncated:
+                        break
+                eval_rewards.append(eval_ep_reward)
+            avg_eval_reward = np.mean(eval_rewards)
+            logging.info(f"[EVAL][Step {step}] Average Eval Reward: {avg_eval_reward}")
+            if writer is not None:
+                writer.add_scalar("eval/avg_reward", avg_eval_reward, step)
+
+    if writer is not None:
+        writer.close()
+    logging.info("[TRAIN][ONLINE] Training loop completed for env: %s", str(details.get('env_name')))
+    return agent
 
 def train_agent(agent_bc, ds, details, keys, env, log_dir=None):
     """
     Modularized training loop.
     """
-    logging.info("[TRAIN] Starting training loop for env: %s", str(details.get('env_name')))
+    # logging.info("[TRAIN] Starting training loop for env: %s", str(details.get('env_name')))
 
     writer = None
     if log_dir is not None:
@@ -690,7 +805,8 @@ def train_agent(agent_bc, ds, details, keys, env, log_dir=None):
         sample = ds.sample_jax(details['batch_size'], keys=keys)
         sample = squeeze_sample_batch(sample)
         
-        agent_bc, info_bc = agent_bc.update_bc(sample)
+        utd_ratio = details.get('utd_ratio', 1)
+        agent_bc, info_bc = agent_bc.update(sample, utd_ratio)
 
         if i % details['log_interval'] == 0:
             log_msg = "[TRAIN][Step %d] train_bc: %s" % (i, ", ".join([f"{k}: {v}" for k, v in info_bc.items()]))
@@ -708,7 +824,9 @@ def train_agent(agent_bc, ds, details, keys, env, log_dir=None):
         success_flag = False
         if i % details["eval_interval"] == 0 or i == 0:
             for inference_params in details['inference_variants']:
-                agent_bc = agent_bc.replace(**inference_params)
+                valid_keys = {'critic', 'target_critic', 'temp', 'tau', 'discount', 'target_entropy', 'num_qs', 'num_min_qs', 'backup_entropy'}
+                filtered_params = {k: v for k, v in inference_params.items() if k in valid_keys}
+                agent_bc = agent_bc.replace(**filtered_params)
                 eval_info_bc = evaluate_bc(agent_bc, env, details['eval_episodes'], train_lora=False)
                 print(eval_info_bc)
 
@@ -730,12 +848,14 @@ def train_agent(agent_bc, ds, details, keys, env, log_dir=None):
                     success_flag = True
                     break
 
-                logging.info(f"[TRAIN][Step {i}] eval_bc ({inference_params}): " + ", ".join([f"{k}: {v}" for k, v in eval_info_bc.items()]))
+                # logging.info(f"[TRAIN][Step {i}] eval_bc ({inference_params}): " + ", ".join([f"{k}: {v}" for k, v in eval_info_bc.items()]))
             if success_flag:
                 break
                 
                 
-            agent_bc.replace(**details['training_time_inference_params'])
+            valid_keys = {'critic', 'target_critic', 'temp', 'tau', 'discount', 'target_entropy', 'num_qs', 'num_min_qs', 'backup_entropy'}
+            filtered_params = {k: v for k, v in details['training_time_inference_params'].items() if k in valid_keys}
+            agent_bc = agent_bc.replace(**filtered_params)
 
     if writer is not None:
         writer.close()
@@ -778,19 +898,30 @@ def call_main(details):
             env = details['env_name']
             ds = Toy_dataset(env)
             env_max_steps = 150
+            # For toy, keep original behavior
+            # Set up TensorBoard log directory
+            log_dir = None
+            if 'results_dir' in details:
+                log_dir = os.path.join(details['results_dir'], "tensorboard")
+                os.makedirs(log_dir, exist_ok=True)
+            config_dict = details['rl_config'].copy_and_resolve_references()
+            agent_bc, keys = create_agent(details, env, config_dict)
+            agent_bc = train_agent(agent_bc, ds, details, keys, env, log_dir=log_dir)
         else:
             env, env_max_steps = create_env(details)
-            ds = load_offline_dataset(details, env, env_max_steps)
-
-        # Set up TensorBoard log directory
-        log_dir = None
-        if 'results_dir' in details:
-            log_dir = os.path.join(details['results_dir'], "tensorboard")
-            os.makedirs(log_dir, exist_ok=True)
-
-        config_dict = details['rl_config'].copy()
-        agent_bc, keys = create_agent(details, env, config_dict)
-        agent_bc = train_agent(agent_bc, ds, details, keys, env, log_dir=log_dir)
+            details['env_max_steps'] = env_max_steps
+            # Set up TensorBoard log directory
+            log_dir = None
+            if 'results_dir' in details:
+                log_dir = os.path.join(details['results_dir'], "tensorboard")
+                os.makedirs(log_dir, exist_ok=True)
+            config_dict = details['rl_config'].copy_and_resolve_references()
+            agent_bc, keys = create_agent(details, env, config_dict)
+            if details.get('online_rl', False):
+                agent_bc = train_agent_online(agent_bc, env, details, log_dir=log_dir)
+            else:
+                ds = load_offline_dataset(details, env, env_max_steps)
+                agent_bc = train_agent(agent_bc, ds, details, keys, env, log_dir=log_dir)
 
         logging.info("[MAIN] Training completed for project: %s, group: %s, env: %s", details['project'], details['group'], details['env_name'])
     except Exception as e:

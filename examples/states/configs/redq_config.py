@@ -1,4 +1,4 @@
-from configs import sac_config
+from . import sac_config
 
 
 def get_config():

@@ -1,4 +1,4 @@
-from configs import iql_antmaze_config
+from . import iql_antmaze_config
 
 
 def get_config():

@@ -158,6 +158,8 @@ class SACLearner(Agent):
         return self.replace(temp=temp), temp_info
 
     def update_critic(self, batch: DatasetDict) -> Tuple[TrainState, Dict[str, float]]:
+        # Standard RL: mask = 1.0 - done
+        masks = 1.0 - batch["dones"]
 
         dist = self.actor.apply_fn(
             {"params": self.actor.params}, batch["next_observations"]
@@ -183,15 +185,29 @@ class SACLearner(Agent):
             rngs={"dropout": key},
         )  # training=True
         next_q = next_qs.min(axis=0)
+        # Fix: squeeze next_q to ensure it's 1D (batch_size,)
+        if next_q.ndim == 2 and next_q.shape[-1] == 1:
+            next_q = jnp.squeeze(next_q, axis=-1)
 
-        target_q = batch["rewards"] + self.discount * batch["masks"] * next_q
+        # Debug shape assertions
+        assert batch["rewards"].ndim == 1, f"rewards shape: {batch['rewards'].shape}"
+        assert masks.ndim == 1, f"masks shape: {masks.shape}"
+        assert next_q.ndim == 1, f"next_q shape: {next_q.shape}"
+
+        target_q = batch["rewards"] + self.discount * masks * next_q
 
         if self.backup_entropy:
             next_log_probs = dist.log_prob(next_actions)
+            # Fix: squeeze next_log_probs to ensure it's 1D (batch_size,)
+            if next_log_probs.ndim == 2 and next_log_probs.shape[-1] == 1:
+                next_log_probs = jnp.squeeze(next_log_probs, axis=-1)
+            assert next_log_probs.ndim == 1, f"next_log_probs shape: {next_log_probs.shape}"
+            temp_value = self.temp.apply_fn({"params": self.temp.params})
+            assert jnp.isscalar(temp_value) or temp_value.shape == (), f"temp_value shape: {getattr(temp_value, 'shape', None)}"
             target_q -= (
                 self.discount
-                * batch["masks"]
-                * self.temp.apply_fn({"params": self.temp.params})
+                * masks
+                * temp_value
                 * next_log_probs
             )
 
@@ -205,7 +221,7 @@ class SACLearner(Agent):
                 True,
                 rngs={"dropout": key},
             )  # training=True
-            critic_loss = ((qs - target_q) ** 2).mean()
+            critic_loss = ((qs - target_q[None, :]) ** 2).mean()
             return critic_loss, {"critic_loss": critic_loss, "q": qs.mean()}
 
         grads, info = jax.grad(critic_loss_fn, has_aux=True)(self.critic.params)

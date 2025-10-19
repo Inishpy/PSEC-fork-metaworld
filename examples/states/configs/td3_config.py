@@ -1,4 +1,4 @@
-from configs import td_config
+from . import td_config
 
 
 def get_config():
