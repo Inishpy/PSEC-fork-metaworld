@@ -3,6 +3,11 @@ from typing import Optional, Union
 
 import gym
 import gym.spaces
+try:
+    import gymnasium
+    _GYMNASIUM_AVAILABLE = True
+except ImportError:
+    _GYMNASIUM_AVAILABLE = False
 import jax
 import numpy as np
 
@@ -12,15 +17,22 @@ from jaxrl5.data.dataset import Dataset, DatasetDict
 def _init_replay_dict(
     obs_space: gym.Space, capacity: int
 ) -> Union[np.ndarray, DatasetDict]:
-    if isinstance(obs_space, gym.spaces.Box):
+    # Accept both gym and gymnasium Box/Dict spaces
+    is_box = isinstance(obs_space, gym.spaces.Box)
+    is_dict = isinstance(obs_space, gym.spaces.Dict)
+    if _GYMNASIUM_AVAILABLE:
+        import gymnasium.spaces
+        is_box = is_box or isinstance(obs_space, gymnasium.spaces.Box)
+        is_dict = is_dict or isinstance(obs_space, gymnasium.spaces.Dict)
+    if is_box:
         return np.empty((capacity, *obs_space.shape), dtype=obs_space.dtype)
-    elif isinstance(obs_space, gym.spaces.Dict):
+    elif is_dict:
         data_dict = {}
         for k, v in obs_space.spaces.items():
             data_dict[k] = _init_replay_dict(v, capacity)
         return data_dict
     else:
-        raise TypeError()
+        raise TypeError(f"Unsupported observation space type: {type(obs_space)}")
 
 
 def _insert_recursively(

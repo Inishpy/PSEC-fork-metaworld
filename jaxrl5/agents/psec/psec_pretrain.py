@@ -96,6 +96,7 @@ class Pretrain(Agent):
 
         time = jnp.zeros((1, 1))
         observations = jnp.expand_dims(observations, axis=0)
+        print("observation", observations)
         actions = jnp.expand_dims(actions, axis = 0)
         actor_params = actor_def.init(actor_key, observations, actions, time)['params']
 

@@ -49,6 +49,16 @@ def load_diffusion_model(model_location, pickle, env):
     
     model_file = get_model_file(pickle=pickle)
     new_agent = agent.load(model_file)
+    # Print only the architecture of the model (the apply_fn of the first TrainState attribute)
+    for attr in dir(new_agent):
+        value = getattr(new_agent, attr)
+        # Check if this is a TrainState (has apply_fn and params)
+        if hasattr(value, "apply_fn") and hasattr(value, "params"):
+            print("Model architecture:", value.apply_fn)
+            break
+    else:
+        print("Could not find model architecture in agent.")
+    print("printed agent architecture")
 
     if not os.path.exists(f"{model_location}/imgs"):
         os.makedirs(f"{model_location}/imgs")

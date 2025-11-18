@@ -76,7 +76,7 @@ def main():
     parser.add_argument(
         "--pickle_ext",
         type=str,
-        default=".pkl",
+        default=".pickle",
         help="Extension of the model checkpoint files (default: .pkl)"
     )
     parser.add_argument(
