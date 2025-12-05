@@ -24,7 +24,7 @@ load_dotenv()
 # wandb.login(key=api_key)
 # logging.info("wandb login done")
 timestamp = int(time.time())
-
+import ot 
 # Set up basic logging configuration
 logging.basicConfig(
     level=logging.INFO,
@@ -80,6 +80,7 @@ class SimpleOfflineDataset:
             return
         self._return_scale = 1.0 / float(max_reward - min_reward)
         self._return_shift = - float(min_reward) * self._return_scale
+
 
 import os
 import re
@@ -670,7 +671,275 @@ def squeeze_sample_batch(sample):
 
 from torch.utils.tensorboard import SummaryWriter
 
-def train_agent(agent_bc, ds, details, keys, env, log_dir=None):
+import torch
+import torchvision.models as models
+import torchvision.transforms as T
+
+def obs_to_cnn_features(obs, device='cuda', batch_size=12):
+    """
+    obs: numpy array (N, H, W, C), values 0–255
+    returns: np.array (N, 512) ResNet18 features
+    """
+    model = models.resnet18(pretrained=True)
+    model = torch.nn.Sequential(*(list(model.children())[:-1]))  # remove classifier
+    model.eval().to(device)
+
+    transform = T.Compose([
+        T.Resize((224, 224)),
+        T.ConvertImageDtype(torch.float32),
+        T.Normalize(mean=[0.485, 0.456, 0.406],
+                    std=[0.229, 0.224, 0.225]),
+    ])
+
+    # Convert (N,H,W,C) → (N,C,H,W)
+    print
+    imgs = torch.tensor(obs, dtype=torch.uint8).permute(0, 3, 1, 2)
+
+    features = []
+    with torch.no_grad():
+        for i in range(0, len(imgs), batch_size):
+            batch = imgs[i:i+batch_size].to(device)
+            batch = transform(batch)                # resize + normalize
+            feats = model(batch).squeeze()          # (batch, 512, 1, 1)
+            feats = feats.view(feats.size(0), -1)   # (batch, 512)
+            features.append(feats.cpu().numpy())
+
+    return np.vstack(features).astype(np.float32)
+
+
+import jax
+import jax.numpy as jnp
+import numpy as np
+
+
+
+def to_tensor_on_device(arr_or_tensor, device):
+    """
+    Convert a numpy array or torch tensor to a torch.float32 tensor on `device`.
+    Ensures contiguity and detaches grad if needed.
+    """
+    if isinstance(arr_or_tensor, torch.Tensor):
+        t = arr_or_tensor.detach()
+    else:
+        # numpy -> tensor (works for np.ndarray)
+        t = torch.as_tensor(arr_or_tensor)
+    return t.contiguous().to(device=device, dtype=torch.float32)
+
+
+def safe_compute_f(ref_size, gamma, X, ref, device=None, chunk_cols=1024):
+    """
+    Compute f = ( (ref_size * gamma).T @ X - ref ) / sqrt(ref_size)
+    in a robust, chunked way.
+
+    Parameters:
+      - ref_size: scalar (int/float/torch scalar)
+      - gamma: torch tensor or numpy array
+      - X: torch tensor or numpy array (2D)
+      - ref: torch tensor or numpy array (2D) — must match output shape for subtraction
+      - device: torch.device or None (auto-selects CUDA if available)
+      - chunk_cols: number of columns of X to process per chunk (tune for memory)
+    Returns:
+      - f: torch.Tensor on `device`
+    """
+    # auto device
+    if device is None:
+        device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+
+    # convert to tensors
+    if not isinstance(gamma, torch.Tensor):
+        gamma = torch.as_tensor(gamma)
+    if not isinstance(X, torch.Tensor):
+        X = torch.as_tensor(X)
+    if not isinstance(ref, torch.Tensor):
+        ref = torch.as_tensor(ref)
+
+    # float32 and contiguous
+    gamma = gamma.contiguous().to(dtype=torch.float32)
+    X = X.contiguous().to(dtype=torch.float32)
+    ref = ref.contiguous().to(dtype=torch.float32)
+
+    # move to device
+    gamma = gamma.to(device)
+    X = X.to(device)
+    ref = ref.to(device)
+
+    # scalar ref_size -> float tensor on same device
+    ref_size_f = float(ref_size) if not isinstance(ref_size, torch.Tensor) else float(ref_size.item())
+    denom = torch.sqrt(torch.tensor(ref_size_f, dtype=torch.float32, device=device))
+
+    # Build A = (ref_size * gamma).T
+    A = (gamma * ref_size_f).T.contiguous()   # A shape: (p, q) depending on gamma
+
+    # Determine orientation for matmul: we want A @ X_part
+    # Ensure A.shape[1] == X.shape[0]; otherwise try transposing X or A appropriately
+    if A.shape[1] != X.shape[0]:
+        # maybe X is (N_samples, features) and A expects features x something.
+        # If needed, transpose X to match. This depends on your intended equation.
+        # Here, we'll try X = X.T if that aligns dims.
+        if A.shape[1] == X.T.shape[0]:
+            X_proc = X.T
+        else:
+            raise RuntimeError(f"Shape mismatch: A.shape={tuple(A.shape)}, X.shape={tuple(X.shape)}; cannot align for matmul.")
+    else:
+        X_proc = X
+
+    # chunk along columns of X_proc (i.e., last dim)
+    total_cols = X_proc.shape[1]
+    parts = []
+    for i in range(0, total_cols, chunk_cols):
+        part = X_proc[:, i:i+chunk_cols]          # shape (A.shape[1], chunk_size)
+        # compute A @ part -> shape (A.shape[0], chunk_size)
+        parts.append(torch.matmul(A, part))
+    out = torch.cat(parts, dim=1)                # shape (A.shape[0], total_cols)
+
+    # Align ref for subtraction. ref must have same shape as out:
+    if tuple(ref.shape) != tuple(out.shape):
+        # try transposing ref if it matches
+        if tuple(ref.T.shape) == tuple(out.shape):
+            ref_aligned = ref.T
+        else:
+            raise RuntimeError(f"ref shape {tuple(ref.shape)} does not match matmul output shape {tuple(out.shape)}; align them first.")
+    else:
+        ref_aligned = ref
+
+    f = (out - ref_aligned) / denom
+    return f
+
+
+def lwe(X, some_task_action_space_size, input_dim):
+    '''Calculates the Embedding for a given Data-Batch of SAR
+    Returns a 1D Tensor with the calculated Embedding'''
+    logging.info("Calculating Embedding")
+    #
+    #print("PrePRocess_SAR_DETECT:", X)
+    #print("What we actually use form the data we give:", X.shape)
+    torch.manual_seed(98)
+    reference = torch.rand(
+        128,   #radom number
+        39 + 4 + 1  #+1 which is reward 39 obs  4 action
+    )  # Plus one which is the reward.
+    device = "cuda:0"
+    ref = reference.to(device)
+    # logging.info(ref.shape)
+    ref_size = ref.shape[0]
+    # logging.info(ref.shape)
+    # print("X:", X.shape, "ref:", ref.shape)
+    # set_reference(
+    #     a_task_observation_dim=X.shape[1]-8,
+    #     some_reference_num=128,
+    #     some_action_dim=7
+    # )
+    # print("X:", X.shape, "ref:", ref.shape)
+    #C = ot.dist(X.cpu(), ref).cpu().numpy()
+    # Make sure both are tensors on the same device
+    # X_t = X.to("cuda")          # or stay on CPU if GPU memory is limited
+    # ref_t = ref.to("cuda")
+    # logging.info("Preprocessing SAR done")
+    # # Compute pairwise squared Euclidean distances
+    # C = torch.cdist(X_t, ref_t, p=2)   # shape (12, 50)
+    logging.info("Calculating Embedding done")
+    # convert/slice both (handles X as numpy or tensor, and ref as torch tensor)
+    X_t   = to_tensor_on_device(X[:, :], device)        # (12, 10)
+    ref_t = to_tensor_on_device(ref[:, :], device) # (50, 10)
+
+    # sanity checks
+    assert X_t.shape[1] == ref_t.shape[1], "feature dims must match"
+    assert X_t.dtype == torch.float32 and ref_t.dtype == torch.float32
+
+    # compute distances on device
+    C_t = torch.cdist(X_t, ref_t)     # shape (12, 50)
+
+    # bring to cpu numpy if you need it in numpy
+    C = C_t.cpu().numpy()
+    # print("C.shape", C.shape)
+    # # If you need a numpy array
+    # C = C.cpu().numpy()
+    #C = ot.dist(X[:,:10].cpu(), ref[:,:10].cpu()).numpy()
+    logging.info(ref.shape)
+    # Calculating the transport plan
+    gamma = torch.from_numpy(ot.emd(ot.unif(X.shape[0]), ot.unif(ref_size), C, numItermax=700000)).float()
+    # Calculating the transport map via barycenter projection /gamma.sum(dim=0).unsqueeze(1)
+    logging.info(ref.shape)
+    f= safe_compute_f(ref_size, gamma, X, ref, device=torch.device("cuda"), chunk_cols=1024)#(torch.matmul((ref_size*gamma).T,X.cpu())-ref)/np.sqrt(ref_size)
+    logging.info(ref.shape)
+    
+    return f.ravel()
+def compute_task_embedding_jax(sample, lwe,  obs_to_cnn_features=None):
+    """
+    sample: dict-like with keys "observations", "actions", "rewards"
+    lwe: function that accepts numpy X and returns embedding (keeps same API as your original lwe)
+    input_dim: passed to lwe as in your PyTorch code
+    obs_to_cnn_features: optional callable that accepts numpy obs and returns (N, d) states.
+                         If None, a fallback flattening is used.
+    Returns: jax DeviceArray final_vec and X_ (result of lwe)
+    """
+    # 1) Transfer from JAX device to host numpy
+    obs = sample["observations"]
+    actions = sample["actions"]
+    rewards = sample["rewards"]
+
+    # move to host numpy arrays
+    obs_np = np.array(jax.device_get(obs))
+    actions_np = np.array(jax.device_get(actions))
+    rewards_np = np.array(jax.device_get(rewards))
+
+    # print("obs_np.shape", obs_np.shape, type(obs_np))
+    # print("actions_np.shape", actions_np.shape, type(actions_np))
+    # print("rewards_np.shape", rewards_np.shape, type(rewards_np))
+
+    input_dim = int(np.prod(obs_np[0]))
+
+    # 2) Build states (N x d)
+    if obs_to_cnn_features is not None:
+        # assume obs_to_cnn_features returns numpy array (N, feature_dim)
+        states = obs_to_cnn_features(obs_np)
+    else:
+        # fallback: flatten / normalize images
+        # common shapes: (N, H, W, C) or (N, 1, D) like your (4096,1,39)
+        N = obs_np.shape[0]
+        states = obs_np.reshape(N, -1).astype(np.float64)  # (N, d)
+        # if these are image pixels in 0-255 range and you want [0,1]
+        # uncomment next line:
+        states = states / 255.0
+
+    # print("states.shape", states.shape)
+
+    # 3) Normalize and flatten actions
+    if actions_np.size == 0:
+        raise ValueError("Actions array is empty in compute_task_embedding_jax. Cannot normalize.")
+    actions_np = actions_np.astype(np.float64)
+    max_act = np.max(np.abs(actions_np)) + 1e-9
+    actions_flat = actions_np / max_act
+    # if actions_flat.ndim == 1:
+    #     actions_flat = actions_flat[:, None]   # make (N, da)
+
+    N = actions_flat.shape[0]
+    actions_flat = actions_flat.reshape(N, -1).astype(np.float64)  # (N, d)
+
+    # 4) Normalize rewards
+    if rewards_np.size == 0:
+        raise ValueError("Rewards array is empty in compute_task_embedding_jax. Cannot normalize.")
+    rewards_np = rewards_np.astype(np.float64)
+    max_r = np.max(np.abs(rewards_np)) + 1e-9
+    rewards_flat = (rewards_np / max_r)[:, None]  # (N, 1)
+
+    # 5) Concatenate to build X (N, d_total)
+    X = np.concatenate([states, actions_flat, rewards_flat], axis=1)
+    # print("X.shape", X.shape)
+
+    # 6) Call your lwe. Assume lwe accepts numpy X and returns numpy result X_
+    X_ = lwe(X, (2, 7), input_dim)   # adapt args if your lwe signature differs
+    # print("X_ shape:", getattr(X_, "shape", None))
+
+    # 7) Build final flattened embedding as JAX DeviceArray to continue JAX pipeline
+    final_vec_np = X.ravel().astype(np.float32)
+    final_vec = jnp.array(final_vec_np)   # send back to device if needed
+
+    # Optionally return X_ (numpy) and the JAX final vector
+    return final_vec
+
+
+def train_agent(agent_bc, ds, details, keys, env, log_dir=None, avg_embedding=None):
     """
     Modularized training loop.
     """
@@ -682,7 +951,23 @@ def train_agent(agent_bc, ds, details, keys, env, log_dir=None):
 
     for i in tqdm(range(details["max_steps"]), smoothing=0.1):
         sample = ds.sample_jax(details['batch_size'], keys=keys)
+
+        embedding = compute_task_embedding_jax(sample, lwe)
+        print(embedding, "embedding")
+        if avg_embedding is None:
+            avg_embedding = embedding
+        else:
+            avg_embedding = 0.5 * avg_embedding + 0.5 * embedding
+        # obs = sample["observations"]
+        # print(obs.shape, type(obs))
+        # actions = sample["actions"]
+        # print(actions.shape, type(actions))
+        # rewards = sample["rewards"]
+        # print(rewards.shape, type(rewards))
+
+
         sample = squeeze_sample_batch(sample)
+        
         
         agent_bc, info_bc = agent_bc.update_bc(sample)
 
@@ -734,7 +1019,7 @@ def train_agent(agent_bc, ds, details, keys, env, log_dir=None):
     if writer is not None:
         writer.close()
     logging.info("[TRAIN] Training loop completed for env: %s", str(details.get('env_name')))
-    return agent_bc
+    return agent_bc, avg_embedding
 
 def call_main(details):
     """
@@ -762,9 +1047,11 @@ def call_main(details):
 
         config_dict = details['rl_config'].copy()
         agent_bc, keys = create_agent(details, env, config_dict)
-        agent_bc = train_agent(agent_bc, ds, details, keys, env, log_dir=log_dir)
+
+        agent_bc, avg_embedding = train_agent(agent_bc, ds, details, keys, env, log_dir=log_dir, avg_embedding=None)
 
         logging.info("[MAIN] Training completed for project: %s, group: %s, env: %s", details['project'], details['group'], details['env_name'])
+        return avg_embedding
     except Exception as e:
         logging.error("[MAIN] Exception in call_main for env: %s: %s", details.get('env_name'), str(e), exc_info=True)
         raise
