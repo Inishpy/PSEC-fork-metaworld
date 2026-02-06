@@ -16,5 +16,4 @@ __pycache__/
 *.pickle
 
 libero_partial/*
-logs
-*.out
+logs/
