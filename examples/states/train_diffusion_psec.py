@@ -33,6 +33,106 @@ logging.basicConfig(
     datefmt="%Y-%m-%d %H:%M:%S"
 )
 
+# --- DOP Merge Utilities (JAX version) ---
+
+import jax
+import jax.numpy as jnp
+
+def _top_r_svd_jax(mat, r):
+    norm = jnp.linalg.norm(mat)
+    m, n = mat.shape
+    if norm == 0:
+        return (jnp.zeros((m, min(r, n)), dtype=mat.dtype),
+                jnp.zeros((min(r, n),), dtype=mat.dtype),
+                jnp.zeros((n, min(r, n)), dtype=mat.dtype))
+    U, S, Vh = jnp.linalg.svd(mat, full_matrices=False)
+    r_chosen = choose_rank_by_energy_jax(S)
+    r_chosen = min(r_chosen, S.shape[0])
+    return U[:, :r_chosen], S[:r_chosen], Vh[:r_chosen, :].T
+
+def choose_rank_by_energy_jax(S, energy_thresh=0.9, r_max=None):
+    energy = (S**2)
+    cumsum = jnp.cumsum(energy)
+    total = jnp.clip(cumsum[-1], a_min=1e-12)
+    frac = cumsum / total
+    r = int(jnp.argmax(frac >= energy_thresh)) + 1
+    if r_max is not None:
+        r = min(r, r_max)
+    return r
+
+def _project_onto_svd_subspace_jax(X, U, V):
+    if U.size == 0 or V.size == 0:
+        return jnp.zeros_like(X)
+    coeffs = jnp.einsum('ir,ij,jr->r', U, X, V)
+    proj = jnp.zeros_like(X)
+    for i in range(U.shape[1]):
+        ui = U[:, i:i+1]
+        vi = V[:, i:i+1]
+        proj = proj + coeffs[i] * (ui @ vi.T)
+    return proj
+
+def dop_merge_simple_jax(
+    theta0,         # base pretrained params (PyTree)
+    theta1,         # previously merged params (PyTree)
+    theta2,         # new trained params (PyTree)
+    K=20,
+    r=8,
+    beta=0.9,
+    eta=1e-2,
+    clip_eps=1e-8,
+):
+    """
+    Dual Orthogonal Projection merge for JAX PyTree parameters.
+    Returns merged PyTree.
+    """
+    def merge_param(W0, Wold, Wnew):
+        if Wold is None or Wnew is None:
+            return Wold if Wold is not None else Wnew
+        if Wold.ndim == 2 and Wnew.ndim == 2 and (W0 is not None and getattr(W0, "ndim", 0) == 2):
+            tau_old = (Wold - W0)
+            tau_new = (Wnew - W0)
+            Uo, So, Vo = _top_r_svd_jax(tau_old, r)
+            Un, Sn, Vn = _top_r_svd_jax(tau_new, r)
+            Wstar = ((Wold + Wnew) / 2.0).copy()
+            alpha_s_prev = 0.5
+            alpha_p_prev = 0.5
+            for _ in range(K):
+                def loss_fn(Wstar_):
+                    delta_old = Wstar_ - Wold
+                    delta_new = Wstar_ - Wnew
+                    proj_old = _project_onto_svd_subspace_jax(delta_old, Uo, Vo)
+                    proj_new = _project_onto_svd_subspace_jax(delta_new, Un, Vn)
+                    Ls = 0.5 * jnp.sum((delta_old - proj_old) ** 2)
+                    Lp = 0.5 * jnp.sum((delta_new - proj_new) ** 2)
+                    return Ls, Lp
+
+                Ls, Lp = loss_fn(Wstar)
+                grad_Ls = jax.grad(lambda w: loss_fn(w)[0])(Wstar)
+                grad_Lp = jax.grad(lambda w: loss_fn(w)[1])(Wstar)
+
+                g_s = grad_Ls.reshape(-1)
+                g_p = grad_Lp.reshape(-1)
+                diff = g_s - g_p
+                denom = jnp.clip(jnp.dot(diff, diff), a_min=clip_eps)
+                numer = jnp.dot(g_p - g_s, g_p)
+                alpha_k = float(jnp.clip(numer / denom, 0.0, 1.0))
+
+                alpha_s_k = beta * alpha_s_prev + (1.0 - beta) * alpha_k
+                alpha_p_k = beta * alpha_p_prev + (1.0 - beta) * (1.0 - alpha_k)
+
+                gk = alpha_s_k * grad_Ls + alpha_p_k * grad_Lp
+                Wstar = (Wstar - eta * gk)
+                alpha_s_prev = alpha_s_k
+                alpha_p_prev = alpha_p_k
+            return Wstar
+        else:
+            return ((Wold + Wnew) / 2.0)
+    # Recursively merge all leaves
+    return jax.tree_util.tree_map(
+        lambda w0, w1, w2: merge_param(w0, w1, w2),
+        theta0, theta1, theta2
+    )
+
 class SimpleOfflineDataset:
     """
     Minimal dataset class to stand in for DSRLDataset when environment doesn't provide get_dataset().
@@ -740,7 +840,7 @@ def train_agent_online(agent, env, details, log_dir=None):
             # logging.info(f"[ROLLOUT][Step {step}] Filling buffer (warmup).")
             action = act_space.sample()
         else:
-            action, _ = agent.eval_actions(obs)
+            action, _ = agent.eval_actions(obs, train_lora=False)
             action = np.asarray(action)
             if action.ndim > 1 and action.shape[0] == 1:
                 action = action.squeeze(0)
@@ -795,7 +895,7 @@ def train_agent_online(agent, env, details, log_dir=None):
                 eval_ep_reward = 0
                 eval_ep_success = 0
                 for _ in range(details.get('env_max_steps', 1000)):
-                    eval_action, _ = agent.eval_actions(eval_obs)
+                    eval_action, _ = agent.eval_actions(eval_obs, train_lora=False)
                     eval_action = np.asarray(eval_action)
                     if eval_action.ndim > 1 and eval_action.shape[0] == 1:
                         eval_action = eval_action.squeeze(0)
@@ -894,20 +994,65 @@ def train_agent(agent_bc, ds, details, keys, env, log_dir=None):
 
     return agent_bc
 
+import jax
+
+# def merge_params(params1, params2, alpha=0.5):
+#     """
+#     Recursively merge two parameter PyTrees by weighted average.
+#     merged = alpha * params1 + (1 - alpha) * params2
+#     """
+#     return jax.tree_util.tree_map(lambda p1, p2: alpha * p1 + (1 - alpha) * p2, params1, params2)
+
 def call_main(details):
     """
-    Main entry point for training diffusion PSEC.
+    Main entry point for sequential Meta-World training and merging with diffusion PSEC.
     """
     logging.info("=========================================================")
     logging.info("[MAIN] Initialized project: %s, group: %s, env: %s", details['project'], details['group'], details['env_name'])
+
+    # --- Meta-World task list (copied from psec_pretrain.py) ---
+    # meta_world_tasks = [
+    #     'assembly-v3', 'basketball-v3', 'bin-picking-v3', 'box-close-v3', 'button-press-topdown-v3',
+    #     'button-press-topdown-wall-v3', 'button-press-v3', 'button-press-wall-v3', 'coffee-button-v3',
+    #     'coffee-pull-v3', 'coffee-push-v3', 'dial-turn-v3', 'disassemble-v3', 'door-close-v3',
+    #     'door-lock-v3', 'door-open-v3', 'door-unlock-v3', 'drawer-close-v3', 'drawer-open-v3',
+    #     'faucet-close-v3', 'faucet-open-v3', 'hammer-v3', 'hand-insert-v3', 'handle-press-side-v3',
+    #     'handle-press-v3', 'handle-pull-side-v3', 'handle-pull-v3', 'lever-pull-v3', 'peg-insert-side-v3',
+    #     'peg-unplug-side-v3', 'pick-out-of-hole-v3', 'pick-place-v3', 'pick-place-wall-v3',
+    #     'plate-slide-back-side-v3', 'plate-slide-back-v3', 'plate-slide-side-v3', 'plate-slide-v3',
+    #     'push-back-v3', 'push-v3', 'push-wall-v3', 'reach-v3', 'reach-wall-v3', 'shelf-place-v3',
+    #     'soccer-v3', 'stick-pull-v3', 'stick-push-v3', 'sweep-into-v3', 'sweep-v3', 'window-close-v3',
+    #     'window-open-v3'
+    # ]
+    meta_world_tasks = [# Easy tasks
+    "button-press-v3",
+    "button-press-topdown-v3",
+    "button-press-wall-v3",
+    "coffee-button-v3",
+    "dial-turn-v3",
+    "door-close-v3",
+    "door-open-v3",
+    "drawer-open-v3",
+    "drawer-close-v3",
+    "faucet-open-v3",
+    "faucet-close-v3",
+    "handle-press-v3",
+    "handle-press-side-v3",
+    "handle-pull-v3",
+    "handle-pull-side-v3",
+    "plate-slide-v3",
+    "plate-slide-back-v3",
+    "plate-slide-side-v3",
+    "reach-v3",
+    "window-open-v3",
+    "window-close-v3"]
 
     # --- Write init log, seed, and task details to a txt file in results_dir ---
     try:
         import json
         results_dir = details.get('results_dir', None)
         seed = details.get('seed', None)
-        env_name = details.get('env_name', None)
-        log_msg = f"[MAIN] Initialized project: {details['project']}, group: {details['group']}, env: {env_name}"
+        log_msg = f"[MAIN] Initialized project: {details['project']}, group: {details['group']}, Meta-World sequential"
         if results_dir is not None and seed is not None:
             os.makedirs(results_dir, exist_ok=True)
             txt_path = os.path.join(results_dir, f"init_seed_{seed}.txt")
@@ -919,49 +1064,154 @@ def call_main(details):
     except Exception as e:
         logging.warning(f"Failed to write init log file for seed {seed} in {results_dir}: {e}")
 
-    try:
-        # Special toy dataset
-        if details.get('env_name') == '8gaussians-multitarget':
-            assert details['dataset_kwargs']['pr_data'] is not None, "No data for Point Robot"
-            env = details['env_name']
-            ds = Toy_dataset(env)
-            env_max_steps = 150
-            # For toy, keep original behavior
-            # Set up TensorBoard log directory
-            log_dir = None
-            if 'results_dir' in details:
-                log_dir = os.path.join(details['results_dir'], "tensorboard")
-                os.makedirs(log_dir, exist_ok=True)
-            config_dict = details['rl_config'].copy_and_resolve_references()
-            agent_bc, keys = create_agent(details, env, config_dict)
-            agent_bc = train_agent(agent_bc, ds, details, keys, env, log_dir=log_dir)
+    # --- Sequential training and merging loop ---
+    prev_agent_bc = None
+    prev_task_names = []
+    for task_idx, task_name in enumerate(meta_world_tasks):
+        print("task ID", task_idx)
+        logging.info(f"\n\n[SEQ] Starting training for Meta-World task {task_idx}: {task_name}\n")
+        # Deep copy details for this task
+        import copy
+        task_details = copy.deepcopy(details)
+        task_details['env_name'] = (task_idx, task_name)
+        task_details['group'] = f"metaworld_{task_name}"
+        task_details['experiment_name'] = f"diffusion_{task_name}"
+        task_details['current_task'] = task_name
+        task_details['benchmark'] = "Meta-World/MT1"
+        task_details['results_dir'] = os.path.join(details.get('results_dir', './results'), f"{task_idx:02d}_{task_name}")
+        os.makedirs(task_details['results_dir'], exist_ok=True)
+        # Exclude previous tasks for composition
+        if task_idx > 0:
+            task_details['exclude_tasks'] = prev_task_names.copy()
         else:
-            env, env_max_steps = create_env(details)
-            details['env_max_steps'] = env_max_steps
-            # Set up TensorBoard log directory
-            log_dir = None
-            if 'results_dir' in details:
-                log_dir = os.path.join(details['results_dir'], "tensorboard")
-                os.makedirs(log_dir, exist_ok=True)
-            config_dict = details['rl_config'].copy_and_resolve_references()
-            config_dict['model_cls'] = "DDPMIQLLearner"
-            # Fix: Map hidden_dims to actor_hidden_dims and critic_hidden_dims for DDPMIQLLearner
-            if 'hidden_dims' in config_dict:
-                if 'actor_hidden_dims' not in config_dict:
-                    config_dict['actor_hidden_dims'] = config_dict['hidden_dims']
-                if 'critic_hidden_dims' not in config_dict:
-                    config_dict['critic_hidden_dims'] = config_dict['hidden_dims']
-                del config_dict['hidden_dims']
-            agent_bc, keys = create_agent(details, env, config_dict)
-            if details.get('online_rl', False):
-                agent_bc = train_agent_online(agent_bc, env, details, log_dir=log_dir)
-            else:
-                ds = load_offline_dataset(details, env, env_max_steps)
-                agent_bc = train_agent(agent_bc, ds, details, keys, env, log_dir=log_dir)
+            task_details['exclude_tasks'] = []
+        # Set up TensorBoard log directory
+        log_dir = os.path.join(task_details['results_dir'], "tensorboard")
+        os.makedirs(log_dir, exist_ok=True)
+        # RL config
+        config_dict = task_details['rl_config'].copy_and_resolve_references()
+        config_dict['model_cls'] = "DDPMIQLLearner"
+        if 'hidden_dims' in config_dict:
+            if 'actor_hidden_dims' not in config_dict:
+                config_dict['actor_hidden_dims'] = config_dict['hidden_dims']
+            if 'critic_hidden_dims' not in config_dict:
+                config_dict['critic_hidden_dims'] = config_dict['hidden_dims']
+            del config_dict['hidden_dims']
+        # Create env
+        env, env_max_steps = create_env(task_details)
+        task_details['env_max_steps'] = env_max_steps
+        # Create agent (with prior models loaded via exclude_tasks)
+        agent_bc, keys = create_agent(task_details, env, config_dict)
+        # If not the first task, merge previous and current agent parameters
+        if prev_agent_bc is not None:
+            # --- DOP Merge: use first, previous, and current models ---
+            import pickle
+            import glob
 
-        logging.info("[MAIN] Training completed for project: %s, group: %s, env: %s", details['project'], details['group'], details['env_name'])
-    except Exception as e:
-        logging.error("[MAIN] Exception in call_main for env: %s: %s", details.get('env_name'), str(e), exc_info=True)
-        raise
+            timestamp = str(details['timestamp'])
+            # Find the first and previous model checkpoint directories
+            first_task_name = meta_world_tasks[0]
+            prev_task_name = prev_task_names[-1]
+            first_task_dir = os.path.join(details.get('results_dir', './results'), f"{0:02d}_{first_task_name}")
+            prev_task_dir = os.path.join(details.get('results_dir', './results'),  f"{task_idx-1:02d}_{prev_task_name}")
+
+            # Find the latest checkpoint in each directory for the correct task
+            def get_latest_checkpoint(d, task_name):
+                pattern = os.path.join(d, "*.pickle")
+                files = glob.glob(pattern)
+                if not files:
+                    raise RuntimeError(f"No model checkpoint found in {d} for {task_name}")
+                # Sort by modification time, newest first
+                files = sorted(files, key=lambda x: os.path.getmtime(x), reverse=True)
+                return files[0]
+            theta0_path = get_latest_checkpoint(first_task_dir, first_task_name)
+            theta1_path = get_latest_checkpoint(prev_task_dir, prev_task_name)
+
+            # Load params from checkpoints
+            with open(theta0_path, "rb") as f:
+                theta0_loaded = pickle.load(f)
+            with open(theta1_path, "rb") as f:
+                theta1_loaded = pickle.load(f)
+
+            # Patch: reconstruct agent if loaded object is a dict (params only)
+            def ensure_ddpmiqllearner(obj, reference_agent):
+                if isinstance(obj, dict):
+                    # Reconstruct agent using reference_agent as template
+                    agent = reference_agent.replace(
+                        score_model=reference_agent.score_model.replace(params=obj["score_model"]),
+                        target_score_model=reference_agent.target_score_model.replace(params=obj["target_score_model"]),
+                        critic=reference_agent.critic.replace(params=obj["critic"]),
+                        target_critic=reference_agent.target_critic.replace(params=obj["target_critic"]),
+                        value=reference_agent.value.replace(params=obj["value"]),
+                    )
+                    return agent
+                return obj
+
+            theta0_agent = ensure_ddpmiqllearner(theta0_loaded, agent_bc)
+            theta1_agent = ensure_ddpmiqllearner(theta1_loaded, agent_bc)
+
+            theta0_score = theta0_agent.score_model.params
+            theta1_score = theta1_agent.score_model.params
+            theta2_score = agent_bc.score_model.params
+
+            theta0_target = theta0_agent.target_score_model.params
+            theta1_target = theta1_agent.target_score_model.params
+            theta2_target = agent_bc.target_score_model.params
+
+            # DOP merge for score_model and target_score_model
+            merged_score_params = dop_merge_simple_jax(theta0_score, theta1_score, theta2_score)
+            merged_target_score_params = dop_merge_simple_jax(theta0_target, theta1_target, theta2_target)
+
+            agent_bc = agent_bc.replace(
+                score_model=agent_bc.score_model.replace(params=merged_score_params),
+                target_score_model=agent_bc.target_score_model.replace(params=merged_target_score_params)
+            )
+            logging.info(f"[SEQ][DOP] DOP-merged first, previous, and current agent parameters for task {task_name}")
+        # Train agent
+        if task_details.get('online_rl', False):
+            agent_bc = train_agent_online(agent_bc, env, task_details, log_dir=log_dir)
+        else:
+            ds = load_offline_dataset(task_details, env, env_max_steps)
+            agent_bc = train_agent(agent_bc, ds, task_details, keys, env, log_dir=log_dir)
+        # Save model
+        save_time = int(time.time())
+        # Save model with timestamp and task name in filename
+        model_save_path = os.path.join(
+            details.get('results_dir', './results'),
+            f"{task_idx:02d}_{task_name}",
+            f"model_{task_name}_{save_time}.pickle"
+        )
+        os.makedirs(os.path.dirname(model_save_path), exist_ok=True)
+        agent_bc.save(os.path.dirname(model_save_path), save_time)
+        logging.info(f"[SEQ] Saved model for task {task_name} at {model_save_path}")
+        # Update prior agent and names for next task
+        prev_agent_bc = agent_bc
+        prev_task_names.append(task_name)
+
+        # Evaluate on all previous tasks (including current)
+        logging.info(f"[SEQ][EVAL] Evaluating merged agent on all previous tasks up to {task_idx} ...")
+        eval_results = []
+        for eval_idx, eval_task in enumerate(prev_task_names):
+            eval_details = copy.deepcopy(details)
+            eval_details['env_name'] = (eval_idx, eval_task)
+            eval_details['benchmark'] = "Meta-World/MT1"
+            eval_env, _ = create_env(eval_details)
+            eval_episodes = details.get('eval_episodes', 10)
+            try:
+                eval_info = evaluate_bc(agent_bc, eval_env, eval_episodes) #, train_lora=False)
+                logging.info(f"[SEQ][EVAL] Task {eval_task}: {eval_info}")
+                print(f"[SEQ][EVAL] Task {eval_task}: {eval_info}")
+                eval_results.append((eval_task, eval_info))
+            except Exception as e:
+                logging.warning(f"[SEQ][EVAL] Evaluation failed for task {eval_task}: {e}")
+                eval_results.append((eval_task, None))
+            if hasattr(eval_env, "close"):
+                eval_env.close()
+        # Print summary
+        print(f"\n[SEQ][EVAL] Summary after task {task_name}:")
+        for eval_task, eval_info in eval_results:
+            print(f"  Task {eval_task}: {eval_info}")
+
+    logging.info("[SEQ] Sequential Meta-World training and merging completed.")
 
 # If this script is run directly, you can add a CLI or test entry here if needed.

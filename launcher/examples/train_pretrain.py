@@ -166,12 +166,12 @@ def main():
         project='PSEC',
         group='metaworld',
         experiment_name=f'rl_{args.algo.lower()}',
-        max_steps=200000,  # RL usually needs more steps
+        max_steps=1000000,  # RL usually needs more steps
         batch_size=256,
         eval_episodes=10,
         log_interval=1000,
-        save_steps=199999,
-        eval_interval=5000,
+        save_steps=999999,
+        eval_interval=50000,
         save_video=False,
         filter_threshold=None,
         take_top=None,

@@ -1,5 +1,10 @@
 # Launcher for RL training on diffusion model using default config
 
+import sys
+import os
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../../..')))
+
+
 from examples.states.configs.train_config import get_config
 from examples.states.train_diffusion_psec import call_main
 

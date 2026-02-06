@@ -73,6 +73,30 @@ class DDPMIQLLearner(Agent):
     alphas: jnp.ndarray
     alpha_hats: jnp.ndarray
 
+    def save(self, save_dir, save_time=None):
+        """
+        Save the model parameters to a file using pickle.
+        """
+        import os
+        import pickle
+
+        if not os.path.exists(save_dir):
+            os.makedirs(save_dir, exist_ok=True)
+        filename = f"model{save_time}.pickle" if save_time is not None else "model.pickle"
+        path = os.path.join(save_dir, filename)
+
+        # Save only the parameters (not full TrainState objects) to avoid pickling issues
+        params = {
+            "score_model": self.score_model.params,
+            "target_score_model": self.target_score_model.params,
+            "critic": self.critic.params,
+            "target_critic": self.target_critic.params,
+            "value": self.value.params,
+        }
+        with open(path, "wb") as f:
+            pickle.dump(params, f)
+        return path
+
     @classmethod
     def create(
         cls,
@@ -357,7 +381,7 @@ class DDPMIQLLearner(Agent):
 
         return new_agent, info
 
-    def eval_actions(self, observations: jnp.ndarray):
+    def eval_actions(self, observations: jnp.ndarray, train_lora):
         rng = self.rng
 
         assert len(observations.shape) == 1
